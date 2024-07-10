@@ -10,6 +10,9 @@ import threading
 import sched
 import datetime
 import pyodbc
+import asyncio
+import aiohttp
+import itertools
 
 #VARS
 client_id = "9bec1ccd55d871163ac79dd5698295e8376e768d"
@@ -189,37 +192,61 @@ def api_estoque_post(db_response, error=False):
         json.dump(json_data[0], file, indent=4)
     print("(api_estoque_post) POST requests finalizadas com sucesso.")
 
-def api_estoque_put(db_response):
-    
-    codigos_com_erro = []
-    for product in db_response:
-        headers = {
-        "Authorization": f"Bearer {session_tokens[0]}"
-        }
-        payload = {
-            "operacao": "B",
-            "preco": product["custo"],
-            "custo": product["custo"],
-            "quantidade": product["estoque"],
-            "observacoes": "API CARBRASIL-BLING PUT",
-            "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        }
-        with open("bling_product.json") as file:
-            file_data = json.load(file)
+async def api_estoque_put(session, product):
+    print("Começando request: ", product["codigo"])
+    print(product)
+    headers = {
+    "Authorization": f"Bearer {session_tokens[0]}"
+    }
+    payload = {
+        "operacao": "B",
+        "preco": product["custo"],
+        "custo": product["custo"],
+        "quantidade": product["estoque"],
+        "observacoes": "API CARBRASIL-BLING PUT",
+        "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    return await session.request(method="PUT", url=f"{host}/Api/v3/estoques/{product['id_estoque']}",  json=payload, headers=headers)
 
-        for data in file_data["products"]:
-            if data["codigo"] == product["codigo"]:
-                r = requests.put(f"{host}/Api/v3/estoques/{data['idestoque']}", headers=headers, json=payload)
-                if r.status_code == 404:
-                    codigos_com_erro.append(product)
-    ###
-    ###PAREI AQUI (08/07/24) TERMINAR ESSA SEÇÃO
-    ###
-    if codigos_com_erro:
-        print(f"\n(api_estoque_put) Foi encontrado um erro na atualização do registro dos seguintes produtos: \n{codigos_com_erro}\n \
-              (api_estoque_put) Corrigindo o erro..")
-    #    api_estoque_post(codigos_com_erro)
+async def async_put(verified_db_response):
+    
+    print("Começando PUT REQUESTS")
+   
+    batched_products = list(itertools.batched(verified_db_response, 3))
+    async with aiohttp.ClientSession() as session:
+        for product in batched_products:
+            await asyncio.sleep(1.3)
+            tasks = [asyncio.ensure_future(api_estoque_put(session,p)) for p in product]
+            responses = await asyncio.gather(*tasks)
+            for x in responses:
+                y = await x.content.read()
+                print(y, x.status)
+                print(x.url)
+    
     print("(api_estoque_put) PUT requests finalizadas com sucesso. ")
+
+def verify_db_response(db_response):
+    has_idestoque = []
+    not_idestoque = []
+    print("(sync_routine) Analisando dados obtidos do banco de dados..")
+    for x in db_response:
+        with open("bling_product.json") as file:
+        #with open(r"C:\Users\supervisor\Desktop\bling_product.json") as file:
+            file_data = json.load(file)
+            if not file_data["products"]:
+                not_idestoque.append(x)
+                continue
+        for data in file_data["products"]:
+            if data["codigo"] == x["codigo"]:
+                x["id_estoque"] = data["idestoque"]
+                has_idestoque.append(x)
+        if x not in has_idestoque:
+            not_idestoque.append(x)
+    print("(sync_routine) Análise completa.")
+
+    return (has_idestoque, not_idestoque)
+    
+    
 
 def sync_routine():
     global session_tokens
@@ -228,30 +255,88 @@ def sync_routine():
     #usando threading para fazer o programa esperar 5 horas enquanto faz outras coisas
     auth_routine_threading = threading.Thread(target=auth_routine)
     auth_routine_threading.start()
-    time.sleep(3)
     while True:
         os.system("cls")
         print(session_tokens)
         print("(sync_routine) Inicializando rotina de sincronização..")
-        products = api_calls_get()
-        db_response = database_get(products)
-        has_idestoque = []
-        not_idestoque = []
-        print("(sync_routine) Analisando dados obtidos do banco de dados..")
-        for x in db_response:
-            with open("bling_product.json") as file:
-                file_data = json.load(file)
-                if not file_data["products"]:
-                    not_idestoque.append(x)
-                    continue
-            for data in file_data["products"]:
-                if data["codigo"] == x["codigo"]:
-                    has_idestoque.append(x)
-            if x not in has_idestoque:
-                not_idestoque.append(x)
-        print("(sync_routine) Análise completa.")
+        #products = api_calls_get()
+        #db_response = database_get(products)
+        db_response = [{'product_id': 16286908630,
+        
+  'codigo': 4580,
+  'descricao': 'ALAV FREIO MAO CHEVETTE',
+  'estoque': 2.0,
+  'preco_venda': 154.99,
+  'custo': 99.18,
+  'id_estoque': 19331182965},
+ {'product_id': 16286908631,
+  'codigo': 4581,
+  'descricao': 'ALAV FREIO MAO CORSA 94/02',
+  'estoque': 1.0,
+  'preco_venda': 179.99,
+  'custo': 113.22,
+  'id_estoque': 19330272831},
+ {'product_id': 16286908632,
+  'codigo': 4582,
+  'descricao': 'ALAV FREIO MAO CORSA/CELTA',
+  'estoque': 2.0,
+  'preco_venda': 179.99,
+  'custo': 108.23,
+  'id_estoque': 19331183027},
+ {'product_id': 16286908633,
+  'codigo': 27686,
+  'descricao': 'ALAV FREIO MAO DOBLO 03/',
+  'estoque': 1.0,
+  'preco_venda': 477.63,
+  'custo': 298.63,
+  'id_estoque': 19331183073},
+ {'product_id': 16286908634,
+  'codigo': 4583,
+  'descricao': 'ALAV FREIO MAO ESCORT 83/',
+  'estoque': 2.0,
+  'preco_venda': 129.9,
+  'custo': 78.39,
+  'id_estoque': 19331183129},
+ {'product_id': 16286908635,
+  'codigo': 4603,
+  'descricao': 'ALAV FREIO MAO FOX/POLO TODOS',
+  'estoque': 1.0,
+  'preco_venda': 102.0,
+  'custo': 72.0,
+  'id_estoque': 19331183168},
+ {'product_id': 16286908636,
+  'codigo': 4584,
+  'descricao': 'ALAV FREIO MAO FUSCA',
+  'estoque': 4.0,
+  'preco_venda': 109.99,
+  'custo': 67.98,
+  'id_estoque': 19331184054},
+ {'product_id': 16286908637,
+  'codigo': 4585,
+  'descricao': 'ALAV FREIO MAO GOL /94',
+  'estoque': 0.0,
+  'preco_venda': 60.0,
+  'custo': 36.0,
+  'id_estoque': 19331184111},
+ {'product_id': 16286908638,
+  'codigo': 4586,
+  'descricao': 'ALAV FREIO MAO GOL /94 C/MANOPLA',
+  'estoque': 2.0,
+  'preco_venda': 129.99,
+  'custo': 84.44,
+  'id_estoque': 19331185157},
+ {'product_id': 16286908639,
+  'codigo': 4588,
+  'descricao': 'ALAV FREIO MAO GOL BOLA 95/02',
+  'estoque': 3.0,
+  'preco_venda': 199.99,
+  'custo': 107.96,
+  'id_estoque': 19331185185}]
+        has_idestoque, not_idestoque = verify_db_response(db_response)
+        
+        #Calling the Appropriate Function
         if has_idestoque:
-            api_estoque_put(has_idestoque)
+            asyncio.run(async_put(has_idestoque))
         if not_idestoque:
             api_estoque_post(not_idestoque)
         print("(sync_routine) Rotina de sincronização finalizada. 10 segundos para a próxima sincronização")
