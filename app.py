@@ -60,6 +60,7 @@ def first_auth():
 
 #função para solicitar o primeiro token de acesso
 def second_auth(auth_code):
+    global session_tokens
     cn_str = f"{HOST}/Api/v3/oauth/token"
     headers = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -78,7 +79,7 @@ def second_auth(auth_code):
         raise RuntimeError("API RETORNOU COM ERRO (second_auth)")
     
     print("(second_auth) Autenticação de segundo estágio realizada.")
-    return (parsed["access_token"], parsed["refresh_token"])
+    session_tokens = (parsed["access_token"], parsed["refresh_token"])
 
 #função para solicitar outro token de acesso
 def refresh(refresh_token):
@@ -345,7 +346,7 @@ def verify_db_response(db_response):
 def sync_routine():
     global session_tokens
     auth_code = first_auth()
-    session_tokens = second_auth(auth_code)
+    second_auth(auth_code)
     #usando threading para fazer o programa esperar 5 horas enquanto faz outras coisas
     auth_routine_threading = threading.Thread(target=auth_routine)
     auth_routine_threading.start()
