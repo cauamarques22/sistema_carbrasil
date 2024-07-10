@@ -15,24 +15,32 @@ import aiohttp
 import itertools
 
 #VARS
-client_id = "9bec1ccd55d871163ac79dd5698295e8376e768d"
-client_secret = "40b19e91450d1abfa404c41a22059d8695847331526b530c8fc6e9623468"
-client_encoding = f"{client_id}:{client_secret}"
-host = "https://www.bling.com.br"
+CLIENT_ID = "9bec1ccd55d871163ac79dd5698295e8376e768d"
+CLIENT_SECRET = "40b19e91450d1abfa404c41a22059d8695847331526b530c8fc6e9623468"
+CLIENT_ENCODING = f"{CLIENT_ID}:{CLIENT_SECRET}"
+HOST = "https://www.bling.com.br"
 state = "".join(random.choices(string.ascii_uppercase + string.digits, k=15))
 session_tokens = ()
-#ENCODING
-client_encoding_bytes = client_encoding.encode()
-b64 = base64.b64encode(client_encoding_bytes)
-b64_str = b64.decode()
 #idestoque_json = "bling_product_sample.json"
-idestoque_json = r"C:\Users\supervisor\Desktop\bling_product.json"
+IDESTOQUE_JSON = r"C:\Users\supervisor\Desktop\bling_idestoque.json"
+
+
+#ENCODING
+CLIENT_ENCODING_BYTES = CLIENT_ENCODING.encode()
+B64 = base64.b64encode(CLIENT_ENCODING_BYTES)
+B64_STR = B64.decode()
 
 #função para o usuário autorizar o aplicativo e obter o token de autorização
 def first_auth():
-    cn_str = f"{host}/Api/v3/oauth/authorize?response_type=code&client_id={client_id}&state={state}"
-    r = requests.get(cn_str)
+    payload = {
+        "client_id": CLIENT_ID,
+        "state": state,
+        "response_type": "code"
+    }
+    cn_str = f"{HOST}/Api/v3/oauth/authorize"
+    r = requests.get(cn_str, params=payload)
     webbrowser.open(r.url)
+    time.sleep(1)
     r2 = requests.get("https://cauamarques.pythonanywhere.com/")
 
     os.system("cls")
@@ -52,11 +60,11 @@ def first_auth():
 
 #função para solicitar o primeiro token de acesso
 def second_auth(auth_code):
-    cn_str = f"{host}/Api/v3/oauth/token"
+    cn_str = f"{HOST}/Api/v3/oauth/token"
     headers = {
     "Content-Type": "application/x-www-form-urlencoded",
     "Accept": "1.0",
-    "Authorization": f"Basic {b64_str}"
+    "Authorization": f"Basic {B64_STR}"
     }
 
     payload = {
@@ -75,11 +83,11 @@ def second_auth(auth_code):
 #função para solicitar outro token de acesso
 def refresh(refresh_token):
     global session_tokens
-    cn_str = f"{host}/Api/v3/oauth/token"
+    cn_str = f"{HOST}/Api/v3/oauth/token"
     headers = {
     "Content-Type": "application/x-www-form-urlencoded",
     "Accept": "1.0",
-    "Authorization": f"Basic {b64_str}"
+    "Authorization": f"Basic {B64_STR}"
     }
 
     payload = {
@@ -101,7 +109,6 @@ def auth_routine():
         print("(auth_routine) Rotina de autenticação agendada.")
         scheduler.run()
        
-
 def api_calls_get():
     counter = 1
     products_per_page = []
@@ -118,7 +125,7 @@ def api_calls_get():
             "criterio": 2
         }
 
-        r = requests.get(f"{host}/Api/v3/produtos", params=payload, headers=headers)
+        r = requests.get(f"{HOST}/Api/v3/produtos", params=payload, headers=headers)
         parsed = json.loads(r.text)
 
         if not parsed["data"]:
@@ -160,7 +167,7 @@ def database_get(products):
 
 def salvar_json(json_data, error=False):
     if error:
-        with open(idestoque_json, "r+") as file:
+        with open(IDESTOQUE_JSON, "r+") as file:
             file_data = json.load(file)
             file.seek(0)
             file.truncate()
@@ -172,7 +179,7 @@ def salvar_json(json_data, error=False):
             json.dump(file_data, file, indent=4)
         return
 
-    with open(idestoque_json, "r+") as file:
+    with open(IDESTOQUE_JSON, "r+") as file:
         file_data = json.load(file)
         file.seek(0)
         file.truncate()
@@ -200,7 +207,7 @@ async def api_estoque_post(session, product):
         "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
 
-    async with session.request(method="POST",url=f"{host}/Api/v3/estoques", headers=headers, json=payload) as resp:
+    async with session.request(method="POST",url=f"{HOST}/Api/v3/estoques", headers=headers, json=payload) as resp:
         response = await resp.json()
         prep_response = {"codigo":product["codigo"], "idestoque": response["data"]["id"]}
         return prep_response
@@ -240,7 +247,7 @@ async def api_estoque_put(session, product):
         "observacoes": "API CARBRASIL-BLING PUT",
         "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-    async with session.request(method="PUT", url=f"{host}/Api/v3/estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
+    async with session.request(method="PUT", url=f"{HOST}/Api/v3/estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
         read_resp =  await resp.content.read()
         if len(read_resp.decode()) > 0:
             prep_response = {"read_content":read_resp, "product_info":product}
@@ -248,25 +255,35 @@ async def api_estoque_put(session, product):
         return resp.status
 
 async def async_put(verified_db_response):
-    print("(async put) Começando PUT REQUESTS")
-    batched_products = list(itertools.batched(verified_db_response, 3))
+    print(f"(async put) Começando PUT REQUESTS em {len(verified_db_response)} registros")
     error_not_found = []
-    uknown_errors = []
+    unknown_errors = []
+    #Faz com que a lista de dicionários esteja separada por Tuplas de 3 dicionários 
+    #verified_db_response: [{}, {} ...]
+    #batched_products: [({},{},{}), ({},{},{}), ...]
+    batched_products = list(itertools.batched(verified_db_response, 3))
     async with aiohttp.ClientSession() as session:
         for product in batched_products:
             await asyncio.sleep(1.3)
             tasks = [asyncio.ensure_future(api_estoque_put(session,p)) for p in product]
             responses = await asyncio.gather(*tasks)
             for x in responses:
+                #Se a response não for o 204 (comportamento esperado), irá tentar converter a 
+                # response em JSON e dar append caso seja um erro conhecido "RESOURCE NOT FOUND".
                 if x != 204:
-                   byte_response = x["read_content"]
-                   reading = byte_response.decode()
-                   reading = json.loads(reading)
-                   if "error" in reading.keys():
-                        if reading["error"]["type"] == "RESOURCE_NOT_FOUND":
-                            error_not_found.append(x["product_info"])
-                        else: 
-                            uknown_errors.append(x["product_info"])
+                    byte_response = x["read_content"]
+                    reading = byte_response.decode()
+                    try:
+                        reading = json.loads(reading)
+                        if "error" in reading.keys():
+                            if reading["error"]["type"] == "RESOURCE_NOT_FOUND":
+                                error_not_found.append(x["product_info"])
+                            else: 
+                                unknown_errors.append(x["product_info"])
+                    #Houve casos onde esse erro foi lançado. A princípio será lidado como Unknown Error e ignorado.
+                    except json.JSONDecodeError:
+                        unknown_errors.append(x)
+    #Caso a lista composta de erros tipo RESOURCE NOT FOUND tenha itens, ela chamará a função async post para lidar com esses erros
     if error_not_found:
         print("\n(async put) Os seguintes produtos retornarm com errros:\n",error_not_found)
         print("(async put) Tentando corrigir os erros")
@@ -276,15 +293,35 @@ async def async_put(verified_db_response):
         else:
             print("(async put) Não foi possível corrigir os erros.")
         return
+    #Se existem Unknown Erros, ele irá imprimir na tela.
+    if unknown_errors:
+        print("\n(async put) Foram encontrados erros não reconhecidos: \n", unknown_errors)
     print("(api_estoque_put) PUT requests finalizadas com sucesso. ")
 
 def verify_db_response(db_response):
+    print("(verify_db_response) Analisando dados obtidos do banco de dados..")
     has_idestoque = []
     not_idestoque = []
-    print("(sync_routine) Analisando dados obtidos do banco de dados..")
+    codigos_ignorados = []
+    #Abre/cria o arquivo ignore_codes.json
+    try:
+        with open("ignore_codes.json", "r+") as file:
+            file_data = json.load(file)
+            ignore_codes = file_data["codes"]
+    except FileNotFoundError:
+        with open("ignore_codes.json", "x") as file:
+            file_data = {"codes":[]}
+            json.dump(file_data, file, indent=4)
+
     for x in db_response:
+        #Verifica se o x["codigo"] está nos ignore_codes
+        if x["codigo"] in ignore_codes:
+            codigos_ignorados.append(x["codigo"])
+            continue
+        #Verifica se o x["codigo"] tem idEstoque cadastrado no arquivo bling_idestqoue.json() e faz a distinção nos arquivos que tem, e que não tem.
+        #Se esse arquivo não existir, ele cria um, e sai do loop.
         try:
-            with open(idestoque_json) as file:
+            with open(IDESTOQUE_JSON) as file:
                 file_data = json.load(file)
                 if not file_data["products"]:
                     not_idestoque = db_response.copy()
@@ -295,14 +332,14 @@ def verify_db_response(db_response):
                     has_idestoque.append(x)
             if x not in has_idestoque:
                 not_idestoque.append(x)
-
         except FileNotFoundError:
-            with open(idestoque_json, "x") as file:
+            with open(IDESTOQUE_JSON, "x") as file:
                 json.dump({"products":[]}, file, indent=4)
                 not_idestoque = db_response.copy()
                 break
-
-    print("(sync_routine) Análise completa.")
+    print("(verify_db_response) IGNORE_CODES:", ignore_codes)
+    print("(verify_db_response) CODIGOS IGNORADOS:", codigos_ignorados)
+    print("(verify_db_response) Análise completa.")
     return (has_idestoque, not_idestoque)
 
 def sync_routine():
@@ -321,11 +358,14 @@ def sync_routine():
         has_idestoque, not_idestoque = verify_db_response(db_response)
         
         #Calling the Appropriate Function
+        now = time.time()
         if has_idestoque:
             asyncio.run(async_put(has_idestoque))
         if not_idestoque:
             asyncio.run(async_post(not_idestoque))
-        print("(sync_routine) Rotina de sincronização finalizada. 10 segundos para a próxima sincronização")
-        time.sleep(10)
+        os.system("cls")
+        after = time.time()
+        time_spent = after-now
+        print(f"O programa levou {time_spent:.2f} segundos para completar o ciclo de sincronização.")
 
 sync_routine()
