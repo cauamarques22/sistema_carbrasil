@@ -25,6 +25,8 @@ session_tokens = ()
 client_encoding_bytes = client_encoding.encode()
 b64 = base64.b64encode(client_encoding_bytes)
 b64_str = b64.decode()
+#idestoque_json = "bling_product_sample.json"
+idestoque_json = r"C:\Users\supervisor\Desktop\bling_product.json"
 
 #função para o usuário autorizar o aplicativo e obter o token de autorização
 def first_auth():
@@ -156,45 +158,77 @@ def database_get(products):
             db_responses.append(document)
     return db_responses
 
-def api_estoque_post(db_response, error=False):
-    #Criar aqui um método para atualizar o estoque do bling com base nas informações obtidas do sistema da Car Brasil
-    print(f"(api_estoque_post) Fazendo POST em {len(db_response)} registros.")
-    json_data = []
-    with open("bling_product.json", "r+") as file:
+def salvar_json(json_data, error=False):
+    if error:
+        with open(idestoque_json, "r+") as file:
             file_data = json.load(file)
-            json_data.append(file_data)
-    for prod in db_response:
-        print(prod["codigo"], prod["descricao"])
-        headers = {
-            "Authorization": f"Bearer {session_tokens[0]}"
-        }
-        payload = {
-            "produto":{
-                "id": prod["product_id"]
-            },
-            "deposito":{
-                "id": 3471220462
-            },
-            "operacao": "B",
-            "preco": prod["custo"],
-            "custo": prod["custo"],
-            "quantidade": prod["estoque"],
-            "observacoes": "API CARBRASIL-BLING POST",
-            "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-        r = requests.post(f"{host}/Api/v3/estoques", headers=headers, json=payload)
-        parsed = json.loads(r.text)
-        iter_data = {"codigo":prod["codigo"],"idestoque":parsed["data"]["id"]}
-        json_data[0]["products"].append(iter_data)
-        
-    os.remove("bling_product.json")
-    with open("bling_product.json", "w+") as file:
-        json.dump(json_data[0], file, indent=4)
-    print("(api_estoque_post) POST requests finalizadas com sucesso.")
+            file.seek(0)
+            file.truncate()
+            for product in json_data:
+                for data in file_data["products"]:
+                    if product["codigo"] == data["codigo"]:
+                        index = file_data["products"].index(data)
+                        file_data["products"][index]["idestoque"] = product["idestoque"]
+            json.dump(file_data, file, indent=4)
+        return
+
+    with open(idestoque_json, "r+") as file:
+        file_data = json.load(file)
+        file.seek(0)
+        file.truncate()
+        for data in json_data:
+            file_data["products"].append(data)
+        json.dump(file_data, file, indent=4)
+
+async def api_estoque_post(session, product):
+    print(product["codigo"], product["descricao"])
+    headers = {
+        "Authorization": f"Bearer {session_tokens[0]}"
+    }
+    payload = {
+        "produto":{
+            "id": product["product_id"]
+        },
+        "deposito":{
+            "id": 3471220462
+        },
+        "operacao": "B",
+        "preco": product["custo"],
+        "custo": product["custo"],
+        "quantidade": product["estoque"],
+        "observacoes": "API CARBRASIL-BLING POST",
+        "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
+    async with session.request(method="POST",url=f"{host}/Api/v3/estoques", headers=headers, json=payload) as resp:
+        response = await resp.json()
+        prep_response = {"codigo":product["codigo"], "idestoque": response["data"]["id"]}
+        return prep_response
+
+async def async_post(verified_db_response, error=False):
+    if error:
+        print("(async_post: errors) Começando POST REQUESTS")
+    else:
+        print("(async_post) Começando POST REQUESTS")
+    batched_responses = []
+    batched_products = list(itertools.batched(verified_db_response, 3))
+    async with aiohttp.ClientSession() as session:
+        for product in batched_products:
+            await asyncio.sleep(1.1)
+            tasks = [asyncio.ensure_future(api_estoque_post(session, p)) for p in product]
+            response = await asyncio.gather(*tasks)
+            batched_responses.append(response)
+
+    flattened_responses = list(itertools.chain.from_iterable(batched_responses))
+    if error:
+        salvar_json(flattened_responses, error=True)
+        print("(async_post: errors) POST REQUESTS finalizadas com sucesso.")
+        return True
+    salvar_json(flattened_responses)
+    print("(async_post) POST REQUESTS finalizadas com sucesso.")
 
 async def api_estoque_put(session, product):
     print("Começando request: ", product["codigo"])
-    print(product)
     headers = {
     "Authorization": f"Bearer {session_tokens[0]}"
     }
@@ -206,23 +240,42 @@ async def api_estoque_put(session, product):
         "observacoes": "API CARBRASIL-BLING PUT",
         "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-    return await session.request(method="PUT", url=f"{host}/Api/v3/estoques/{product['id_estoque']}",  json=payload, headers=headers)
+    async with session.request(method="PUT", url=f"{host}/Api/v3/estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
+        read_resp =  await resp.content.read()
+        if len(read_resp.decode()) > 0:
+            prep_response = {"read_content":read_resp, "product_info":product}
+            return prep_response
+        return resp.status
 
 async def async_put(verified_db_response):
-    
-    print("Começando PUT REQUESTS")
-   
+    print("(async put) Começando PUT REQUESTS")
     batched_products = list(itertools.batched(verified_db_response, 3))
+    error_not_found = []
+    uknown_errors = []
     async with aiohttp.ClientSession() as session:
         for product in batched_products:
             await asyncio.sleep(1.3)
             tasks = [asyncio.ensure_future(api_estoque_put(session,p)) for p in product]
             responses = await asyncio.gather(*tasks)
             for x in responses:
-                y = await x.content.read()
-                print(y, x.status)
-                print(x.url)
-    
+                if x != 204:
+                   byte_response = x["read_content"]
+                   reading = byte_response.decode()
+                   reading = json.loads(reading)
+                   if "error" in reading.keys():
+                        if reading["error"]["type"] == "RESOURCE_NOT_FOUND":
+                            error_not_found.append(x["product_info"])
+                        else: 
+                            uknown_errors.append(x["product_info"])
+    if error_not_found:
+        print("\n(async put) Os seguintes produtos retornarm com errros:\n",error_not_found)
+        print("(async put) Tentando corrigir os erros")
+        r = await asyncio.gather(async_post(error_not_found, error=True))
+        if r:
+            print("(async put) Erros corrigidos com sucesso.")
+        else:
+            print("(async put) Não foi possível corrigir os erros.")
+        return
     print("(api_estoque_put) PUT requests finalizadas com sucesso. ")
 
 def verify_db_response(db_response):
@@ -230,23 +283,27 @@ def verify_db_response(db_response):
     not_idestoque = []
     print("(sync_routine) Analisando dados obtidos do banco de dados..")
     for x in db_response:
-        with open("bling_product.json") as file:
-        #with open(r"C:\Users\supervisor\Desktop\bling_product.json") as file:
-            file_data = json.load(file)
-            if not file_data["products"]:
+        try:
+            with open(idestoque_json) as file:
+                file_data = json.load(file)
+                if not file_data["products"]:
+                    not_idestoque = db_response.copy()
+                    break
+            for data in file_data["products"]:
+                if data["codigo"] == x["codigo"]:
+                    x["id_estoque"] = data["idestoque"]
+                    has_idestoque.append(x)
+            if x not in has_idestoque:
                 not_idestoque.append(x)
-                continue
-        for data in file_data["products"]:
-            if data["codigo"] == x["codigo"]:
-                x["id_estoque"] = data["idestoque"]
-                has_idestoque.append(x)
-        if x not in has_idestoque:
-            not_idestoque.append(x)
-    print("(sync_routine) Análise completa.")
 
+        except FileNotFoundError:
+            with open(idestoque_json, "x") as file:
+                json.dump({"products":[]}, file, indent=4)
+                not_idestoque = db_response.copy()
+                break
+
+    print("(sync_routine) Análise completa.")
     return (has_idestoque, not_idestoque)
-    
-    
 
 def sync_routine():
     global session_tokens
@@ -259,98 +316,16 @@ def sync_routine():
         os.system("cls")
         print(session_tokens)
         print("(sync_routine) Inicializando rotina de sincronização..")
-        #products = api_calls_get()
-        #db_response = database_get(products)
-        db_response = [{'product_id': 16286908630,
-        
-  'codigo': 4580,
-  'descricao': 'ALAV FREIO MAO CHEVETTE',
-  'estoque': 2.0,
-  'preco_venda': 154.99,
-  'custo': 99.18,
-  'id_estoque': 19331182965},
- {'product_id': 16286908631,
-  'codigo': 4581,
-  'descricao': 'ALAV FREIO MAO CORSA 94/02',
-  'estoque': 1.0,
-  'preco_venda': 179.99,
-  'custo': 113.22,
-  'id_estoque': 19330272831},
- {'product_id': 16286908632,
-  'codigo': 4582,
-  'descricao': 'ALAV FREIO MAO CORSA/CELTA',
-  'estoque': 2.0,
-  'preco_venda': 179.99,
-  'custo': 108.23,
-  'id_estoque': 19331183027},
- {'product_id': 16286908633,
-  'codigo': 27686,
-  'descricao': 'ALAV FREIO MAO DOBLO 03/',
-  'estoque': 1.0,
-  'preco_venda': 477.63,
-  'custo': 298.63,
-  'id_estoque': 19331183073},
- {'product_id': 16286908634,
-  'codigo': 4583,
-  'descricao': 'ALAV FREIO MAO ESCORT 83/',
-  'estoque': 2.0,
-  'preco_venda': 129.9,
-  'custo': 78.39,
-  'id_estoque': 19331183129},
- {'product_id': 16286908635,
-  'codigo': 4603,
-  'descricao': 'ALAV FREIO MAO FOX/POLO TODOS',
-  'estoque': 1.0,
-  'preco_venda': 102.0,
-  'custo': 72.0,
-  'id_estoque': 19331183168},
- {'product_id': 16286908636,
-  'codigo': 4584,
-  'descricao': 'ALAV FREIO MAO FUSCA',
-  'estoque': 4.0,
-  'preco_venda': 109.99,
-  'custo': 67.98,
-  'id_estoque': 19331184054},
- {'product_id': 16286908637,
-  'codigo': 4585,
-  'descricao': 'ALAV FREIO MAO GOL /94',
-  'estoque': 0.0,
-  'preco_venda': 60.0,
-  'custo': 36.0,
-  'id_estoque': 19331184111},
- {'product_id': 16286908638,
-  'codigo': 4586,
-  'descricao': 'ALAV FREIO MAO GOL /94 C/MANOPLA',
-  'estoque': 2.0,
-  'preco_venda': 129.99,
-  'custo': 84.44,
-  'id_estoque': 19331185157},
- {'product_id': 16286908639,
-  'codigo': 4588,
-  'descricao': 'ALAV FREIO MAO GOL BOLA 95/02',
-  'estoque': 3.0,
-  'preco_venda': 199.99,
-  'custo': 107.96,
-  'id_estoque': 19331185185}]
+        products = api_calls_get()
+        db_response = database_get(products)
         has_idestoque, not_idestoque = verify_db_response(db_response)
         
         #Calling the Appropriate Function
         if has_idestoque:
             asyncio.run(async_put(has_idestoque))
         if not_idestoque:
-            api_estoque_post(not_idestoque)
+            asyncio.run(async_post(not_idestoque))
         print("(sync_routine) Rotina de sincronização finalizada. 10 segundos para a próxima sincronização")
         time.sleep(10)
 
 sync_routine()
-
-
-
-
-#Falta fazer a função de sincronizar o estoque e de rotina de atualização. Utilizar os mesmos conceitos aplicados de threading e de scheduling para aplicar uma sincronia
-# a cada x tempo.
-#preciso definir também o padrão de funcionamento do programa, eu não posso simplesmente clonar o estoque da CarBrasil no bling a cada x horas, eu tenho que fazer 
-# uma requisição dos produtos do bling e pedir para o estoque da CarBrasil somente os produtos que vieram nessa requisição.
-# Motivo: na data de hoje (06/07/24) estamos trabalhando apenas com o estoque que está contado, e não o estoque completo.
-
-
