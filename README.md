@@ -55,3 +55,9 @@ Foi removido o time.sleep() da função sync_routine, pois com 4.500 produtos o 
 - Adição de comentários para facilitar o entendimento do código.
 - Fazer a implementação de Logs para facilitar detecção e solução de erros.
 - Melhorar o error handling do sistema para evitar futuras dores de cabeça.
+
+## 11/07/2024
+
+### 1 
+
+Corrigido erro nas put requests e adição de um log simples

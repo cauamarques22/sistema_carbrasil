@@ -1,3 +1,4 @@
+import aiohttp.client_exceptions
 import requests
 import webbrowser
 import base64
@@ -13,6 +14,7 @@ import pyodbc
 import asyncio
 import aiohttp
 import itertools
+import logging
 
 #VARS
 CLIENT_ID = "9bec1ccd55d871163ac79dd5698295e8376e768d"
@@ -24,6 +26,9 @@ session_tokens = ()
 #idestoque_json = "bling_product_sample.json"
 IDESTOQUE_JSON = r"C:\Users\supervisor\Desktop\bling_idestoque.json"
 
+#INICIALIZAR LOGGING
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename="error_log.log", encoding="utf-8", level=logging.DEBUG)
 
 #ENCODING
 CLIENT_ENCODING_BYTES = CLIENT_ENCODING.encode()
@@ -248,12 +253,19 @@ async def api_estoque_put(session, product):
         "observacoes": "API CARBRASIL-BLING PUT",
         "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-    async with session.request(method="PUT", url=f"{HOST}/Api/v3/estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
-        read_resp =  await resp.content.read()
-        if len(read_resp.decode()) > 0:
-            prep_response = {"read_content":read_resp, "product_info":product}
-            return prep_response
-        return resp.status
+    try:
+        async with session.request(method="PUT", url=f"{HOST}/Api/v3/estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
+            read_resp =  await resp.content.read()
+            if len(read_resp.decode()) > 0:
+                prep_response = {"read_content":read_resp, "product_info":product}
+                return prep_response
+            return resp.status
+    except aiohttp.client_exceptions.ClientOSError as err:
+        if err.winerror == 64:
+            logger.error(f"(api_estoque_put) {datetime.datetime.now()}: {err.strerror} |END LINE|")
+            logger.error(f"(api_estoque_put) {datetime.datetime.now()}: {err.winerror} |END LINE|")
+            logger.error(f"(api_estoque_put) {datetime.datetime.now()}: PRODUCT THAT RAISED AN ERROR: |END LINE|")
+            logger.error(f"(api_estoque_put) {datetime.datetime.now()}: {product} |END LINE|")
 
 async def async_put(verified_db_response):
     print(f"(async put) Começando PUT REQUESTS em {len(verified_db_response)} registros")
