@@ -367,7 +367,7 @@ class IOHandler(ApiFunctions):
             keys = [key for key in product["divergencias"].keys()]
             if "estoque" in keys or "custo" in keys:
                 self.api_stock_instructions.append(product)
-            if "descricao" in keys or "preco" in keys:
+            if "descricao" in keys:
                 self.api_product_instructions.append(product)
         
         if self.api_stock_instructions:
