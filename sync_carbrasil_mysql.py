@@ -138,7 +138,7 @@ class DatabaseSync():
         logger.info("(compare_responses) Diagnóstico completo")
         return diagnosis
     
-    def update_custo_estoque_mysql(diagnosis):
+    def update_custo_estoque_mysql(self, diagnosis):
         print("(update_custo_estoque_mysql) Atualizando custo e estoque")
         for product in diagnosis:
             if "custo" in product["divergencias"].keys() or "estoque" in product["divergencias"].keys():
