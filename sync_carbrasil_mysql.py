@@ -1,5 +1,5 @@
 import pyodbc
-from sync_bling_mysql import cursor
+from sync_bling_mysql import cursor, conn
 import logging
 #import arquivos_de_apoio.teste2 as t2
 
@@ -138,6 +138,14 @@ class DatabaseSync():
         logger.info("(compare_responses) Diagnóstico completo")
         return diagnosis
     
+    def update_custo_estoque_mysql(diagnosis):
+        print("(update_custo_estoque_mysql) Atualizando custo e estoque")
+        for product in diagnosis:
+            if "custo" in product["divergencias"].keys() or "estoque" in product["divergencias"].keys():
+                cursor.execute(f"UPDATE db_sistema_intermediador SET custo = {product['divergencias']['custo']}, estoque = {int(product['divergencias']['estoque'])} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+        conn.commit()
+        print("(update_custo_estoque_mysql) Atualização concluída")
+
     def loop(self):
         db_products = self.database_get_all()
         #db_products = t2.database_response
@@ -145,6 +153,7 @@ class DatabaseSync():
         carbrasil_products = self.carbrasil_database_get(db_products)
         #carbrasil_products = t2.carbrasil_response
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products)
+        self.update_custo_estoque_mysql(diagnosis)
         return diagnosis
     
 
