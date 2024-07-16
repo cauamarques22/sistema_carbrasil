@@ -326,7 +326,7 @@ class ApiFunctions():
                     
                     if "decoded_resp" in resp.keys():
                         if "error" in resp["decoded_resp"].keys():
-                            if resp["decoded_resp"]["errror"]["type"] == "RESOURCE_NOT_FOUND":
+                            if resp["decoded_resp"]["error"]["type"] == "RESOURCE_NOT_FOUND":
                                 error_not_found.append(resp)
                                 continue
                             unknown_errors.append(resp)

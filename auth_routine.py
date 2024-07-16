@@ -26,25 +26,6 @@ CLIENT_ENCODING_BYTES = CLIENT_ENCODING.encode()
 B64 = base64.b64encode(CLIENT_ENCODING_BYTES)
 B64_STR = B64.decode()
 
-def auto_login():
-    res = pyautogui.locateCenterOnScreen("locate_bling.png", confidence=0.9)
-    pyautogui.moveTo(res[0], res[1]-50)
-    pyautogui.click()
-    with pyautogui.hold("ctrl"):
-        pyautogui.press("f5")
-    time.sleep(1)
-    pyautogui.moveTo(res[0], res[1]+5)
-    pyautogui.click()
-    pyautogui.write("carbrasil")
-    pyautogui.click()
-    time.sleep(0.5)
-    pyautogui.moveTo(res[0], res[1]+53)
-    pyautogui.click()
-    pyautogui.write("Carbrasil@2024")
-    res2 = pyautogui.locateCenterOnScreen("entrar.png", confidence=0.9)
-    pyautogui.moveTo(res2)
-    pyautogui.click()
-
 def first_auth():
     payload = {
         "client_id": CLIENT_ID,
@@ -56,7 +37,6 @@ def first_auth():
     webbrowser.open(r.url)
     time.sleep(2)
     r2 = requests.get("https://cauamarques.pythonanywhere.com/")
-    auto_login()
 
     os.system("cls")
     print("Aguardando a Autorização do Usuário.")

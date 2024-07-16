@@ -126,6 +126,10 @@ class DatabaseSync():
                         diagnosis.append(document)
                         break
                     
+                    if "custo" in doc_keys or "estoque" in doc_keys:
+                        document["divergencias"].setdefault("estoque", dicts_carbrasil["estoque"])
+                        document["divergencias"].setdefault("custo", dicts_carbrasil["custo"])
+                    
                     #adiciona a descrição do produto no dicionário, pois a api de produtos pede como obrigatório.
                     #Neste ponto só chegaria os produtos que tem divergência na descrição ou no preço.
                     document["divergencias"].setdefault("descricao", dicts_carbrasil["descricao"])
@@ -140,8 +144,15 @@ class DatabaseSync():
     def update_custo_estoque_mysql(self, diagnosis):
         print("(update_custo_estoque_mysql) Atualizando custo e estoque")
         for product in diagnosis:
-            if "custo" in product["divergencias"].keys() and "estoque" in product["divergencias"].keys():
-                cursor.execute(f"UPDATE db_sistema_intermediador SET custo = {product['divergencias']['custo']}, estoque = {int(product['divergencias']['estoque'])} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+            prod_keys = [x for x in product["divergencias"].keys()]
+            if "custo" in prod_keys:
+                cursor.execute(f"UPDATE db_sistema_intermediador SET custo = {product['divergencias']['custo']} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+            if "estoque" in prod_keys:
+                cursor.execute(f"UPDATE db_sistema_intermediador SET estoque = {int(product['divergencias']['estoque'])} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+            if "preco" in prod_keys:
+                cursor.execute(f"UPDATE db_sistema_intermediador SET preco = {product['divergencias']['preco']} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+            if "descricao" in prod_keys:
+                cursor.execute(f"UPDATE db_sistema_intermediador SET descricao = \'{product['divergencias']['descricao']}\' WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
         conn.commit()
         print("(update_custo_estoque_mysql) Atualização concluída")
 
