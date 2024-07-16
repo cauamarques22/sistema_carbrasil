@@ -46,7 +46,7 @@ class BlingDatabaseSync():
         while True:
             time.sleep(1.1)
             headers = {
-                "Authorization": f"Bearer 1b151f2011163d5b09062972b80743684309e154"
+                "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
             }
 
             payload = {
@@ -58,7 +58,7 @@ class BlingDatabaseSync():
             r = requests.get(f"{auth_routine.HOST}produtos", params=payload, headers=headers)
             parsed = json.loads(r.text)
 
-            if not parsed.get("data"): #exception KeyError
+            if not parsed.get("data"):
                 break
 
             products_per_page.append(parsed["data"])
