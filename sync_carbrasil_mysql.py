@@ -66,7 +66,6 @@ class DatabaseSync():
                     "estoque": float(x[2])
                 }
                 carbrasil_responses.append(document)
-                logger.debug(document)
 
         print("(carbrasil_database_get) Produtos obtidos com sucesso")
         logger.info("(carbrasil_database_get) Produtos obtidos com sucesso")
@@ -141,7 +140,7 @@ class DatabaseSync():
     def update_custo_estoque_mysql(self, diagnosis):
         print("(update_custo_estoque_mysql) Atualizando custo e estoque")
         for product in diagnosis:
-            if "custo" in product["divergencias"].keys() or "estoque" in product["divergencias"].keys():
+            if "custo" in product["divergencias"].keys() and "estoque" in product["divergencias"].keys():
                 cursor.execute(f"UPDATE db_sistema_intermediador SET custo = {product['divergencias']['custo']}, estoque = {int(product['divergencias']['estoque'])} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
         conn.commit()
         print("(update_custo_estoque_mysql) Atualização concluída")
