@@ -87,7 +87,6 @@ class ApiFunctions():
     async def create_stock_slave(self, session, product):
 
         print("(create_stock_slave) Começando request: ", product["codigo_carbrasil"])
-        logger.debug(f"(create_stock_slave) Começando request: \n{product['codigo_carbrasil']}")
         headers = {
             "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
         }
@@ -176,7 +175,6 @@ class ApiFunctions():
     async def update_stock_slave(self, session:aiohttp.ClientSession, product: dict) -> dict:
 
         print("(update_stock_slave) Começando request: ", product["codigo_carbrasil"])
-        logger.info(f"(update_stock_slave) Começando request: {product["codigo_carbrasil"]}")
         headers = {
         "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
         }
@@ -264,7 +262,6 @@ class ApiFunctions():
     async def update_product_slave(self, session: aiohttp.ClientSession, product: dict): #ATUALIZAR O ERROR HANDLING
         
         print(f"(update_product_slave) Atualizando Código: {product["codigo_carbrasil"]}")
-        logger.info(f"(update_product_slave) Atualizando Código: {product["codigo_carbrasil"]}")
         headers = {
         "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
         }
@@ -286,7 +283,7 @@ class ApiFunctions():
                 resp_status = resp.status
                 
                 if resp_status != 200:
-                    product["decoded_resp"] = resp.json()
+                    product["decoded_resp"] = await resp.json()
                     product["response_status"]= resp_status 
                     logger.error(f"Produto com erro: \n{product}")
                     return product
