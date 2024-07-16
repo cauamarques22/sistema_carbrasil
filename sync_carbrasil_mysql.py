@@ -105,13 +105,13 @@ class DatabaseSync():
                     }
 
                     if not equal_description:
-                        document["descricao"] = dicts_carbrasil["descricao"]
+                        document["divergencias"]["descricao"] = dicts_carbrasil["descricao"]
                     if not equal_price:
-                        document["preco"] = dicts_carbrasil["preco"]
+                        document["divergencias"]["preco"] = dicts_carbrasil["preco"]
                     if not equal_cost:
-                        document["custo"] = dicts_carbrasil["custo"]
+                        document["divergencias"]["custo"] = dicts_carbrasil["custo"]
                     if not equal_stock:
-                        document["estoque"] = dicts_carbrasil["estoque"]
+                        document["divergencias"]["estoque"] = dicts_carbrasil["estoque"]
 
                     doc_keys = [x for x in document["divergencias"].keys()]
                     #Se todas as condições acima foram falsas, doc_keys só terá as chaves padrão, sinalizando que

@@ -269,7 +269,8 @@ class ApiFunctions():
         "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
         }
         payload = {
-            "nome": product["descricao"],
+            "nome": product["divergencias"]["descricao"],
+            "preco": product["divergencias"]["preco"],
             "tipo": product["bling_tipo"],
             "situacao": product["bling_situacao"],
             "formato": product["bling_formato"],
@@ -279,9 +280,7 @@ class ApiFunctions():
             "tipoProducao": "T",
 
         }
-        if "preco" in product.keys():
-            payload["preco"] = product["preco"]
-        
+
         try:
             async with session.request(method="PUT", url=f"{auth_routine.HOST}produtos/{product['id_bling']}", headers=headers, json=payload) as resp:
                 resp_status = resp.status
@@ -292,12 +291,12 @@ class ApiFunctions():
                     logger.error(f"Produto com erro: \n{product}")
                     return product
 
-                product["response_status_code"] = resp_status.status
-                logger.debug(f"Código Car Brasil: {product['codigo_carbrasil']} | Status: {product['response_status_code']}")
+                product["response_status"] = resp_status
+                logger.debug(f"Código Car Brasil: {product['codigo_carbrasil']} | Status: {product['response_status']}")
                 return product
 
         except aiohttp.client_exceptions.ClientOSError as err:
-            product["response_status_code"] = resp.status
+            product["response_status"] = resp.status
             logger.error(f"(api_estoque_put) WINERROR: {err.winerror}")
             logger.error("(api_estoque_put) PRODUCT THAT RAISED AN ERROR:")
             logger.error(f"(api_estoque_put) {product}")

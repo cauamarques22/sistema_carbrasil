@@ -38,8 +38,8 @@ def app_loop():
         iohandler.main()
         end = time.time()
         print("(app_loop) 30 minutos para a próxima sincronização.")
-        print(f"(app_loop) O programa levou {start-end:.2f} segundos para completar")
-        logger.info(f"(app_loop) O programa levou {start-end:.2f} segundos para completar")
+        print(f"(app_loop) O programa levou {end-start:.2f} segundos para completar")
+        logger.info(f"(app_loop) O programa levou {end-start:.2f} segundos para completar")
         time.sleep(30*60)
     
 
