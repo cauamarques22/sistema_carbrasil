@@ -100,7 +100,8 @@ class DatabaseSync():
                         "marca": dicts_db["marca"],
                         "largura": dicts_db["largura"],
                         "altura": dicts_db["altura"],
-                        "profundidade": dicts_db["profundidade"]
+                        "profundidade": dicts_db["profundidade"],
+                        "divergencias": {}
                     }
 
                     if not equal_description:
@@ -112,30 +113,24 @@ class DatabaseSync():
                     if not equal_stock:
                         document["estoque"] = dicts_carbrasil["estoque"]
 
-                    doc_keys = [x for x in document.keys()]
+                    doc_keys = [x for x in document["divergencias"].keys()]
                     #Se todas as condições acima foram falsas, doc_keys só terá as chaves padrão, sinalizando que
                     # não há divergência nó código em questão
-                    if "descricao" not in doc_keys and "preco" not in doc_keys and "custo" not in doc_keys and "estoque" not in doc_keys:
+                    if not doc_keys:
                         break
                     
                     #Se tem "estoque" ou "custo" e não tem "preço" e "descrição", faz o append e sai do loop
-                    #pois se não sair do loop, ele irá adicionar a descrição automaticamente no dicionário
-                    #e a Classe InputHandler do Módulo request_routine fará uma request sem sentido pra atualizar
-                    #a descrição (quando ela nem teve divergência)
                     if ("estoque" in doc_keys or "custo" in doc_keys) and ("preco" not in doc_keys and "descricao" not in doc_keys):
-                        if "estoque" not in doc_keys:
-                            document["estoque"] = dicts_carbrasil["estoque"]
-                        if "custo" not in doc_keys:
-                            document["custo"] = dicts_carbrasil["custo"]
+                        document["divergencias"].setdefault("estoque", dicts_carbrasil["estoque"])
+                        document["divergencias"].setdefault("custo", dicts_carbrasil["custo"]) 
+                        document["divergencias"].setdefault("preco", dicts_carbrasil["preco"])
                         diagnosis.append(document)
-                        logger.debug(document)
                         break
                     
                     #adiciona a descrição do produto no dicionário, pois a api de produtos pede como obrigatório.
-                    if "descricao" not in doc_keys:
-                        document["descricao"] = dicts_carbrasil["descricao"]
-                    
-                    logger.debug(document)
+                    #Neste ponto só chegaria os produtos que tem divergência na descrição ou no preço.
+                    document["divergencias"].setdefault("descricao", dicts_carbrasil["descricao"])
+                    document["divergencias"].setdefault("preco", dicts_carbrasil["preco"])
                     diagnosis.append(document)
                     break
 
