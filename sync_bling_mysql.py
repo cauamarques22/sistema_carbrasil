@@ -35,9 +35,8 @@ except mysql.connector.ProgrammingError as err:
         conn.commit()
 
 class BlingDatabaseSync():
-    def __init__(self, loop_time):
+    def __init__(self):
         self.bling_products = []
-        self.loop_time = loop_time
 
     def api_calls_get(self):
         counter = 1
