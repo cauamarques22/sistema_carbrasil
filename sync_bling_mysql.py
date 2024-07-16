@@ -46,7 +46,7 @@ class BlingDatabaseSync():
         while True:
             time.sleep(1.1)
             headers = {
-                "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
+                "Authorization": f"Bearer 1b151f2011163d5b09062972b80743684309e154"
             }
 
             payload = {
@@ -93,5 +93,4 @@ class BlingDatabaseSync():
             self.api_calls_get()
             self.update_database()
             time.sleep(30 * 60)
-
 
