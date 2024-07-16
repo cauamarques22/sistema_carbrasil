@@ -11,8 +11,10 @@ import sched
 
 
 #VARS
-CLIENT_ID = "9bec1ccd55d871163ac79dd5698295e8376e768d"
-CLIENT_SECRET = "40b19e91450d1abfa404c41a22059d8695847331526b530c8fc6e9623468"
+app_secrets = open("app_secrets.json")
+parsed = json.load(app_secrets)
+CLIENT_ID = parsed["clientID"]
+CLIENT_SECRET = parsed["clientSecret"]
 CLIENT_ENCODING = f"{CLIENT_ID}:{CLIENT_SECRET}"
 HOST = "https://www.bling.com.br/Api/v3/"
 state = "".join(random.choices(string.ascii_uppercase + string.digits, k=15))
