@@ -8,7 +8,6 @@ import os
 import json
 import datetime
 import sched
-import pyautogui
 
 
 #VARS
