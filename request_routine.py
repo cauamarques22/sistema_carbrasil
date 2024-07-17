@@ -293,7 +293,7 @@ class ApiFunctions():
                 return product
 
         except aiohttp.client_exceptions.ClientOSError as err:
-            product["response_status"] = resp.status
+            product["response_status"] = resp_status if "resp_status" in locals() else "VARIABLE resp_status NOT EXECUTED"
             logger.error(f"(api_estoque_put) WINERROR: {err.winerror}")
             logger.error("(api_estoque_put) PRODUCT THAT RAISED AN ERROR:")
             logger.error(f"(api_estoque_put) {product}")

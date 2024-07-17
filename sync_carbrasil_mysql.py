@@ -148,7 +148,7 @@ class DatabaseSync():
             if "custo" in prod_keys:
                 cursor.execute("UPDATE db_sistema_intermediador SET custo = %s WHERE codigo_carbrasil = %s", (product['divergencias']['custo'], product['codigo_carbrasil']))
             if "estoque" in prod_keys:
-                cursor.execute("UPDATE db_sistema_intermediador SET estoque = %s WHERE codigo_carbrasil = %s", (product['divergencias']['descricao'], product['codigo_carbrasil']))
+                cursor.execute("UPDATE db_sistema_intermediador SET estoque = %s WHERE codigo_carbrasil = %s", (product['divergencias']['estoque'], product['codigo_carbrasil']))
             if "preco" in prod_keys:
                 cursor.execute("UPDATE db_sistema_intermediador SET preco = %s WHERE codigo_carbrasil = %s", (product['divergencias']['preco'], product['codigo_carbrasil']))
             if "descricao" in prod_keys:
