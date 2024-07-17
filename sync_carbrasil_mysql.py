@@ -146,13 +146,13 @@ class DatabaseSync():
         for product in diagnosis:
             prod_keys = [x for x in product["divergencias"].keys()]
             if "custo" in prod_keys:
-                cursor.execute(f"UPDATE db_sistema_intermediador SET custo = {product['divergencias']['custo']} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+                cursor.execute("UPDATE db_sistema_intermediador SET custo = %s WHERE codigo_carbrasil = %s", (product['divergencias']['custo'], product['codigo_carbrasil']))
             if "estoque" in prod_keys:
-                cursor.execute(f"UPDATE db_sistema_intermediador SET estoque = {int(product['divergencias']['estoque'])} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+                cursor.execute("UPDATE db_sistema_intermediador SET estoque = %s WHERE codigo_carbrasil = %s", (product['divergencias']['descricao'], product['codigo_carbrasil']))
             if "preco" in prod_keys:
-                cursor.execute(f"UPDATE db_sistema_intermediador SET preco = {product['divergencias']['preco']} WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+                cursor.execute("UPDATE db_sistema_intermediador SET preco = %s WHERE codigo_carbrasil = %s", (product['divergencias']['preco'], product['codigo_carbrasil']))
             if "descricao" in prod_keys:
-                cursor.execute(f"UPDATE db_sistema_intermediador SET descricao = \'{product['divergencias']['descricao']}\' WHERE codigo_carbrasil = {product['codigo_carbrasil']} ")
+                cursor.execute("UPDATE db_sistema_intermediador SET descricao = %s WHERE codigo_carbrasil = %s", (product['divergencias']['descricao'], product['codigo_carbrasil']))
         conn.commit()
         print("(update_custo_estoque_mysql) Atualização concluída")
 
