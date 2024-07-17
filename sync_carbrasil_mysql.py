@@ -141,7 +141,7 @@ class DatabaseSync():
         logger.info("(compare_responses) Diagnóstico completo")
         return diagnosis
     
-    def update_custo_estoque_mysql(self, diagnosis):
+    def update_mysql_db(self, diagnosis):
         print("(update_custo_estoque_mysql) Atualizando custo e estoque")
         for product in diagnosis:
             prod_keys = [x for x in product["divergencias"].keys()]
@@ -154,7 +154,7 @@ class DatabaseSync():
             if "descricao" in prod_keys:
                 cursor.execute("UPDATE db_sistema_intermediador SET descricao = %s WHERE codigo_carbrasil = %s", (product['divergencias']['descricao'], product['codigo_carbrasil']))
         conn.commit()
-        print("(update_custo_estoque_mysql) Atualização concluída")
+        print("(update_mysql_db) Atualização concluída")
 
     def loop(self):
         db_products = self.database_get_all()
@@ -163,7 +163,7 @@ class DatabaseSync():
         carbrasil_products = self.carbrasil_database_get(db_products)
         #carbrasil_products = t2.carbrasil_response
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products)
-        self.update_custo_estoque_mysql(diagnosis)
+        self.update_mysql_db(diagnosis)
         return diagnosis
     
 
