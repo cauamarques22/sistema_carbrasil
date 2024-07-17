@@ -13,7 +13,7 @@ logging.basicConfig(filename="app_logs.log", encoding="utf-8", level=logging.DEB
 
 #Se conecta ou cria o banco de dados do sistema.
 try:
-    conn = mysql.connector.connect(user="root", password="123456", database="intermediador_bling", host="localhost") 
+    conn = mysql.connector.connect(user="root", password="123456", database="intermediador_bling", host="CARBRASIL-HOST") 
     cursor = conn.cursor(buffered=True)
     cursor.execute("SELECT * FROM db_sistema_intermediador")
 except mysql.connector.ProgrammingError as err:
@@ -23,13 +23,13 @@ except mysql.connector.ProgrammingError as err:
         cursor.execute("CREATE DATABASE intermediador_bling")
         cursor.execute("USE intermediador_bling")
         cursor.execute("CREATE TABLE db_sistema_intermediador(codigo_carbrasil INT PRIMARY KEY, id_bling BIGINT, idEstoque BIGINT,\
-                       descricao VARCHAR(255), preco FLOAT, custo FLOAT, estoque INT, bling_tipo VARCHAR(1), bling_formato VARCHAR(1), \
+                       descricao VARCHAR(255), preco FLOAT(8,3), custo FLOAT(8,3), estoque INT, bling_tipo VARCHAR(1), bling_formato VARCHAR(1), \
                        bling_situacao VARCHAR(1), gtin VARCHAR(50), peso_liquido FLOAT, peso_bruto FLOAT, marca VARCHAR(255), largura FLOAT, \
                        altura FLOAT, profundidade FLOAT)")
         conn.commit()
     if err.errno == 1146:
         cursor.execute("CREATE TABLE db_sistema_intermediador(codigo_carbrasil INT PRIMARY KEY, id_bling BIGINT, idEstoque BIGINT,\
-                       descricao VARCHAR(255), preco FLOAT, custo FLOAT, estoque INT, bling_tipo VARCHAR(1), bling_formato VARCHAR(1), \
+                       descricao VARCHAR(255), preco FLOAT(8,3), custo FLOAT(8,3), estoque INT, bling_tipo VARCHAR(1), bling_formato VARCHAR(1), \
                        bling_situacao VARCHAR(1), gtin VARCHAR(50), peso_liquido FLOAT, peso_bruto FLOAT, marca VARCHAR(255), largura FLOAT, \
                        altura FLOAT, profundidade FLOAT)")
         conn.commit()
@@ -39,19 +39,19 @@ class BlingDatabaseSync():
         self.bling_products = []
 
     def api_calls_get(self):
-        counter = 1
+        pages = 1
         products_per_page = []
         all_products = []
         print("(api_calls_get) Solicitando produtos ao Bling..")
         while True:
-            time.sleep(1.1)
+            time.sleep(1)
             headers = {
                 "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
             }
 
             payload = {
                 "limite": 500,
-                "pagina": counter,
+                "pagina": pages,
                 "criterio": 2
             }
 
@@ -62,7 +62,7 @@ class BlingDatabaseSync():
                 break
 
             products_per_page.append(parsed["data"])
-            counter +=1
+            pages +=1
         
         for x in products_per_page:
             for prod in x:
