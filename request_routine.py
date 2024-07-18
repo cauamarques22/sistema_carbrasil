@@ -447,8 +447,8 @@ class IOHandler(ApiFunctions):
         flat_error = list(itertools.chain.from_iterable(error_status))
         
         if flat_error:
-            await self.verify_input(flat_error, error=True)
-            await self.call_api()
+            self.verify_input(flat_error, error=True)
+            self.call_api()
         sync_carbrasil_mysql.DatabaseSync.update_mysql_db(flat_ok)
 
     def main(self):
