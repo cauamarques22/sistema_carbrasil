@@ -8,7 +8,7 @@ import sync_bling_mysql
 import request_routine
 import sync_carbrasil_mysql
 
-#INICIALIZAR LOGGING
+#Init Logging
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.basicConfig(level=logging.DEBUG, filemode="w", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("request_routine_module")
@@ -27,13 +27,17 @@ def app_loop():
     T2 = threading.Thread(target=b_routine.bling_routine)
     T2.start()
 
-    #CarBrasil DB and Internal DB Sync and Verify
+    #Instances
     db_events = sync_carbrasil_mysql.DatabaseSync()
     iohandler = request_routine.IOHandler()
 
+    #Resetting Internal Error Count Column
+    T3 = threading.Thread(target=db_events.reset_internal_error_count)
+    T3.start()
+
     while True:
         start = time.time()
-        diagnosis = db_events.loop()
+        diagnosis = db_events.main()
         iohandler.verify_input(diagnosis)
         iohandler.main()
         end = time.time()

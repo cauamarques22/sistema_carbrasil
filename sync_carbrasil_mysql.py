@@ -1,7 +1,9 @@
 import pyodbc
-from sync_bling_mysql import cursor, conn
 import logging
-#import arquivos_de_apoio.teste2 as t2
+import time
+
+#APP modules
+from sync_bling_mysql import cursor, conn
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="app_logs.log", encoding="utf-8", level=logging.DEBUG , format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -32,9 +34,15 @@ class DatabaseSync():
                 "marca": product[13],
                 "largura": product[14],
                 "altura": product[15],
-                "profundidade": product[16]
+                "profundidade": product[16],
+                "internal_error_count": product[17],
+                "ignore_code": product[18]
             }
-            
+            if document["ignore_code"] == 1:
+                continue
+            if document["internal_error_count"] > 0:
+                continue
+
             all_database_products.append(document)
         print("(database_get_all) Produtos obtidos com sucesso.")
         logger.info("(database_get_all) Produtos obtidos com sucesso.")
@@ -72,68 +80,69 @@ class DatabaseSync():
         return carbrasil_responses
 
     def compare_responses(self, carbrasil_response: list[dict], database_response: list[dict]) -> list[dict]:
-
         print("(compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico")
         logger.info("(compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico")
         
         diagnosis = []
-        for dicts_db in database_response:
-            for dicts_carbrasil in carbrasil_response:
-                if dicts_db["codigo_carbrasil"] == dicts_carbrasil["codigo_carbrasil"]:
+        for dict_mysql in database_response:
+            for dict_carbrasil in carbrasil_response:
+                if dict_mysql["codigo_carbrasil"] == dict_carbrasil["codigo_carbrasil"]:
 
-                    equal_description = dicts_db["descricao"] == dicts_carbrasil["descricao"]
-                    equal_price = dicts_db["preco"] == dicts_carbrasil["preco"]
-                    equal_cost = dicts_db["custo"] == dicts_carbrasil["custo"]
-                    equal_stock = dicts_db["estoque"] == dicts_carbrasil["estoque"]
+                    #Criação do Dicionário com as informações do produto, e as divergências.
+                    #Nas divergências estarão os valores reais, que devem ser atualizados.
+                    document = dict_mysql.copy()
+                    del document["descricao"]
+                    del document["preco"]
+                    del document["custo"]
+                    del document["estoque"]
+                    document["divergencias"] = {}
 
-                    document = {
-                        "codigo_carbrasil": dicts_db["codigo_carbrasil"],
-                        "id_bling": dicts_db["id_bling"],
-                        "id_estoque": dicts_db["id_estoque"],
-                        "bling_tipo": dicts_db["bling_tipo"],
-                        "bling_formato": dicts_db["bling_formato"],
-                        "bling_situacao": dicts_db["bling_situacao"],
-                        "gtin": dicts_db["gtin"],
-                        "peso_liquido": dicts_db["peso_liquido"],
-                        "peso_bruto": dicts_db["peso_bruto"],
-                        "marca": dicts_db["marca"],
-                        "largura": dicts_db["largura"],
-                        "altura": dicts_db["altura"],
-                        "profundidade": dicts_db["profundidade"],
-                        "divergencias": {}
-                    }
+                    #Comparação
+                    equal_description = dict_mysql["descricao"] == dict_carbrasil["descricao"]
+                    equal_price = dict_mysql["preco"] == dict_carbrasil["preco"]
+                    equal_cost = dict_mysql["custo"] == dict_carbrasil["custo"]
+                    equal_stock = dict_mysql["estoque"] == dict_carbrasil["estoque"]
 
                     if not equal_description:
-                        document["divergencias"]["descricao"] = dicts_carbrasil["descricao"]
+                        document["divergencias"]["descricao"] = dict_carbrasil["descricao"]
                     if not equal_price:
-                        document["divergencias"]["preco"] = dicts_carbrasil["preco"]
+                        document["divergencias"]["preco"] = dict_carbrasil["preco"]
                     if not equal_cost:
-                        document["divergencias"]["custo"] = dicts_carbrasil["custo"]
+                        document["divergencias"]["custo"] = dict_carbrasil["custo"]
                     if not equal_stock:
-                        document["divergencias"]["estoque"] = dicts_carbrasil["estoque"]
+                        document["divergencias"]["estoque"] = dict_carbrasil["estoque"]
 
                     doc_keys = [x for x in document["divergencias"].keys()]
                     #Se todas as condições acima foram falsas, doc_keys só terá as chaves padrão, sinalizando que
-                    # não há divergência nó código em questão
+                    #não há divergência nó código em questão
                     if not doc_keys:
                         break
-                    
-                    #Se tem "estoque" ou "custo" e não tem "preço" e "descrição", faz o append e sai do loop
+
+                    #Se tem ("estoque" ou "custo") E (não tem "preço" e "descrição") nas chaves do dicionário, faz o append e sai do loop
+                    #Será redirecionado para API estoque
                     if ("estoque" in doc_keys or "custo" in doc_keys) and ("preco" not in doc_keys and "descricao" not in doc_keys):
-                        document["divergencias"].setdefault("estoque", dicts_carbrasil["estoque"])
-                        document["divergencias"].setdefault("custo", dicts_carbrasil["custo"]) 
-                        document["divergencias"].setdefault("preco", dicts_carbrasil["preco"])
+                        document["divergencias"].setdefault("estoque", dict_carbrasil["estoque"])
+                        document["divergencias"].setdefault("custo", dict_carbrasil["custo"]) 
+                        document["divergencias"].setdefault("preco", dict_carbrasil["preco"])
+                        document["endpoint_correto"] = "estoque"
                         diagnosis.append(document)
                         break
-                    
-                    if "custo" in doc_keys or "estoque" in doc_keys:
-                        document["divergencias"].setdefault("estoque", dicts_carbrasil["estoque"])
-                        document["divergencias"].setdefault("custo", dicts_carbrasil["custo"])
-                    
-                    #adiciona a descrição do produto no dicionário, pois a api de produtos pede como obrigatório.
-                    #Neste ponto só chegaria os produtos que tem divergência na descrição ou no preço.
-                    document["divergencias"].setdefault("descricao", dicts_carbrasil["descricao"])
-                    document["divergencias"].setdefault("preco", dicts_carbrasil["preco"])
+
+                    #Se tem ("descrição" ou "preco") E (não tem "estoque" e "custo") nas chaves do dicionário, faz o append e sai do loop
+                    #Será redirecionado para API produto 
+                    if ("descricao" in doc_keys or "preco" in doc_keys) and ("estoque" not in doc_keys and "custo" not in doc_keys):
+                        document["divergencias"].setdefault("descricao", dict_carbrasil["descricao"])
+                        document["divergencias"].setdefault("preco", dict_carbrasil["preco"])
+                        document["endpoint_correto"] = "produto"
+                        diagnosis.append(document)
+                        break
+
+                    #Caso nenhuma condição sirva, o dicionário passará por duas APIs, sendo necessário colocar essas informações por padrão
+                    document["divergencias"].setdefault("descricao", dict_carbrasil["descricao"])
+                    document["divergencias"].setdefault("preco", dict_carbrasil["preco"])
+                    document["divergencias"].setdefault("estoque", dict_carbrasil["estoque"])
+                    document["divergencias"].setdefault("custo", dict_carbrasil["custo"])
+                    document["endpoint_correto"] = "ambos"
                     diagnosis.append(document)
                     break
 
@@ -142,7 +151,8 @@ class DatabaseSync():
         return diagnosis
     
     def update_mysql_db(self, diagnosis):
-        print("(update_custo_estoque_mysql) Atualizando custo e estoque")
+        print("(update_mysql_db) Atualizando custo e estoque")
+        logger.info("(update_mysql_db) Atualizando custo e estoque")
         for product in diagnosis:
             prod_keys = [x for x in product["divergencias"].keys()]
             if "custo" in prod_keys:
@@ -155,15 +165,19 @@ class DatabaseSync():
                 cursor.execute("UPDATE db_sistema_intermediador SET descricao = %s WHERE codigo_carbrasil = %s", (product['divergencias']['descricao'], product['codigo_carbrasil']))
         conn.commit()
         print("(update_mysql_db) Atualização concluída")
+        logger.info("(update_mysql_db) Atualização concluída")
 
-    def loop(self):
+    def reset_internal_error_count(self):
+        time.sleep(1*60*60)
+        cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = 0 WHERE internal_error_count > 0")
+        conn.commit()
+
+    def main(self):
         db_products = self.database_get_all()
-        #db_products = t2.database_response
-
         carbrasil_products = self.carbrasil_database_get(db_products)
-        #carbrasil_products = t2.carbrasil_response
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products)
-        self.update_mysql_db(diagnosis)
+        logger.info(f"Tamanho da lista 'diagnosis': {len(diagnosis)}")
+        #self.update_mysql_db(diagnosis)
         return diagnosis
     
 

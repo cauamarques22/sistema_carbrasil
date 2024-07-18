@@ -1,15 +1,15 @@
 #Dependencies
 import aiohttp.client_exceptions
-import auth_routine
 import datetime
 import aiohttp
 import asyncio
 import itertools
 import logging
 
-
 #APP modules
 from sync_bling_mysql import cursor, conn
+import auth_routine
+import sync_carbrasil_mysql
 
 logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("request_routine_module")
@@ -85,8 +85,7 @@ class ApiFunctions():
                         logger.error(value)
 
     async def create_stock_slave(self, session, product):
-
-        print("(create_stock_slave) Começando request: ", product["codigo_carbrasil"])
+        print(f"(create_stock_slave) Começando request: {product['codigo_carbrasil']}")
         headers = {
             "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
         }
@@ -108,40 +107,38 @@ class ApiFunctions():
         try:
             async with session.request(method="POST",url=f"{auth_routine.HOST}estoques", headers=headers, json=payload) as resp:
                 response = await resp.json()
-                if resp.status == 201:
-                    document = {"response_status": resp.status,"codigo_carbrasil":product["codigo_carbrasil"], "id_estoque": response["data"]["id"]}
-                    logger.debug(f"request document: \n{document}")
-                    return document
                 
-                product["response_status"] = resp.status
-                product["decoded_resp"] = response
-                logger.error(f"Produto com erro: \n{product}")
+                if resp.status != 201:
+                    product["resposta_api"] = {"response_status": resp.status, "decoded_resp": response}
+                    logger.error(f"Produto com erro: \n{product}")
+                    return product
+
+                product["resposta_api"] = {"response_status": resp.status, "id_estoque": response["data"]["id"]}
                 return product
         
         except aiohttp.client_exceptions.ClientOSError as err:
-
+            product["resposta_api"] = {"response_status":"OSERROR"}
             logger.error(f"(create_stock_slave) WINERROR: {err.winerror}")
             logger.error("(create_stock_slave) PRODUCT THAT RAISED AN ERROR:")
             logger.error(f"(create_stock_slave) {product}")
             logger.exception("ClientOSError")
-            product["response_status"] = "OSERROR"
             return product
         
         except Exception as err:
-            
-            product["response_status"] = "CRITICAL_EXCEPTION"
+            product["resposta_api"] = {"response_status":"CRITICAL_EXCEPTION"}
             logger.critical("(create_stock_slave) UNHANDLED EXCEPTION")
             logger.exception("(create_stock_slave) UNKNOWN EXCEPTION")
             logger.debug(f"Produto utilizado durante a exceção:\n{product}")
             raise err
 
     async def create_stock_main(self, instructions, error=False):
-        
-        print(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS")
+        print(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
+        logger.info(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
         unknown_errors: list[dict] = []
         os_error: list[dict] = []
         critical_errors: list[dict] = []
         ok_status: list[dict] = []
+        error_status: list[dict] = [] 
 
         batched_products = list(itertools.batched(instructions, 3))
         async with aiohttp.ClientSession() as session:
@@ -152,29 +149,37 @@ class ApiFunctions():
                 for resp in response:
 
                     #ERROR HANDLING
-                    if "decoded_resp" in resp.keys():
-                        if "error" in resp["decoded_resp"].keys():
+                    if "decoded_resp" in resp["resposta_api"].keys():
+                        if "error" in resp["resposta_api"]["decoded_resp"].keys():
                             unknown_errors.append(resp)
                     
-                    if resp["response_status"] == "OSERROR":
+                    elif resp["resposta_api"]["response_status"] == "OSERROR":
                         os_error.append(resp)
-                    elif resp["response_status"] == "CRITICAL_EXCEPTION":
-                        critical_errors.append(resp)
-                    elif resp["response_status"] == 201:
+                    elif resp["resposta_api"]["response_status"] == 201:
                         ok_status.append(resp)
         
         for prod in ok_status:
-            cursor.execute(f"UPDATE db_sistema_intermediador SET idEstoque={prod['id_estoque']} WHERE codigo_carbrasil={prod['codigo_carbrasil']}")
+            cursor.execute(f"UPDATE db_sistema_intermediador SET idEstoque={prod["resposta_api"]['id_estoque']} WHERE codigo_carbrasil={prod['codigo_carbrasil']}")
         conn.commit()
+
         if unknown_errors or os_error or critical_errors:
             await asyncio.create_task(self.error_handler(semaphore=self.semaphore, function="create_stock_main", unknown_errors=unknown_errors, 
                             os_error=os_error, critical_errors=critical_errors))
-        logger.info("(create_stock_main) POST REQUESTS finalizadas com sucesso.")
-        print("(create_stock_main) POST REQUESTS finalizadas com sucesso.")
+        
+        msg = f"(create_stock_main) POST REQUESTS FINALIZADAS, RESULTADOS:\n \
+                    unknown_errors:{len(unknown_errors)}\n \
+                    os_errors: {len(os_error)}\n \
+                    ok_status: {len(ok_status)}"
+        logger.info(msg)
+        print(msg)
+
+        error_status.extend(unknown_errors)
+        error_status.extend(os_error)
+        return (ok_status, error_status)
 
     async def update_stock_slave(self, session:aiohttp.ClientSession, product: dict) -> dict:
 
-        print("(update_stock_slave) Começando request: ", product["codigo_carbrasil"])
+        print(f"(update_stock_slave) Começando request: {product['codigo_carbrasil']}")
         headers = {
         "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
         }
@@ -191,18 +196,16 @@ class ApiFunctions():
                 resp_status = resp.status
 
                 if resp_status  != 204:
-                    product["decoded_resp"] = resp.json()
-                    product["response_status"]= resp_status 
+                    product["resposta_api"] = {"decoded_resp": await resp.json(), "response_status": resp_status}
                     logger.error(f"Produto com erro: \n{product}")
                     return product
 
-                product["response_status"] = resp_status 
-                logger.debug(product)
+                product["resposta_api"] = {"response_status":resp_status}
                 return product
 
         except aiohttp.client_exceptions.ClientOSError as err:
             
-            product["response_status"] = "OSERROR"
+            product["resposta_api"] = {"response_status": "OSERROR"}
             logger.error(f"(api_estoque_put) WINERROR: {err.winerror}")
             logger.error("(api_estoque_put) PRODUCT THAT RAISED AN ERROR:")
             logger.error(f"(api_estoque_put): \n{product}")
@@ -211,7 +214,7 @@ class ApiFunctions():
         
         except Exception as err:
             
-            product["response_status"] = "CRITICAL_EXCEPTION"
+            product["resposta_api"] = {"response_status":"CRITICAL_EXCEPTION"}
             logger.critical("(update_stock_slave) UNHANDLED EXCEPTION")
             logger.exception("(update_stock_slave) UNKNOWN EXCEPTION")
             logger.error(f"(update_stock_slave): \n{product}")
@@ -223,6 +226,7 @@ class ApiFunctions():
         unknown_errors: list[dict] = []
         os_error: list[dict] = []
         ok_status: list[dict] = []
+        error_status: list[dict] = []
 
         batched_products = list(itertools.batched(instructions, 3))
         async with aiohttp.ClientSession() as session:
@@ -234,34 +238,39 @@ class ApiFunctions():
                 #ERROR HANDLING
                 for resp in responses:
                     
-                    if "decoded_resp" in resp.keys():
-                        if "error" in resp["decoded_resp"].keys():
-                            if resp["decoded_resp"]["errror"]["type"] == "RESOURCE_NOT_FOUND":
+                    if "decoded_resp" in resp["resposta_api"].keys():
+                        if "error" in resp["resposta_api"]["decoded_resp"].keys():
+                            if resp["resposta_api"]["decoded_resp"]["error"]["type"] == "RESOURCE_NOT_FOUND":
                                 error_not_found.append(resp)
                                 continue
                             unknown_errors.append(resp)
                     
-                    if resp["response_status"] == "OSERROR":
+                    elif resp["resposta_api"]["response_status"] == "OSERROR":
                         os_error.append(resp)
-                    elif resp["response_status"] == 204:
+                    elif resp["resposta_api"]["response_status"] == 204:
                         ok_status.append(resp)
-
-        logger.info(f"(update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:\n \
-                    error_not_found:{len(error_not_found)}\n \
-                    unknown_errors:{len(unknown_errors)}\n \
-                    os_errors: {len(os_error)}\n")
         
         if error_not_found or unknown_errors or os_error:
             await asyncio.create_task(self.error_handler(semaphore=self.semaphore ,function="update_stock_main" ,
                                                          error_not_found=error_not_found, unknown_errors=unknown_errors,
                                                          os_error=os_error))
         
-        print("(update_stock_main) ROTINA DE PUT REQUESTS FINALIZADA")
-        logger.info("(update_stock_main) ROTINA DE PUT REQUESTS FINALIZADA")
+        msg = f"(update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:\n \
+                    error_not_found:{len(error_not_found)}\n \
+                    unknown_errors:{len(unknown_errors)}\n \
+                    os_errors: {len(os_error)}\n"
+        
+        logger.info(msg)
+        print(msg)
+        
+        error_status.extend(error_not_found)
+        error_status.extend(unknown_errors)
+        error_status.extend(os_error)
+        return (ok_status, error_status)
 
     async def update_product_slave(self, session: aiohttp.ClientSession, product: dict): #ATUALIZAR O ERROR HANDLING
         
-        print(f"(update_product_slave) Atualizando Código: {product["codigo_carbrasil"]}")
+        print(f"(update_product_slave) Atualizando Código: {product['codigo_carbrasil']}")
         headers = {
         "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
         }
@@ -275,7 +284,6 @@ class ApiFunctions():
             "unidade": "UN",
             "condicao": 1,
             "tipoProducao": "T",
-
         }
 
         try:
@@ -283,68 +291,75 @@ class ApiFunctions():
                 resp_status = resp.status
                 
                 if resp_status != 200:
-                    product["decoded_resp"] = await resp.json()
-                    product["response_status"]= resp_status 
+                    product["resposta_api"] = {"decoded_resp": await resp.json(), "response_status": resp_status}
                     logger.error(f"Produto com erro: \n{product}")
                     return product
 
                 product["response_status"] = resp_status
-                logger.debug(f"Código Car Brasil: {product['codigo_carbrasil']} | Status: {product['response_status']}")
                 return product
 
         except aiohttp.client_exceptions.ClientOSError as err:
-            product["response_status"] = resp_status if "resp_status" in locals() else "VARIABLE resp_status NOT EXECUTED"
+            product["resposta_api"] = {"response_status":"OSERROR"}
             logger.error(f"(api_estoque_put) WINERROR: {err.winerror}")
             logger.error("(api_estoque_put) PRODUCT THAT RAISED AN ERROR:")
-            logger.error(f"(api_estoque_put) {product}")
+            logger.error(f"(api_estoque_put) \n{product}")
             logger.exception("ClientOSError")
             return product
         
         except Exception as err:
-            product["response_status"] = "CRITICAL_EXCEPTION"
+            product["resposta_api"] = {"response_status":"CRITICAL_EXCEPTION"}
             logger.critical("(update_stock_slave) UNHANDLED EXCEPTION")
-            logger.exception("(update_stock_slave) UNKNOWN EXCEPTION")
+            logger.exception("(update_stock_slave) UNHANDLED EXCEPTION")
             logger.error(f"(update_stock_slave): \n{product}")
             raise err
 
     async def update_product_main(self,instructions: list[dict]):
-        print("(update_product_main) Atualizando informações de PRODUTOS no Bling..")
+        print(f"(update_product_main) Começando PUT REQUESTS em {len(instructions)} registros")
         error_not_found: list[dict] = []
         unknown_errors: list[dict] = []
         os_error: list[dict] = []
         ok_status: list[dict] = []
+        error_status: list[dict] = []
 
         batched_diagnosis = list(itertools.batched(instructions, 3))
         async with aiohttp.ClientSession() as session:
-            for instructions in batched_diagnosis:
+            for batch_instructions in batched_diagnosis:
                 await asyncio.sleep(1.1)
-                tasks = [asyncio.create_task(self.update_product_slave(session,dicts)) for dicts in instructions]
+                tasks = [asyncio.create_task(self.update_product_slave(session,dicts)) for dicts in batch_instructions]
                 responses = await asyncio.gather(*tasks)
                 
                 #ERROR HANDLING
                 for resp in responses:
                     
-                    if "decoded_resp" in resp.keys():
-                        if "error" in resp["decoded_resp"].keys():
-                            if resp["decoded_resp"]["error"]["type"] == "RESOURCE_NOT_FOUND":
+                    if "decoded_resp" in resp["resposta_api"].keys():
+                        if "error" in resp["resposta_api"]["decoded_resp"].keys():
+                            if resp["resposta_api"]["decoded_resp"]["error"]["type"] == "RESOURCE_NOT_FOUND":
                                 error_not_found.append(resp)
                                 continue
                             unknown_errors.append(resp)
                     
-                    if resp["response_status"] == "OSERROR":
+                    elif resp["resposta_api"]["response_status"] == "OSERROR":
                         os_error.append(resp)
-                    elif resp["response_status"] == 200:
+                    elif resp["resposta_api"]["response_status"] == 200:
                         ok_status.append(resp)
 
-        logger.info(f"(update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:\n \
-                    error_not_found:{len(error_not_found)}\n \
-                    unknown_errors:{len(unknown_errors)}\n \
-                    os_errors: {len(os_error)}\n")
+        
         if error_not_found or unknown_errors or os_error:
             await asyncio.create_task(self.error_handler(semaphore=self.semaphore ,function="update_product_main" ,
                                                          error_not_found=error_not_found, unknown_errors=unknown_errors,
                                                          os_error=os_error))
-        print("(update_product_main) Atualização feita com sucesso.")
+        
+        msg = f"(update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:\n \
+                    error_not_found:{len(error_not_found)}\n \
+                    unknown_errors:{len(unknown_errors)}\n \
+                    os_errors: {len(os_error)}\n"
+        logger.info(msg)
+        print(msg)
+
+        error_status.extend(error_not_found)
+        error_status.extend(unknown_errors)
+        error_status.extend(os_error)
+        return (ok_status, error_status)
 
 class IOHandler(ApiFunctions):
 
@@ -355,15 +370,28 @@ class IOHandler(ApiFunctions):
         self.no_stockId = []
         self.semaphore = asyncio.Semaphore(1)
 
-    def verify_input(self, diagnosis):
+    def verify_input(self, diagnosis:list[dict], error=False):
+
+        if error:
+            for product in diagnosis:
+                cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = internal_error_count + 1 WHERE codigo_carbrasil = %s", (product["codigo_carbrasil"],))
+
+                if product["internal_error_count"] > 2:
+                    with open("ERRO_SISTEMA_INTEGRADOR.txt", "a+") as file:
+                        file.write(f"{datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")} O produto a seguir está causando muitos erros no sistema:\n")
+                        file.write(f"{product}")
+            conn.commit()
 
         print("(verify_input) Separando diagnóstico")
         logger.info("(verify_input) Separando diagnóstico")
         for product in diagnosis:
-            keys = [key for key in product["divergencias"].keys()]
-            if "estoque" in keys or "custo" in keys:
+            on_error_limit = product["internal_error_count"] <= 2
+            if product["endpoint_correto"] == "estoque" and on_error_limit:
                 self.api_stock_instructions.append(product)
-            if "descricao" in keys:
+            elif product["endpoint_correto"] == "produto" and on_error_limit:
+                self.api_product_instructions.append(product)
+            elif product["endpoint_correto"] == "ambos" and on_error_limit:
+                self.api_stock_instructions.append(product)
                 self.api_product_instructions.append(product)
         
         if self.api_stock_instructions:
@@ -379,22 +407,49 @@ class IOHandler(ApiFunctions):
         logger.info("(verify_input) Diagnóstico separado")
 
     async def call_api(self):
+        ok_status = []
+        error_status = []
 
         print("(call_api) Executando funções apropriadas")
         logger.info("(call_api) Executando funções apropriadas")
         if self.api_product_instructions:
             print("(call_api) Executando 'update_product_main'")
             logger.info("(call_api) Executando 'update_product_main'")
-            await asyncio.create_task(self.update_product_main(self.api_product_instructions))
+
+            resp1 = await asyncio.create_task(self.update_product_main(self.api_product_instructions))
+            ok_status.append(resp1[0])
+            error_status.append(resp1[1])
+            #( [{}, ...], [{}, ...] )
         
         if self.yes_stockId:
             logger.info("(call_api) executando 'update_stock_main'")
             logger.debug(f"self.yes_stockId: \n{self.yes_stockId}")
-            await asyncio.create_task(self.update_stock_main(self.yes_stockId))
+
+            resp2 = await asyncio.create_task(self.update_stock_main(self.yes_stockId))
+            ok_status.append(resp2[0])
+            error_status.append(resp2[1])
+            #( [{}, ...], [{}, ...] )
         if self.no_stockId:
             logger.info("(call_api) executando 'create_stock_main'")
             logger.debug(f"self.no_stockId: \n{self.no_stockId}")
-            await asyncio.create_task(self.create_stock_main(self.no_stockId))
+
+            resp3 = await asyncio.create_task(self.create_stock_main(self.no_stockId))
+            ok_status.append(resp3[0])
+            error_status.append(resp3[1])
+            #( [{}, ...], [{}, ...] )
+
+        self.api_product_instructions.clear()
+        self.api_stock_instructions.clear()
+        self.yes_stockId.clear()
+        self.no_stockId.clear()
+
+        flat_ok = list(itertools.chain.from_iterable(ok_status))
+        flat_error = list(itertools.chain.from_iterable(error_status))
+        
+        if flat_error:
+            await self.verify_input(flat_error, error=True)
+            await self.call_api()
+        sync_carbrasil_mysql.DatabaseSync.update_mysql_db(flat_ok)
 
     def main(self):
         asyncio.run(self.call_api())
