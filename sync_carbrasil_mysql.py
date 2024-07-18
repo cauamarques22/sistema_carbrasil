@@ -150,6 +150,7 @@ class DatabaseSync():
         logger.info("(compare_responses) Diagnóstico completo")
         return diagnosis
     
+    @classmethod
     def update_mysql_db(self, diagnosis):
         print("(update_mysql_db) Atualizando custo e estoque")
         logger.info("(update_mysql_db) Atualizando custo e estoque")
@@ -167,6 +168,7 @@ class DatabaseSync():
         print("(update_mysql_db) Atualização concluída")
         logger.info("(update_mysql_db) Atualização concluída")
 
+    @classmethod
     def reset_internal_error_count(self):
         time.sleep(1*60*60)
         cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = 0 WHERE internal_error_count > 0")
