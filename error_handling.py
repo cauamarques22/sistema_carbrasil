@@ -72,6 +72,8 @@ class ErrorHandler(ApiFunctions):
         flat_ok = list(itertools.chain.from_iterable(ok_status))
         if flat_error:
             self.displayer(f"ErrorHandler - (error_return_api): ainda houveram {len(flat_error)} registros que retornaram com erro. Por favor verifique os códigos.\n")
+            for x in flat_error:
+                self.displayer(f"{x}")
             await asyncio.create_task(self.error_return_api(flat_error))
         if flat_ok:
             self.db_events.update_mysql_db(flat_ok)

@@ -138,9 +138,7 @@ class ModuleManager(UI.UIFunctions):
                 diagnosis = self.db_events.main()
                 if self.stop_event.is_set():
                     break
-
-                #Mudar o IOHANDLER para ser assincrono de verdade e criar compartilhamento de variáveis com
-                #as funções call_api e verify_input, pos eu não posso depender de retorno delas.
+                
                 self.iohandler.product_queue = Queue(maxsize=4)
                 self.iohandler.yes_stock_queue = Queue(maxsize=4)
                 self.iohandler.no_stock_queue = Queue(maxsize=4)
@@ -151,6 +149,9 @@ class ModuleManager(UI.UIFunctions):
                 mthread2.start()
                 mthread1.join()
                 mthread2.join()
+
+                #Atualizando informações da label dos produtos atualizados
+                self.info1_count.config(text=f"{self.iohandler.produtos_atualizados}")
 
                 end = time.time()
                 runtime = end - begin

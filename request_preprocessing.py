@@ -22,6 +22,8 @@ class IOHandler(ErrorHandler):
         self._pause_trigger = pause_event
         self._stop_trigger = stop_event
 
+        self.produtos_atualizados = 0
+
     async def verify_input(self, diagnosis:list[dict]):
 
         self.displayer("(verify_input) Separando diagnóstico")
@@ -125,7 +127,7 @@ class IOHandler(ErrorHandler):
 
         flat_ok = list(itertools.chain.from_iterable(ok_status))
         flat_error = list(itertools.chain.from_iterable(error_status))
-        self.produtos_atualizados = len(flat_ok)
+        self.produtos_atualizados += len(flat_ok)
         if flat_error:
             await asyncio.create_task(self.error_return_api(flat_error))
         if flat_ok:
