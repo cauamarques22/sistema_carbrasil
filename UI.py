@@ -79,22 +79,22 @@ class Display:
         #Menu Buttons
         std_x = 0.05
         std_width = 0.9
-        self.start_btn = ctk.CTkButton(self.menu_frame, text="Iniciar Sincronização",font=("Montserrat", 14, "bold") ,command=self.start)
+        self.start_btn = ctk.CTkButton(self.menu_frame, text="Iniciar Sincronização",font=("Montserrat", 13, "bold") ,command=self.start)
         self.start_btn.place(relx=std_x, relwidth=std_width, rely=0.02, relheight=0.05)
 
-        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=("Montserrat", 14, "bold"), command=self.pause_thread, state="disabled")
+        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=("Montserrat", 13, "bold"), command=self.pause_thread, state="disabled")
         self.pause_btn.place(relx=std_x, relwidth=std_width, rely=0.09, relheight=0.05)
 
-        self.continue_btn = ctk.CTkButton(self.menu_frame, text="Continuar Sincronização", font=("Montserrat", 14, "bold"),command=self.continuar_thread, state="disabled")
+        self.continue_btn = ctk.CTkButton(self.menu_frame, text="Continuar Sincronização", font=("Montserrat", 13, "bold"),command=self.continuar_thread, state="disabled")
         self.continue_btn.place(relx=std_x, relwidth=std_width, rely=0.16, relheight=0.05)
 
-        self.stop_btn = ctk.CTkButton(self.menu_frame, text="Parar Sincronização",font=("Montserrat", 14, "bold"), command=self.parar_thread, state="disabled")
+        self.stop_btn = ctk.CTkButton(self.menu_frame, text="Parar Sincronização",font=("Montserrat", 13, "bold"), command=self.parar_thread, state="disabled")
         self.stop_btn.place(relx=std_x, relwidth=std_width, rely=0.23, relheight=0.05)
 
-        self.f1_btn = ctk.CTkButton(self.menu_frame, text="Painel Principal",font=("Montserrat", 14, "bold"), command=lambda: self.switch_frame(self.app_frame1))
+        self.f1_btn = ctk.CTkButton(self.menu_frame, text="Painel Principal",font=("Montserrat", 13, "bold"), command=lambda: self.switch_frame(self.app_frame1))
         self.f1_btn.place(relx=std_x, relwidth=std_width, rely= 0.5, relheight=0.1)
 
-        self.f2_btn = ctk.CTkButton(self.menu_frame, text="Painel de Informações",font=("Montserrat", 14, "bold"), command=lambda: self.switch_frame(self.app_frame2))
+        self.f2_btn = ctk.CTkButton(self.menu_frame, text="Painel de Informações",font=("Montserrat", 13, "bold"), command=lambda: self.switch_frame(self.app_frame2))
         self.f2_btn.place(relx=std_x, relwidth=std_width, rely= 0.62, relheight=0.1)
 
         self.continue_btn.bind("<Configure>", self.resize_text)
