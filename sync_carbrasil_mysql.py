@@ -186,11 +186,11 @@ class DatabaseSync():
         self._pause_trigger.wait()
         if self._stop_trigger.is_set():
             return
-        #carbrasil_products = self.carbrasil_database_get(db_products)
+        carbrasil_products = self.carbrasil_database_get(db_products)
         self._pause_trigger.wait()
         if self._stop_trigger.is_set():
             return
-        carbrasil_products = db_products.copy()
+        #carbrasil_products = db_products.copy()
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products)
         logger.info(f"Tamanho da lista 'diagnosis': {len(diagnosis)}")
         return diagnosis

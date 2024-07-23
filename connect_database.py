@@ -33,6 +33,6 @@ class DatabaseConnection():
                         "UID=sa;"
                         "PWD=Tec12345678;")
 
-        #cnxn = pyodbc.connect(cnxn_str)
-        #cb_cursor = cnxn.cursor()
-        cb_cursor = None
+        cnxn = pyodbc.connect(cnxn_str)
+        cb_cursor = cnxn.cursor()
+        #cb_cursor = None
