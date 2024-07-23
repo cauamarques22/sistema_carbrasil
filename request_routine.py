@@ -7,16 +7,25 @@ import itertools
 import logging
 
 #APP modules
-from sync_bling_mysql import cursor, conn
 import auth_routine
-import sync_carbrasil_mysql
 
 logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("request_routine_module")
 
 class ApiFunctions():
-    def __init__ (self):
+    def __init__ (self, txbox, conn, cursor ,pause_event = None, stop_event = None):
+        super().__init__()
+        self._pause_trigger = pause_event
+        self._stop_trigger = stop_event
+        
+        self.cursor = cursor
+        self.conn = conn
         self.semaphore = asyncio.Semaphore(1)
+        self.txbox = txbox
+
+    def displayer(self, msg):
+        print(msg)
+        self.txbox.insert('end', f"{msg}\n")
 
     async def error_handler(self, semaphore,function, **kwargs):
         async with semaphore:
@@ -24,70 +33,73 @@ class ApiFunctions():
                 if function == "update_stock_main":
                     if key == "error_not_found" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_stock_main' RETORNARAM COM 'error_not_found'"
-                        print(msg)
+                        self.displayer(msg)
                         logger.info(msg)
 
                         r = await asyncio.gather(self.create_stock_main(value, error=True))
                         if r:
-                            print("(error_handler) ERROS CORRIGIDOS")
+                            self.displayer("(error_handler) ERROS CORRIGIDOS")
                             logger.info("(error_handler) ERROS CORRIGIDOS")
                         else:
-                            print("(error_handler) ERROS NÃO FORAM CORRIGIDOS")
+                            self.displayer("(error_handler) ERROS NÃO FORAM CORRIGIDOS")
                             logger.error("(error_handler) ERROS NÃO FORAM CORRIGIDOS")
                     elif key == "unknown_errors" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_stock_main' RETORNARAM COM 'unknown_errors'"
-                        print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
 
                     elif key == "os_error" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_stock_main' RETORNARAM COM 'os_error'"
-                        print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
 
                 elif function == "create_stock_main":
                     if key == "unknown_errors" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'create_stock_main' RETORNARAM COM 'unknown_errors'"
-                        print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
 
                     elif key == "os_error" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'create_stock_main' RETORNARAM COM 'os_error'"
-                        print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
                     
                     elif key == "error_not_found" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'create_stock_main' RETORNARAM COM 'error_not_found'"
-                        print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
 
                 elif function == "update_product_main":
                     if key == "unknown_errors" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'unknown_errors'"
-                        print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
 
                     elif key == "os_error" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'os_error'"
                         print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
                     
                     elif key == "error_not_found" and kwargs[key]:
                         msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'error_not_found'"
                         print(msg)
+                        self.displayer(msg)
                         logger.error(msg)
                         logger.error(value)
 
     async def create_stock_slave(self, session, product):
         print(f"(create_stock_slave) Começando request: {product['codigo_carbrasil']}")
+        self.displayer(f"(create_stock_slave) Começando request: {product['codigo_carbrasil']}")
         headers = {
-            "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
+            "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
         }
         payload = {
             "produto":{
@@ -105,7 +117,7 @@ class ApiFunctions():
         }
 
         try:
-            async with session.request(method="POST",url=f"{auth_routine.HOST}estoques", headers=headers, json=payload) as resp:
+            async with session.request(method="POST",url=f"{auth_routine.AuthRoutine.HOST}estoques", headers=headers, json=payload) as resp:
                 response = await resp.json()
                 
                 if resp.status != 201:
@@ -133,6 +145,7 @@ class ApiFunctions():
 
     async def create_stock_main(self, instructions, error=False):
         print(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
+        self.displayer(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
         logger.info(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
         unknown_errors: list[dict] = []
         os_error: list[dict] = []
@@ -159,18 +172,19 @@ class ApiFunctions():
                         ok_status.append(resp)
         
         for prod in ok_status:
-            cursor.execute(f"UPDATE db_sistema_intermediador SET idEstoque={prod["resposta_api"]['id_estoque']} WHERE codigo_carbrasil={prod['codigo_carbrasil']}")
-        conn.commit()
-
+            self.cursor.execute(f"UPDATE db_sistema_intermediador SET idEstoque={prod["resposta_api"]['id_estoque']} WHERE codigo_carbrasil={prod['codigo_carbrasil']}")
+        self.conn.commit()
+    
         if unknown_errors or os_error or critical_errors:
             await asyncio.create_task(self.error_handler(semaphore=self.semaphore, function="create_stock_main", unknown_errors=unknown_errors, 
                             os_error=os_error, critical_errors=critical_errors))
         
         msg = f"(create_stock_main) POST REQUESTS FINALIZADAS, RESULTADOS:\n \
-                    unknown_errors:{len(unknown_errors)}\n \
-                    os_errors: {len(os_error)}\n \
-                    ok_status: {len(ok_status)}"
+                unknown_errors:{len(unknown_errors)}\n \
+                os_errors: {len(os_error)}\n \
+                ok_status: {len(ok_status)}"
         logger.info(msg)
+        self.displayer(msg)
         print(msg)
 
         error_status.extend(unknown_errors)
@@ -180,8 +194,9 @@ class ApiFunctions():
     async def update_stock_slave(self, session:aiohttp.ClientSession, product: dict) -> dict:
 
         print(f"(update_stock_slave) Começando request: {product['codigo_carbrasil']}")
+        self.displayer(f"(update_stock_slave) Começando request: {product['codigo_carbrasil']}")
         headers = {
-        "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
+        "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
         }
         payload = {
             "operacao": "B",
@@ -192,7 +207,7 @@ class ApiFunctions():
             "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         try:
-            async with session.request(method="PUT", url=f"{auth_routine.HOST}estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
+            async with session.request(method="PUT", url=f"{auth_routine.AuthRoutine.HOST}estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
                 resp_status = resp.status
 
                 if resp_status  != 204:
@@ -222,6 +237,7 @@ class ApiFunctions():
 
     async def update_stock_main(self, instructions):
         print(f"(update_stock_main) Começando PUT REQUESTS em {len(instructions)} registros")
+        self.displayer(f"(update_stock_main) Começando PUT REQUESTS em {len(instructions)} registros")
         error_not_found: list[dict] = []
         unknown_errors: list[dict] = []
         os_error: list[dict] = []
@@ -262,7 +278,8 @@ class ApiFunctions():
         
         logger.info(msg)
         print(msg)
-        
+        self.displayer(msg)
+
         error_status.extend(error_not_found)
         error_status.extend(unknown_errors)
         error_status.extend(os_error)
@@ -271,8 +288,9 @@ class ApiFunctions():
     async def update_product_slave(self, session: aiohttp.ClientSession, product: dict): #ATUALIZAR O ERROR HANDLING
         
         print(f"(update_product_slave) Atualizando Código: {product['codigo_carbrasil']}")
+        self.displayer(f"(update_product_slave) Atualizando Código: {product['codigo_carbrasil']}")
         headers = {
-        "Authorization": f"Bearer {auth_routine.session_tokens[0]}"
+        "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
         }
         payload = {
             "nome": product["divergencias"]["descricao"],
@@ -287,7 +305,7 @@ class ApiFunctions():
         }
 
         try:
-            async with session.request(method="PUT", url=f"{auth_routine.HOST}produtos/{product['id_bling']}", headers=headers, json=payload) as resp:
+            async with session.request(method="PUT", url=f"{auth_routine.AuthRoutine.HOST}produtos/{product['id_bling']}", headers=headers, json=payload) as resp:
                 resp_status = resp.status
                 
                 if resp_status != 200:
@@ -295,7 +313,7 @@ class ApiFunctions():
                     logger.error(f"Produto com erro: \n{product}")
                     return product
 
-                product["response_status"] = resp_status
+                product["resposta_api"] = {"response_status":resp_status}
                 return product
 
         except aiohttp.client_exceptions.ClientOSError as err:
@@ -315,6 +333,7 @@ class ApiFunctions():
 
     async def update_product_main(self,instructions: list[dict]):
         print(f"(update_product_main) Começando PUT REQUESTS em {len(instructions)} registros")
+        self.displayer(f"(update_product_main) Começando PUT REQUESTS em {len(instructions)} registros")
         error_not_found: list[dict] = []
         unknown_errors: list[dict] = []
         os_error: list[dict] = []
@@ -355,101 +374,10 @@ class ApiFunctions():
                     os_errors: {len(os_error)}\n"
         logger.info(msg)
         print(msg)
+        self.displayer(msg)
 
         error_status.extend(error_not_found)
         error_status.extend(unknown_errors)
         error_status.extend(os_error)
         return (ok_status, error_status)
 
-class IOHandler(ApiFunctions):
-
-    def __init__(self):
-        self.api_product_instructions = []
-        self.api_stock_instructions = []
-        self.yes_stockId = []
-        self.no_stockId = []
-        self.semaphore = asyncio.Semaphore(1)
-
-    def verify_input(self, diagnosis:list[dict], error=False):
-
-        if error:
-            for product in diagnosis:
-                cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = internal_error_count + 1 WHERE codigo_carbrasil = %s", (product["codigo_carbrasil"],))
-
-                if product["internal_error_count"] > 2:
-                    with open("ERRO_SISTEMA_INTEGRADOR.txt", "a+") as file:
-                        file.write(f"{datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")} O produto a seguir está causando muitos erros no sistema:\n")
-                        file.write(f"{product}")
-            conn.commit()
-
-        print("(verify_input) Separando diagnóstico")
-        logger.info("(verify_input) Separando diagnóstico")
-        for product in diagnosis:
-            on_error_limit = product["internal_error_count"] <= 2
-            if product["endpoint_correto"] == "estoque" and on_error_limit:
-                self.api_stock_instructions.append(product)
-            elif product["endpoint_correto"] == "produto" and on_error_limit:
-                self.api_product_instructions.append(product)
-            elif product["endpoint_correto"] == "ambos" and on_error_limit:
-                self.api_stock_instructions.append(product)
-                self.api_product_instructions.append(product)
-        
-        if self.api_stock_instructions:
-            for product in self.api_stock_instructions:
-                if product["id_estoque"]:
-                    self.yes_stockId.append(product)
-                    continue
-                self.no_stockId.append(product)
-
-        logger.debug(f"self.api_product_instructions: \n{self.api_product_instructions}")
-        logger.debug(f"self.api_stock_instructions: \n{self.api_stock_instructions}")
-        print("(verify_input) Diagnóstico separado")
-        logger.info("(verify_input) Diagnóstico separado")
-
-    async def call_api(self):
-        ok_status = []
-        error_status = []
-
-        print("(call_api) Executando funções apropriadas")
-        logger.info("(call_api) Executando funções apropriadas")
-        if self.api_product_instructions:
-            print("(call_api) Executando 'update_product_main'")
-            logger.info("(call_api) Executando 'update_product_main'")
-
-            resp1 = await asyncio.create_task(self.update_product_main(self.api_product_instructions))
-            ok_status.append(resp1[0])
-            error_status.append(resp1[1])
-            #( [{}, ...], [{}, ...] )
-        
-        if self.yes_stockId:
-            logger.info("(call_api) executando 'update_stock_main'")
-            logger.debug(f"self.yes_stockId: \n{self.yes_stockId}")
-
-            resp2 = await asyncio.create_task(self.update_stock_main(self.yes_stockId))
-            ok_status.append(resp2[0])
-            error_status.append(resp2[1])
-            #( [{}, ...], [{}, ...] )
-        if self.no_stockId:
-            logger.info("(call_api) executando 'create_stock_main'")
-            logger.debug(f"self.no_stockId: \n{self.no_stockId}")
-
-            resp3 = await asyncio.create_task(self.create_stock_main(self.no_stockId))
-            ok_status.append(resp3[0])
-            error_status.append(resp3[1])
-            #( [{}, ...], [{}, ...] )
-
-        self.api_product_instructions.clear()
-        self.api_stock_instructions.clear()
-        self.yes_stockId.clear()
-        self.no_stockId.clear()
-
-        flat_ok = list(itertools.chain.from_iterable(ok_status))
-        flat_error = list(itertools.chain.from_iterable(error_status))
-        
-        if flat_error:
-            await self.verify_input(flat_error, error=True)
-            await self.call_api()
-        sync_carbrasil_mysql.DatabaseSync.update_mysql_db(flat_ok)
-
-    def main(self):
-        asyncio.run(self.call_api())
