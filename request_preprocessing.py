@@ -52,7 +52,7 @@ class IOHandler(ErrorHandler):
         packed_yes_stock = []
         packed_no_stock = []
         if stock_info:
-            for product in self.api_stock_instructions:
+            for product in stock_info:
                 if product["id_estoque"]:
                     if len(packed_yes_stock) == 3:
                         self.yes_stock_queue.put(packed_yes_stock.copy())
@@ -102,7 +102,6 @@ class IOHandler(ErrorHandler):
                     yes_stock_data = self.yes_stock_queue.get(timeout=3)
                     self.displayer("(call_api) executando 'update_stock_main'")
                     logger.info("(call_api) executando 'update_stock_main'")
-                    logger.debug(f"self.yes_stockId: \n{self.yes_stockId}")
 
                     resp2 = await asyncio.create_task(self.update_stock_main(yes_stock_data))
                     ok_status.append(resp2[0])

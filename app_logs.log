@@ -16,3 +16,32 @@
 2024-07-23 14:55:17,603 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 21
 2024-07-23 14:55:17,608 - asyncio - DEBUG - Using proactor: IocpProactor
 2024-07-23 14:55:17,610 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-23 15:00:43,758 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-23 15:00:43,763 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-23 15:00:43,886 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-23 15:00:43,888 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-23 15:00:43,889 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 15:00:43,889 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 15:00:47,229 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-23 15:00:47,230 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-23 15:00:50,396 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-23 15:00:50,396 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 24
+2024-07-23 15:00:50,405 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-23 15:00:50,407 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-23 15:00:50,411 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-23 15:00:50,411 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-23 15:01:32,952 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-23 15:01:32,960 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-23 15:01:33,099 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-23 15:01:33,102 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-23 15:01:33,103 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 15:01:33,104 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 15:01:36,827 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-23 15:01:36,828 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-23 15:01:39,921 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-23 15:01:39,922 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 24
+2024-07-23 15:01:39,928 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-23 15:01:39,931 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-23 15:01:39,938 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-23 15:01:39,940 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-23 15:01:42,947 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
