@@ -15,7 +15,7 @@ class ErrorHandler(ApiFunctions):
 
     def displayer(self, msg):
         print(msg)
-        self.txbox.insert(f"{msg}\n")
+        self.txbox.insert('end', f"{msg}\n")
 
     async def error_return_api(self,error_list):
         products_api_estoque = []

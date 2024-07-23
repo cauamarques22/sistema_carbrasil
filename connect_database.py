@@ -4,7 +4,7 @@ import pyodbc
 class DatabaseConnection():
     def __init__(self):
         try:
-            self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="sistema_integrador", pool_size=4, user="root", password="123456", database="intermediador_bling", host="localhost") 
+            self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="sistema_integrador", pool_size=4, user="root", password="123456", database="intermediador_bling", host="CARBRASIL-HOST") 
             self.conn1 = self.conn_pool.get_connection()
             self.cursor1 = self.conn1.cursor()
             self.cursor1.execute("SELECT * FROM db_sistema_intermediador")
@@ -34,5 +34,5 @@ class DatabaseConnection():
                         "PWD=Tec12345678;")
 
         cnxn = pyodbc.connect(cnxn_str)
-        cb_cursor = cnxn.cursor()
+        self.cb_cursor = cnxn.cursor()
         #cb_cursor = None

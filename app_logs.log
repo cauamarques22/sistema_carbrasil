@@ -1,0 +1,18 @@
+2024-07-23 14:51:53,595 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-23 14:51:53,602 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-23 14:51:53,739 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-23 14:51:53,740 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-23 14:51:53,741 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 14:51:53,741 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 14:55:10,744 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-23 14:55:10,752 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-23 14:55:10,872 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-23 14:55:10,874 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-23 14:55:10,874 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 14:55:10,875 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-23 14:55:14,739 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-23 14:55:14,740 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-23 14:55:17,603 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-23 14:55:17,603 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 21
+2024-07-23 14:55:17,608 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-23 14:55:17,610 - asyncio - DEBUG - Using proactor: IocpProactor

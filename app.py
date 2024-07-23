@@ -31,7 +31,8 @@ class ModuleManager(UI.UIFunctions):
         #Database Module Instance
         db_events_conn = self.db_connection.conn_pool.get_connection()
         db_events_cursor = db_events_conn.cursor()
-        self.db_events = sync_carbrasil_mysql.DatabaseSync(txbox=self.modulo3_textbox,conn=db_events_conn, cursor=db_events_cursor, pause_event=self.pause_event,stop_event=self.stop_event)
+        cb_cursor = self.db_connection.cb_cursor
+        self.db_events = sync_carbrasil_mysql.DatabaseSync(txbox=self.modulo3_textbox,conn=db_events_conn, cursor=db_events_cursor,cb_cursor=cb_cursor, pause_event=self.pause_event,stop_event=self.stop_event)
         
         #Request Routine Instance
         self.iohandler = request_preprocessing.IOHandler(txbox=self.modulo2_textbox, db_sync_instance=self.db_events, pause_event=self.pause_event,stop_event=self.stop_event)

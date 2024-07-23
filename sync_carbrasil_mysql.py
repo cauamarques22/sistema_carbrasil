@@ -6,13 +6,14 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(filename="app_logs.log", encoding="utf-8", level=logging.DEBUG , format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 class DatabaseSync():
-    def __init__(self, txbox, conn, cursor, pause_event=None, stop_event=None):
+    def __init__(self, txbox, conn, cursor, cb_cursor, pause_event=None, stop_event=None):
         super().__init__()
         self.txbox = txbox
         self._pause_trigger = pause_event
         self._stop_trigger = stop_event
         self.conn = conn
         self.cursor = cursor
+        self.cb_cursor = cb_cursor
 
     def displayer(self, msg):
         print(msg)
