@@ -2,7 +2,6 @@ import threading
 import time
 import logging
 import datetime
-from queue import Queue
 
 #APP modules
 import auth_routine
@@ -48,6 +47,10 @@ class ModuleManager(UI.UIFunctions):
         #App Mainloop
         self.root.mainloop()
 
+    def displayer(self, msg):
+        print(msg)
+        self.modulo1_textbox.insert('end', f"{msg}\n")
+    
     def start(self):
         
         def first_start():
@@ -84,6 +87,7 @@ class ModuleManager(UI.UIFunctions):
         self.stop_btn.configure(state="normal")
         self.continue_btn.configure(state="normal")
         self.pause_btn.configure(state="normal")
+        self.modulo1_label.configure(text_color="green")
         self.modulo2_label.configure(text_color="green")
         self.modulo3_label.configure(text_color="green")
         self.modulo4_label.configure(text_color="green")
@@ -121,6 +125,7 @@ class ModuleManager(UI.UIFunctions):
         self.pause_btn.configure(state="disabled")
         self.continue_btn.configure(state="disabled")
         self.start_btn.configure(state="normal")
+        self.modulo1_label.configure(text="Painel Principal", text_color="red")
         self.modulo2_label.configure(text="Modulo 2",text_color="red")
         self.modulo3_label.configure(text="Modulo 3",text_color="red")
         self.modulo4_label.configure(text="Modulo 4",text_color="red")
@@ -128,37 +133,28 @@ class ModuleManager(UI.UIFunctions):
     def Bridge(self):
         start_time = datetime.datetime.now()
         iteration_counter = 0
+        self.displayer("(bridge) Iniciando sistema.")
         while not self.stop_event.is_set():
             self.pause_event.wait()
             now = datetime.datetime.now()
             elapsed_time = now - start_time
             elapsed_minutes = elapsed_time.seconds / 60
+            self.info1_count.configure(text=f"{self.iohandler.produtos_atualizados}")
             if elapsed_minutes >= 30 or iteration_counter == 0:
                 iteration_counter+=1
                 begin = time.time()
                 diagnosis = self.db_events.main()
                 if self.stop_event.is_set():
                     break
-                
-                self.iohandler.product_queue = Queue(maxsize=4)
-                self.iohandler.yes_stock_queue = Queue(maxsize=4)
-                self.iohandler.no_stock_queue = Queue(maxsize=4)
-
-                mthread1 = threading.Thread(target=self.iohandler.run_verify_input, args=(diagnosis,)) 
-                mthread2 = threading.Thread(target=self.iohandler.run_call_api)
-                mthread1.start()
-                mthread2.start()
-                mthread1.join()
-                mthread2.join()
-
+                self.iohandler.verify_input(diagnosis)
+                self.iohandler.main()
+            
                 #Atualizando informações da label dos produtos atualizados
-                self.info1_count.config(text=f"{self.iohandler.produtos_atualizados}")
-
                 end = time.time()
                 runtime = end - begin
-                #self.displayer("(app_loop) 30 minutos para a próxima sincronização.")
-                #self.displayer(f"(app_loop) O programa levou {runtime:.2f} segundos para completar")
-                logger.info(f"(app_loop) O programa levou {runtime:.2f} segundos para completar")
+                self.displayer("(bridge) 30 minutos para a próxima sincronização.")
+                self.displayer(f"(bridge) O programa levou {runtime:.2f} segundos para completar")
+                logger.info(f"(bridge) O programa levou {runtime:.2f} segundos para completar")
             time.sleep(15)
 
 app = ModuleManager()

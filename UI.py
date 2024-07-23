@@ -45,43 +45,43 @@ class Display:
 
     def widgets(self):
         #Widgets Modulo 1
-        self.modulo1_label = ctk.CTkLabel(self.app_subframe1,text="Modulo 1", font=("Montserrat", 18, "bold"), text_color="red")
+        self.modulo1_label = ctk.CTkLabel(self.app_subframe1,text="Painel Principal", font=("Montserrat", 18, "bold"), text_color="red")
         self.modulo1_label.place(relx=0.02, rely=0.04)
 
-        self.modulo1_textbox = ctk.CTkTextbox(self.app_subframe1, width=0, height=0, font=("Montserrat", 14),state="disabled",fg_color="#282A27")
+        self.modulo1_textbox = ctk.CTkTextbox(self.app_subframe1, width=0, height=0, font=("Montserrat", 14),fg_color="#282A27")
         self.modulo1_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
         #Widgets Modulo 2
-        self.modulo2_label = ctk.CTkLabel(self.app_subframe2,text="Modulo 2", font=("Montserrat", 18, "bold"), text_color="red")
+        self.modulo2_label = ctk.CTkLabel(self.app_subframe2,text="Modulo 1", font=("Montserrat", 18, "bold"), text_color="red")
         self.modulo2_label.place(relx=0.02, rely=0.04)
 
-        self.modulo2_textbox = ctk.CTkTextbox(self.app_subframe2, width=0, height=0, font=("Montserrat", 14), state="disabled", fg_color="#282A27")
+        self.modulo2_textbox = ctk.CTkTextbox(self.app_subframe2, width=0, height=0, font=("Montserrat", 14),  fg_color="#282A27")
         self.modulo2_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
         #Widgets Modulo 3
-        self.modulo3_label = ctk.CTkLabel(self.app_subframe3,text="Modulo 3", font=("Montserrat", 18, "bold"), text_color="red")
+        self.modulo3_label = ctk.CTkLabel(self.app_subframe3,text="Modulo 2", font=("Montserrat", 18, "bold"), text_color="red")
         self.modulo3_label.place(relx=0.02, rely=0.04)
 
-        self.modulo3_textbox = ctk.CTkTextbox(self.app_subframe3, width=0, height=0, font=("Montserrat", 14),state="disabled",fg_color="#282A27")
+        self.modulo3_textbox = ctk.CTkTextbox(self.app_subframe3, width=0, height=0, font=("Montserrat", 14),fg_color="#282A27")
         self.modulo3_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
         #Widgets Modulo 4
-        self.modulo4_label = ctk.CTkLabel(self.app_subframe4,text="Modulo 4", font=("Montserrat", 18, "bold"), text_color="red")
+        self.modulo4_label = ctk.CTkLabel(self.app_subframe4,text="Modulo 3", font=("Montserrat", 18, "bold"), text_color="red")
         self.modulo4_label.place(relx=0.02, rely=0.04)
 
-        self.modulo4_textbox = ctk.CTkTextbox(self.app_subframe4, width=0, height=0, font=("Montserrat", 14),state="disabled",fg_color="#282A27")
+        self.modulo4_textbox = ctk.CTkTextbox(self.app_subframe4, width=0, height=0, font=("Montserrat", 14),fg_color="#282A27")
         self.modulo4_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
         #Widgets Frame 2
         self.error_label = ctk.CTkLabel(self.app2_subframe,text="Mensagens de Erro", font=("Montserrat", 18, "bold"))
         self.error_label.place(relx=0.02, rely=0.04)
 
-        self.error_textbox = ctk.CTkTextbox(self.app2_subframe, width=0, height=0, font=("Montserrat", 14),state="disabled", fg_color="#282A27")
+        self.error_textbox = ctk.CTkTextbox(self.app2_subframe, width=0, height=0, font=("Montserrat", 14), fg_color="#282A27")
         self.error_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
-        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados:", fg_color="red")
+        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados:")
         self.info1_label.place(relx=0.03, rely=0.02, relwidth=0.3, relheight=0.05)
-        self.info1_count = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="0", fg_color="blue")
+        self.info1_count = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="0")
         self.info1_count.place(relx=0.32, rely=0.02, relwidth=0.15, relheight=0.05)
 
         #Menu Buttons
