@@ -1,0 +1,383 @@
+#Dependencies
+import aiohttp.client_exceptions
+import datetime
+import aiohttp
+import asyncio
+import itertools
+import logging
+
+#APP modules
+import auth_routine
+
+logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger = logging.getLogger("request_routine_module")
+
+class ApiFunctions():
+    def __init__ (self, txbox, conn, cursor ,pause_event = None, stop_event = None):
+        super().__init__()
+        self._pause_trigger = pause_event
+        self._stop_trigger = stop_event
+        
+        self.cursor = cursor
+        self.conn = conn
+        self.semaphore = asyncio.Semaphore(1)
+        self.txbox = txbox
+
+    def displayer(self, msg):
+        print(msg)
+        self.txbox.insert('end', f"{msg}\n")
+
+    async def error_handler(self, semaphore,function, **kwargs):
+        async with semaphore:
+            for key,value in kwargs.items():
+                if function == "update_stock_main":
+                    if key == "error_not_found" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_stock_main' RETORNARAM COM 'error_not_found'"
+                        self.displayer(msg)
+                        logger.info(msg)
+
+                        r = await asyncio.gather(self.create_stock_main(value, error=True))
+                        if r:
+                            self.displayer("(error_handler) ERROS CORRIGIDOS")
+                            logger.info("(error_handler) ERROS CORRIGIDOS")
+                        else:
+                            self.displayer("(error_handler) ERROS NÃO FORAM CORRIGIDOS")
+                            logger.error("(error_handler) ERROS NÃO FORAM CORRIGIDOS")
+                    elif key == "unknown_errors" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_stock_main' RETORNARAM COM 'unknown_errors'"
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+
+                    elif key == "os_error" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_stock_main' RETORNARAM COM 'os_error'"
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+
+                elif function == "create_stock_main":
+                    if key == "unknown_errors" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'create_stock_main' RETORNARAM COM 'unknown_errors'"
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+
+                    elif key == "os_error" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'create_stock_main' RETORNARAM COM 'os_error'"
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+                    
+                    elif key == "error_not_found" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'create_stock_main' RETORNARAM COM 'error_not_found'"
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+
+                elif function == "update_product_main":
+                    if key == "unknown_errors" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'unknown_errors'"
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+
+                    elif key == "os_error" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'os_error'"
+                        print(msg)
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+                    
+                    elif key == "error_not_found" and kwargs[key]:
+                        msg = "(error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'error_not_found'"
+                        print(msg)
+                        self.displayer(msg)
+                        logger.error(msg)
+                        logger.error(value)
+
+    async def create_stock_slave(self, session, product):
+        print(f"(create_stock_slave) Começando request: {product['codigo_carbrasil']}")
+        self.displayer(f"(create_stock_slave) Começando request: {product['codigo_carbrasil']}")
+        headers = {
+            "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
+        }
+        payload = {
+            "produto":{
+                "id": product["id_bling"]
+            },
+            "deposito":{
+                "id": 3471220462
+            },
+            "operacao": "B",
+            "preco": product["divergencias"]["preco"],
+            "custo": product["divergencias"]["custo"],
+            "quantidade": product["divergencias"]["estoque"],
+            "observacoes": "API CARBRASIL-BLING POST",
+            "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+
+        try:
+            async with session.request(method="POST",url=f"{auth_routine.AuthRoutine.HOST}estoques", headers=headers, json=payload) as resp:
+                response = await resp.json()
+                
+                if resp.status != 201:
+                    product["resposta_api"] = {"response_status": resp.status, "decoded_resp": response}
+                    logger.error(f"Produto com erro: \n{product}")
+                    return product
+
+                product["resposta_api"] = {"response_status": resp.status, "id_estoque": response["data"]["id"]}
+                return product
+        
+        except aiohttp.client_exceptions.ClientOSError as err:
+            product["resposta_api"] = {"response_status":"OSERROR"}
+            logger.error(f"(create_stock_slave) WINERROR: {err.winerror}")
+            logger.error("(create_stock_slave) PRODUCT THAT RAISED AN ERROR:")
+            logger.error(f"(create_stock_slave) {product}")
+            logger.exception("ClientOSError")
+            return product
+        
+        except Exception as err:
+            product["resposta_api"] = {"response_status":"CRITICAL_EXCEPTION"}
+            logger.critical("(create_stock_slave) UNHANDLED EXCEPTION")
+            logger.exception("(create_stock_slave) UNKNOWN EXCEPTION")
+            logger.debug(f"Produto utilizado durante a exceção:\n{product}")
+            raise err
+
+    async def create_stock_main(self, instructions, error=False):
+        print(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
+        self.displayer(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
+        logger.info(f"{'(create_stock_main: errors)' if error else '(create_stock_main)'} Começando POST REQUESTS de {len(instructions)} produtos.")
+        unknown_errors: list[dict] = []
+        os_error: list[dict] = []
+        critical_errors: list[dict] = []
+        ok_status: list[dict] = []
+        error_status: list[dict] = [] 
+
+        batched_products = list(itertools.batched(instructions, 3))
+        async with aiohttp.ClientSession() as session:
+            for product in batched_products:
+                await asyncio.sleep(1.1)
+                tasks = [asyncio.create_task(self.create_stock_slave(session, p)) for p in product]
+                response = await asyncio.gather(*tasks)
+                for resp in response:
+
+                    #ERROR HANDLING
+                    if "decoded_resp" in resp["resposta_api"].keys():
+                        if "error" in resp["resposta_api"]["decoded_resp"].keys():
+                            unknown_errors.append(resp)
+                    
+                    elif resp["resposta_api"]["response_status"] == "OSERROR":
+                        os_error.append(resp)
+                    elif resp["resposta_api"]["response_status"] == 201:
+                        ok_status.append(resp)
+        
+        for prod in ok_status:
+            self.cursor.execute(f"UPDATE db_sistema_intermediador SET idEstoque={prod["resposta_api"]['id_estoque']} WHERE codigo_carbrasil={prod['codigo_carbrasil']}")
+        self.conn.commit()
+    
+        if unknown_errors or os_error or critical_errors:
+            await asyncio.create_task(self.error_handler(semaphore=self.semaphore, function="create_stock_main", unknown_errors=unknown_errors, 
+                            os_error=os_error, critical_errors=critical_errors))
+        
+        msg = f"(create_stock_main) POST REQUESTS FINALIZADAS, RESULTADOS:\n \
+                unknown_errors:{len(unknown_errors)}\n \
+                os_errors: {len(os_error)}\n \
+                ok_status: {len(ok_status)}"
+        logger.info(msg)
+        self.displayer(msg)
+        print(msg)
+
+        error_status.extend(unknown_errors)
+        error_status.extend(os_error)
+        return (ok_status, error_status)
+
+    async def update_stock_slave(self, session:aiohttp.ClientSession, product: dict) -> dict:
+
+        print(f"(update_stock_slave) Começando request: {product['codigo_carbrasil']}")
+        self.displayer(f"(update_stock_slave) Começando request: {product['codigo_carbrasil']}")
+        headers = {
+        "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
+        }
+        payload = {
+            "operacao": "B",
+            "preco": product["divergencias"]["preco"],
+            "custo": product["divergencias"]["custo"],
+            "quantidade": product["divergencias"]["estoque"],
+            "observacoes": "API CARBRASIL-BLING PUT",
+            "data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        try:
+            async with session.request(method="PUT", url=f"{auth_routine.AuthRoutine.HOST}estoques/{product['id_estoque']}",  json=payload, headers=headers) as resp:
+                resp_status = resp.status
+
+                if resp_status  != 204:
+                    product["resposta_api"] = {"decoded_resp": await resp.json(), "response_status": resp_status}
+                    logger.error(f"Produto com erro: \n{product}")
+                    return product
+
+                product["resposta_api"] = {"response_status":resp_status}
+                return product
+
+        except aiohttp.client_exceptions.ClientOSError as err:
+            
+            product["resposta_api"] = {"response_status": "OSERROR"}
+            logger.error(f"(api_estoque_put) WINERROR: {err.winerror}")
+            logger.error("(api_estoque_put) PRODUCT THAT RAISED AN ERROR:")
+            logger.error(f"(api_estoque_put): \n{product}")
+            logger.exception("ClientOSError")
+            return product
+        
+        except Exception as err:
+            
+            product["resposta_api"] = {"response_status":"CRITICAL_EXCEPTION"}
+            logger.critical("(update_stock_slave) UNHANDLED EXCEPTION")
+            logger.exception("(update_stock_slave) UNKNOWN EXCEPTION")
+            logger.error(f"(update_stock_slave): \n{product}")
+            raise err
+
+    async def update_stock_main(self, instructions):
+        print(f"(update_stock_main) Começando PUT REQUESTS em {len(instructions)} registros")
+        self.displayer(f"(update_stock_main) Começando PUT REQUESTS em {len(instructions)} registros")
+        error_not_found: list[dict] = []
+        unknown_errors: list[dict] = []
+        os_error: list[dict] = []
+        ok_status: list[dict] = []
+        error_status: list[dict] = []
+
+        batched_products = list(itertools.batched(instructions, 3))
+        async with aiohttp.ClientSession() as session:
+            for product in batched_products:
+                await asyncio.sleep(1.1)
+                tasks = [asyncio.create_task(self.update_stock_slave(session,p)) for p in product]
+                responses = await asyncio.gather(*tasks)
+               
+                #ERROR HANDLING
+                for resp in responses:
+                    
+                    if "decoded_resp" in resp["resposta_api"].keys():
+                        if "error" in resp["resposta_api"]["decoded_resp"].keys():
+                            if resp["resposta_api"]["decoded_resp"]["error"]["type"] == "RESOURCE_NOT_FOUND":
+                                error_not_found.append(resp)
+                                continue
+                            unknown_errors.append(resp)
+                    
+                    elif resp["resposta_api"]["response_status"] == "OSERROR":
+                        os_error.append(resp)
+                    elif resp["resposta_api"]["response_status"] == 204:
+                        ok_status.append(resp)
+        
+        if error_not_found or unknown_errors or os_error:
+            await asyncio.create_task(self.error_handler(semaphore=self.semaphore ,function="update_stock_main" ,
+                                                         error_not_found=error_not_found, unknown_errors=unknown_errors,
+                                                         os_error=os_error))
+        
+        msg = f"(update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:\n \
+                    error_not_found:{len(error_not_found)}\n \
+                    unknown_errors:{len(unknown_errors)}\n \
+                    os_errors: {len(os_error)}\n"
+        
+        logger.info(msg)
+        print(msg)
+        self.displayer(msg)
+
+        error_status.extend(error_not_found)
+        error_status.extend(unknown_errors)
+        error_status.extend(os_error)
+        return (ok_status, error_status)
+
+    async def update_product_slave(self, session: aiohttp.ClientSession, product: dict): #ATUALIZAR O ERROR HANDLING
+        
+        print(f"(update_product_slave) Atualizando Código: {product['codigo_carbrasil']}")
+        self.displayer(f"(update_product_slave) Atualizando Código: {product['codigo_carbrasil']}")
+        headers = {
+        "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
+        }
+        payload = {
+            "nome": product["divergencias"]["descricao"],
+            "preco": product["divergencias"]["preco"],
+            "tipo": product["bling_tipo"],
+            "situacao": product["bling_situacao"],
+            "formato": product["bling_formato"],
+            "codigo": product["codigo_carbrasil"],
+            "unidade": "UN",
+            "condicao": 1,
+            "tipoProducao": "T",
+        }
+
+        try:
+            async with session.request(method="PUT", url=f"{auth_routine.AuthRoutine.HOST}produtos/{product['id_bling']}", headers=headers, json=payload) as resp:
+                resp_status = resp.status
+                
+                if resp_status != 200:
+                    product["resposta_api"] = {"decoded_resp": await resp.json(), "response_status": resp_status}
+                    logger.error(f"Produto com erro: \n{product}")
+                    return product
+
+                product["resposta_api"] = {"response_status":resp_status}
+                return product
+
+        except aiohttp.client_exceptions.ClientOSError as err:
+            product["resposta_api"] = {"response_status":"OSERROR"}
+            logger.error(f"(api_estoque_put) WINERROR: {err.winerror}")
+            logger.error("(api_estoque_put) PRODUCT THAT RAISED AN ERROR:")
+            logger.error(f"(api_estoque_put) \n{product}")
+            logger.exception("ClientOSError")
+            return product
+        
+        except Exception as err:
+            product["resposta_api"] = {"response_status":"CRITICAL_EXCEPTION"}
+            logger.critical("(update_stock_slave) UNHANDLED EXCEPTION")
+            logger.exception("(update_stock_slave) UNHANDLED EXCEPTION")
+            logger.error(f"(update_stock_slave): \n{product}")
+            raise err
+
+    async def update_product_main(self,instructions: list[dict]):
+        print(f"(update_product_main) Começando PUT REQUESTS em {len(instructions)} registros")
+        self.displayer(f"(update_product_main) Começando PUT REQUESTS em {len(instructions)} registros")
+        error_not_found: list[dict] = []
+        unknown_errors: list[dict] = []
+        os_error: list[dict] = []
+        ok_status: list[dict] = []
+        error_status: list[dict] = []
+
+        batched_diagnosis = list(itertools.batched(instructions, 3))
+        async with aiohttp.ClientSession() as session:
+            for batch_instructions in batched_diagnosis:
+                await asyncio.sleep(1.1)
+                tasks = [asyncio.create_task(self.update_product_slave(session,dicts)) for dicts in batch_instructions]
+                responses = await asyncio.gather(*tasks)
+                
+                #ERROR HANDLING
+                for resp in responses:
+                    
+                    if "decoded_resp" in resp["resposta_api"].keys():
+                        if "error" in resp["resposta_api"]["decoded_resp"].keys():
+                            if resp["resposta_api"]["decoded_resp"]["error"]["type"] == "RESOURCE_NOT_FOUND":
+                                error_not_found.append(resp)
+                                continue
+                            unknown_errors.append(resp)
+                    
+                    elif resp["resposta_api"]["response_status"] == "OSERROR":
+                        os_error.append(resp)
+                    elif resp["resposta_api"]["response_status"] == 200:
+                        ok_status.append(resp)
+
+        
+        if error_not_found or unknown_errors or os_error:
+            await asyncio.create_task(self.error_handler(semaphore=self.semaphore ,function="update_product_main" ,
+                                                         error_not_found=error_not_found, unknown_errors=unknown_errors,
+                                                         os_error=os_error))
+        
+        msg = f"(update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:\n \
+                    error_not_found:{len(error_not_found)}\n \
+                    unknown_errors:{len(unknown_errors)}\n \
+                    os_errors: {len(os_error)}\n"
+        logger.info(msg)
+        print(msg)
+        self.displayer(msg)
+
+        error_status.extend(error_not_found)
+        error_status.extend(unknown_errors)
+        error_status.extend(os_error)
+        return (ok_status, error_status)
+
