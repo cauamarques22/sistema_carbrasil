@@ -141,6 +141,7 @@ class ModuleManager(UI.UIFunctions):
             elapsed_minutes = elapsed_time.seconds / 60
             self.info1_count.configure(text=f"{self.iohandler.produtos_atualizados}")
             if elapsed_minutes >= 30 or iteration_counter == 0:
+                start_time = datetime.datetime.now()
                 iteration_counter+=1
                 begin = time.time()
                 diagnosis = self.db_events.main()
