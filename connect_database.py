@@ -10,7 +10,7 @@ class DatabaseConnection():
             self.cursor1.execute("SELECT * FROM db_sistema_intermediador")
         except mysql.connector.ProgrammingError as err:
             if err.errno == 1049:
-                self.conn1 = mysql.connector.pooling.MySQLConnectionPool(pool_name="sistema_integrador", pool_size=4,user="root", password="123456", host="localhost")            
+                self.conn1 = mysql.connector.pooling.MySQLConnectionPool(pool_name="sistema_integrador", pool_size=4,user="root", password="123456", host="CARBRASIL-HOST")            
                 self.cursor1 = self.conn1.cursor()
                 self.cursor1.execute("CREATE DATABASE intermediador_bling")
                 self.cursor1.execute("USE intermediador_bling")
