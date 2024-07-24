@@ -3,9 +3,11 @@ class Display:
 
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.geometry("1366x760")
+        self.screen_width = self.root.winfo_screenwidth()
+        self.screen_height = self.root.winfo_screenheight()
+        self.root.geometry(f"{round(self.screen_width*0.78)}x{round(self.screen_height*0.75)}")
         self.root.title("Sistema Integrador")
-        ctk.set_default_color_theme("blue")
+        ctk.set_default_color_theme("green")
         ctk.set_appearance_mode("dark")
         
 
@@ -79,7 +81,7 @@ class Display:
         self.error_textbox = ctk.CTkTextbox(self.app2_subframe, width=0, height=0, font=("Montserrat", 14), fg_color="#282A27")
         self.error_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
-        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados:")
+        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados: ")
         self.info1_label.place(relx=0.03, rely=0.02, relwidth=0.3, relheight=0.05)
         self.info1_count = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="0")
         self.info1_count.place(relx=0.32, rely=0.02, relwidth=0.15, relheight=0.05)
@@ -87,25 +89,32 @@ class Display:
         #Menu Buttons
         std_x = 0.05
         std_width = 0.9
-        self.start_btn = ctk.CTkButton(self.menu_frame, text="Iniciar Sincronização",font=("Montserrat", 13, "bold") ,command=self.start)
+        std_font1 = ("Montserrat", 12, "bold")
+        std_font2 = ("Montserrat", 14, "bold")
+        self.start_btn = ctk.CTkButton(self.menu_frame, text="Iniciar Sincronização",font=std_font1 ,command=self.start)
         self.start_btn.place(relx=std_x, relwidth=std_width, rely=0.02, relheight=0.05)
 
-        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=("Montserrat", 13, "bold"), command=self.pause_thread, state="disabled")
+        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=std_font1, command=self.pause_thread, state="disabled")
         self.pause_btn.place(relx=std_x, relwidth=std_width, rely=0.09, relheight=0.05)
 
-        self.continue_btn = ctk.CTkButton(self.menu_frame, text="Continuar Sincronização", font=("Montserrat", 13, "bold"),command=self.continuar_thread, state="disabled")
+        self.continue_btn = ctk.CTkButton(self.menu_frame, text="Continuar Sincronização", font=std_font1,command=self.continuar_thread, state="disabled")
         self.continue_btn.place(relx=std_x, relwidth=std_width, rely=0.16, relheight=0.05)
 
-        self.stop_btn = ctk.CTkButton(self.menu_frame, text="Parar Sincronização",font=("Montserrat", 13, "bold"), command=self.parar_thread, state="disabled")
+        self.stop_btn = ctk.CTkButton(self.menu_frame, text="Parar Sincronização",font=std_font1, command=self.parar_thread, state="disabled")
         self.stop_btn.place(relx=std_x, relwidth=std_width, rely=0.23, relheight=0.05)
 
-        self.f1_btn = ctk.CTkButton(self.menu_frame, text="Painel Principal",font=("Montserrat", 13, "bold"), command=lambda: self.switch_frame(self.app_frame1))
+        self.f1_btn = ctk.CTkButton(self.menu_frame, text="Painel Principal",font=std_font2, command=lambda: self.switch_frame(self.app_frame1))
         self.f1_btn.place(relx=std_x, relwidth=std_width, rely= 0.5, relheight=0.1)
 
-        self.f2_btn = ctk.CTkButton(self.menu_frame, text="Painel de Informações",font=("Montserrat", 13, "bold"), command=lambda: self.switch_frame(self.app_frame2))
+        self.f2_btn = ctk.CTkButton(self.menu_frame, text="Painel de Informações",font=std_font2, command=lambda: self.switch_frame(self.app_frame2))
         self.f2_btn.place(relx=std_x, relwidth=std_width, rely= 0.62, relheight=0.1)
 
-        self.continue_btn.bind("<Configure>", self.resize_text)
+        self.start_btn.bind("<Configure>", lambda event: self.resize_text(event, self.start_btn))
+        self.pause_btn.bind("<Configure>", lambda event: self.resize_text(event, self.pause_btn))
+        self.continue_btn.bind("<Configure>", lambda event: self.resize_text(event, self.continue_btn))
+        self.stop_btn.bind("<Configure>", lambda event: self.resize_text(event, self.stop_btn))
+        self.f1_btn.bind("<Configure>", lambda event: self.resize_text(event, self.f1_btn))
+        self.f2_btn.bind("<Configure>", lambda event: self.resize_text(event, self.f2_btn))
 
         # self.f3_btn = ctk.CTkButton(self.menu_frame, text="Get TxtBox", command= self.get_txtbox)
         # self.f3_btn.place(relx=0.2, relwidth=0.6, rely= 0.8, relheight=0.1)
@@ -123,7 +132,7 @@ class UIFunctions(Display):
         texto = self.modulo1_textbox.get("1.0", ctk.END)
         self.modulo2_textbox.insert(ctk.END, texto)
     
-    def resize_text(self, event):
+    def resize_text(self, event, button):
     # Ajusta o comprimento da quebra de linha com base na largura do botão
         wrap_length = event.width  # Ajuste conforme necessário
-        self.continue_btn._text_label.configure(wraplength=wrap_length)
+        button._text_label.configure(wraplength=wrap_length)
