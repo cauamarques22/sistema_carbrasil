@@ -6787,3 +6787,817 @@
 2024-07-24 15:10:45,768 - asyncio - DEBUG - Using proactor: IocpProactor
 2024-07-24 15:10:45,770 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
 2024-07-24 15:10:45,771 - app_module - INFO - (bridge) O programa levou 2.32 segundos para completar
+2024-07-24 15:12:16,030 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 15:12:16,033 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 15:12:16,086 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 15:12:16,087 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 15:12:16,088 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 15:12:16,088 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 15:12:30,023 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 15:12:30,024 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 15:12:31,747 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 15:12:31,747 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 15:12:31,749 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 15:12:31,749 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 15:12:31,749 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 15:12:31,750 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 15:12:31,750 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 15:12:31,752 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 15:12:31,754 - app_module - INFO - (bridge) O programa levou 15.72 segundos para completar
+2024-07-24 15:12:35,958 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 15:12:35,959 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 15:12:36,556 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 15:12:36,557 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 15:12:37,240 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 15:37:22,287 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 15:37:42,338 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 15:37:42,339 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 15:37:42,903 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 15:37:42,903 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 15:37:43,544 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 15:42:16,912 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 15:42:16,976 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 15:42:16,977 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 15:42:16,978 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 15:42:16,978 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 15:42:17,760 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 15:42:17,761 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 15:42:19,398 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 15:42:19,398 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 15:42:19,399 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 15:42:19,399 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 15:42:19,400 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 15:42:19,400 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 15:42:19,401 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 15:42:19,402 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 15:42:19,407 - app_module - INFO - (bridge) O programa levou 2.49 segundos para completar
+2024-07-24 16:02:28,598 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 16:02:48,542 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 16:02:48,544 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 16:02:49,091 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 16:02:49,091 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 16:02:49,709 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 16:12:19,561 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 16:12:19,614 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 16:12:19,615 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 16:12:19,618 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 16:12:19,618 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 16:12:20,409 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 16:12:20,410 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 16:12:22,101 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 16:12:22,101 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 2
+2024-07-24 16:12:22,102 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 16:12:22,102 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 16:12:22,103 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[{'codigo_carbrasil': 8054, 'id_bling': 16286903830, 'id_estoque': 19369309931, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 3.0, 'custo': 39.9, 'preco': 65.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 9543, 'id_bling': 16286904931, 'id_estoque': 19369442797, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 18.04, 'preco': 29.99}, 'endpoint_correto': 'estoque'}]
+2024-07-24 16:12:22,103 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 16:12:22,103 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 16:12:22,105 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 16:12:22,105 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-24 16:12:22,106 - request_preprocessing - DEBUG - self.yes_stockId: 
+[{'codigo_carbrasil': 8054, 'id_bling': 16286903830, 'id_estoque': 19369309931, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 3.0, 'custo': 39.9, 'preco': 65.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 9543, 'id_bling': 16286904931, 'id_estoque': 19369442797, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 18.04, 'preco': 29.99}, 'endpoint_correto': 'estoque'}]
+2024-07-24 16:12:24,264 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-24 16:12:24,266 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando banco de dados
+2024-07-24 16:12:24,273 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-24 16:12:24,279 - app_module - INFO - (bridge) O programa levou 4.72 segundos para completar
+2024-07-24 16:27:34,758 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 16:27:54,736 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 16:27:54,737 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 16:27:55,325 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 16:27:55,325 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 16:27:55,989 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 16:42:24,445 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 16:42:24,497 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 16:42:24,498 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 16:42:24,500 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 16:42:24,500 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 16:42:25,281 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 16:42:25,283 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 16:42:26,953 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 16:42:26,953 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 16:42:26,955 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 16:42:26,955 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 16:42:26,955 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 16:42:26,956 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 16:42:26,956 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 16:42:26,957 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 16:42:26,959 - app_module - INFO - (bridge) O programa levou 2.51 segundos para completar
+2024-07-24 16:52:41,048 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 16:53:00,499 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 16:53:00,502 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 16:53:01,085 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 16:53:01,085 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 16:53:01,745 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 17:12:27,120 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 17:12:27,177 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 17:12:27,179 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 17:12:27,180 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 17:12:27,180 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 17:12:27,786 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 17:12:27,787 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 17:12:29,455 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 17:12:29,455 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 17:12:29,457 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 17:12:29,457 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 17:12:29,457 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 17:12:29,457 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 17:12:29,458 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 17:12:29,459 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 17:12:29,461 - app_module - INFO - (bridge) O programa levou 2.34 segundos para completar
+2024-07-24 17:17:46,796 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 17:18:06,315 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 17:18:06,317 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 17:18:06,919 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 17:18:06,919 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 17:18:07,604 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 17:42:29,624 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 17:42:29,675 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 17:42:29,676 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 17:42:29,678 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 17:42:29,678 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 17:42:30,465 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 17:42:30,467 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 17:42:32,146 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 17:42:32,146 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 17:42:32,148 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 17:42:32,148 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 17:42:32,148 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 17:42:32,148 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 17:42:32,149 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 17:42:32,150 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 17:42:32,152 - app_module - INFO - (bridge) O programa levou 2.53 segundos para completar
+2024-07-24 17:42:52,646 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 17:43:12,157 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 17:43:12,160 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 17:43:12,754 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 17:43:12,754 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 17:43:13,427 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 18:07:58,620 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 18:08:18,140 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 18:08:18,140 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 18:08:18,700 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 18:08:18,700 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 18:08:19,360 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 18:12:32,577 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 18:12:32,627 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 18:12:32,627 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 18:12:32,627 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 18:12:32,627 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 18:12:33,407 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 18:12:33,407 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 18:12:35,047 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 18:12:35,047 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 2
+2024-07-24 18:12:35,047 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 18:12:35,047 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 18:12:35,047 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[{'codigo_carbrasil': 9215, 'id_bling': 16286908239, 'id_estoque': 19369400940, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 107.69, 'preco': 169.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 25872, 'id_bling': 16286905938, 'id_estoque': 19369642403, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 95.92, 'preco': 169.99}, 'endpoint_correto': 'estoque'}]
+2024-07-24 18:12:35,057 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 18:12:35,057 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 18:12:35,057 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 18:12:35,057 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-24 18:12:35,057 - request_preprocessing - DEBUG - self.yes_stockId: 
+[{'codigo_carbrasil': 9215, 'id_bling': 16286908239, 'id_estoque': 19369400940, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 107.69, 'preco': 169.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 25872, 'id_bling': 16286905938, 'id_estoque': 19369642403, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 95.92, 'preco': 169.99}, 'endpoint_correto': 'estoque'}]
+2024-07-24 18:12:37,407 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-24 18:12:37,407 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando banco de dados
+2024-07-24 18:12:37,417 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-24 18:12:37,417 - app_module - INFO - (bridge) O programa levou 4.84 segundos para completar
+2024-07-24 18:33:04,840 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 18:33:24,338 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 18:33:24,348 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 18:33:24,918 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 18:33:24,918 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 18:33:25,578 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 18:42:38,218 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 18:42:38,268 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 18:42:38,268 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 18:42:38,268 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 18:42:38,268 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 18:42:38,888 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 18:42:38,888 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 18:42:40,518 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 18:42:40,518 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 18:42:40,518 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 18:42:40,518 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 18:42:40,518 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 18:42:40,518 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 18:42:40,518 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 18:42:40,518 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 18:42:40,518 - app_module - INFO - (bridge) O programa levou 2.30 segundos para completar
+2024-07-24 18:58:11,034 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 18:58:30,718 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 18:58:30,718 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 18:58:31,278 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 18:58:31,278 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 18:58:31,918 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 19:12:41,367 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 19:12:41,417 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 19:12:41,417 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 19:12:41,417 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 19:12:41,417 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 19:12:41,987 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 19:12:41,987 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 19:12:43,607 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 19:12:43,607 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 19:12:43,607 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 19:12:43,607 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 19:12:43,607 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 19:12:43,607 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 19:12:43,607 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 19:12:43,617 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 19:12:43,617 - app_module - INFO - (bridge) O programa levou 2.25 segundos para completar
+2024-07-24 19:23:17,473 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 19:23:37,281 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 19:23:37,281 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 19:23:37,861 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 19:23:37,861 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 19:23:38,511 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 19:42:44,433 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 19:42:44,483 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 19:42:44,483 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 19:42:44,493 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 19:42:44,493 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 19:42:45,063 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 19:42:45,063 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 19:42:46,683 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 19:42:46,683 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 19:42:46,683 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 19:42:46,683 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 19:42:46,683 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 19:42:46,683 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 19:42:46,683 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 19:42:46,683 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 19:42:46,683 - app_module - INFO - (bridge) O programa levou 2.25 segundos para completar
+2024-07-24 19:48:23,988 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 19:48:46,506 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 19:48:46,516 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 19:48:47,076 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 19:48:47,076 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 19:48:47,716 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 20:12:47,233 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 20:12:47,288 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 20:12:47,290 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 20:12:47,291 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 20:12:47,291 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 20:12:47,862 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 20:12:47,864 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 20:12:49,484 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 20:12:49,484 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 20:12:49,486 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 20:12:49,486 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 20:12:49,486 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 20:12:49,486 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 20:12:49,487 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 20:12:49,488 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 20:12:49,490 - app_module - INFO - (bridge) O programa levou 2.26 segundos para completar
+2024-07-24 20:13:32,975 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 20:13:54,072 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 20:13:54,075 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 20:13:54,641 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 20:13:54,641 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 20:13:55,283 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 20:38:40,327 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 20:39:03,841 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 20:39:03,843 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 20:39:04,371 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 20:39:04,372 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 20:39:05,000 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 20:42:49,647 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 20:42:49,698 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 20:42:49,699 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 20:42:49,701 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 20:42:49,701 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 20:42:50,268 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 20:42:50,269 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 20:42:51,906 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 20:42:51,906 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 20:42:51,907 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 20:42:51,908 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 20:42:51,908 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 20:42:51,908 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 20:42:51,908 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 20:42:51,910 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 20:42:51,912 - app_module - INFO - (bridge) O programa levou 2.26 segundos para completar
+2024-07-24 21:03:50,041 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 21:04:10,509 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 21:04:10,511 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 21:04:11,068 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 21:04:11,068 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 21:04:11,714 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 21:12:52,074 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 21:12:52,131 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 21:12:52,132 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 21:12:52,134 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 21:12:52,134 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 21:12:52,694 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 21:12:52,695 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 21:12:54,341 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 21:12:54,341 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 21:12:54,343 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 21:12:54,343 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 21:12:54,343 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 21:12:54,343 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 21:12:54,344 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 21:12:54,345 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 21:12:54,347 - app_module - INFO - (bridge) O programa levou 2.27 segundos para completar
+2024-07-24 21:28:56,758 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 21:29:19,276 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 21:29:19,276 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 21:29:19,836 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 21:29:19,836 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 21:29:20,476 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 21:42:54,530 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 21:42:54,580 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 21:42:54,582 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 21:42:54,583 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 21:42:54,583 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 21:42:55,153 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 21:42:55,155 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 21:42:56,798 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 21:42:56,798 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 21:42:56,799 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 21:42:56,799 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 21:42:56,800 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 21:42:56,800 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 21:42:56,800 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 21:42:56,802 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 21:42:56,805 - app_module - INFO - (bridge) O programa levou 2.27 segundos para completar
+2024-07-24 21:54:05,532 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 21:54:27,827 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 21:54:27,829 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 21:54:28,393 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 21:54:28,393 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 21:54:29,034 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 22:12:56,973 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 22:12:57,021 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 22:12:57,024 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 22:12:57,025 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 22:12:57,025 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 22:12:57,586 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 22:12:57,588 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 22:12:59,237 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 22:12:59,237 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 22:12:59,238 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 22:12:59,239 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 22:12:59,239 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 22:12:59,239 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 22:12:59,240 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 22:12:59,241 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 22:12:59,244 - app_module - INFO - (bridge) O programa levou 2.27 segundos para completar
+2024-07-24 22:19:14,117 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 22:19:35,125 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 22:19:35,127 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 22:19:35,689 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 22:19:35,689 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 22:19:36,332 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 22:42:59,404 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 22:42:59,457 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 22:42:59,459 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 22:42:59,460 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 22:42:59,460 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 22:43:00,043 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 22:43:00,044 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 22:43:01,682 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 22:43:01,682 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 22:43:01,684 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 22:43:01,684 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 22:43:01,684 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 22:43:01,685 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 22:43:01,685 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 22:43:01,686 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 22:43:01,688 - app_module - INFO - (bridge) O programa levou 2.28 segundos para completar
+2024-07-24 22:44:21,377 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 22:44:41,889 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 22:44:41,892 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 22:44:42,453 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 22:44:42,453 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 22:44:43,080 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 23:09:28,328 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 23:09:47,763 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 23:09:47,763 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 23:09:48,333 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 23:09:48,333 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 23:09:48,983 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 23:13:02,116 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 23:13:02,166 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 23:13:02,166 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 23:13:02,176 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 23:13:02,176 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 23:13:02,726 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 23:13:02,726 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 23:13:04,386 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 23:13:04,386 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 23:13:04,386 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 23:13:04,386 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 23:13:04,386 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 23:13:04,386 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 23:13:04,386 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 23:13:04,386 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 23:13:04,396 - app_module - INFO - (bridge) O programa levou 2.27 segundos para completar
+2024-07-24 23:34:34,174 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-24 23:34:55,048 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-24 23:34:55,051 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-24 23:34:55,617 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-24 23:34:55,617 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-24 23:34:56,265 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-24 23:43:04,640 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-24 23:43:04,696 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-24 23:43:04,698 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-24 23:43:04,700 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 23:43:04,700 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-24 23:43:05,277 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-24 23:43:05,279 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-24 23:43:06,962 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-24 23:43:06,962 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-24 23:43:06,963 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-24 23:43:06,963 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-24 23:43:06,964 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-24 23:43:06,964 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-24 23:43:06,964 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-24 23:43:06,966 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-24 23:43:06,968 - app_module - INFO - (bridge) O programa levou 2.33 segundos para completar
+2024-07-24 23:59:41,308 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 00:00:01,530 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 00:00:01,538 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 00:00:02,109 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 00:00:02,109 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 00:00:02,747 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 00:13:07,141 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 00:13:07,192 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 00:13:07,194 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 00:13:07,195 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 00:13:07,195 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 00:13:07,769 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 00:13:07,770 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 00:13:09,407 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 00:13:09,407 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-25 00:13:09,408 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 00:13:09,408 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 00:13:09,408 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-25 00:13:09,409 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 00:13:09,409 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 00:13:09,410 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 00:13:09,414 - app_module - INFO - (bridge) O programa levou 2.27 segundos para completar
+2024-07-25 00:24:47,794 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 00:25:10,788 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 00:25:10,791 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 00:25:11,359 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 00:25:11,359 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 00:25:12,008 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 00:43:09,583 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 00:43:09,634 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 00:43:09,635 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 00:43:09,636 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 00:43:09,636 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 00:43:10,201 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 00:43:10,203 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 00:43:11,871 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 00:43:11,871 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-25 00:43:11,873 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 00:43:11,873 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 00:43:11,873 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-25 00:43:11,874 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 00:43:11,874 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 00:43:11,875 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 00:43:11,877 - app_module - INFO - (bridge) O programa levou 2.29 segundos para completar
+2024-07-25 00:49:57,116 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 00:50:20,034 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 00:50:20,034 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 00:50:20,584 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 00:50:20,584 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 00:50:21,224 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 01:13:12,598 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 01:13:12,652 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 01:13:12,654 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 01:13:12,656 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 01:13:12,656 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 01:13:13,258 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 01:13:13,260 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 01:13:14,901 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 01:13:14,901 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-25 01:13:14,902 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 01:13:14,902 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 01:13:14,902 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-25 01:13:14,903 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 01:13:14,903 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 01:13:14,905 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 01:13:14,907 - app_module - INFO - (bridge) O programa levou 2.31 segundos para completar
+2024-07-25 14:34:42,036 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 14:34:42,043 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 14:34:42,098 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 14:34:42,100 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 14:34:42,101 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 14:34:42,101 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 14:34:42,936 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 14:34:42,937 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 14:34:44,681 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 14:34:44,681 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 17
+2024-07-25 14:34:44,683 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 14:34:44,683 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[{'codigo_carbrasil': 7975, 'id_bling': 16286904362, 'id_estoque': 19369301912, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 68.99, 'custo': 42.51, 'estoque': 6.0, 'descricao': 'BIELETA KA NOVO/NEW FIESTA/ECOSPORT 12/'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 9302, 'id_bling': 16286905111, 'id_estoque': 19369411525, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 117.99, 'custo': 73.41, 'estoque': 2.0, 'descricao': 'CABO FREIO GOL GTI 16V TDS 2950MM'}, 'endpoint_correto': 'ambos'}]
+2024-07-25 14:34:44,683 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[{'codigo_carbrasil': 4783, 'id_bling': 16286907769, 'id_estoque': 19369197013, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 38.32, 'preco': 69.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4847, 'id_bling': 16286907807, 'id_estoque': 19369206917, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 8.0, 'custo': 25.92, 'preco': 49.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4859, 'id_bling': 16286907873, 'id_estoque': 19369208299, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 38.32, 'preco': 69.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4860, 'id_bling': 16286907874, 'id_estoque': 19369208703, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 34.78, 'preco': 59.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4986, 'id_bling': 16286907940, 'id_estoque': 19369223211, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 4.0, 'custo': 4.73, 'preco': 10.0}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 7379, 'id_bling': 16286903571, 'id_estoque': 19369258895, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 172.8, 'preco': 269.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 7826, 'id_bling': 16286902964, 'id_estoque': 19369295514, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 65.05, 'preco': 99.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 7975, 'id_bling': 16286904362, 'id_estoque': 19369301912, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 68.99, 'custo': 42.51, 'estoque': 6.0, 'descricao': 'BIELETA KA NOVO/NEW FIESTA/ECOSPORT 12/'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 8020, 'id_bling': 16286904395, 'id_estoque': 19369305947, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 4.0, 'custo': 42.31, 'preco': 69.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 8675, 'id_bling': 16286908421, 'id_estoque': 19369366453, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 4.0, 'custo': 34.22, 'preco': 59.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 9302, 'id_bling': 16286905111, 'id_estoque': 19369411525, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 117.99, 'custo': 73.41, 'estoque': 2.0, 'descricao': 'CABO FREIO GOL GTI 16V TDS 2950MM'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 9485, 'id_bling': 16286905048, 'id_estoque': 19369435325, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 37.55, 'preco': 59.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 13806, 'id_bling': 16286903102, 'id_estoque': 19369519451, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 3.0, 'custo': 24.47, 'preco': 44.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 19970, 'id_bling': 16286902785, 'id_estoque': 19369570019, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 311.56, 'preco': 479.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 19971, 'id_bling': 16286902786, 'id_estoque': 19369570185, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 309.4, 'preco': 479.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 23613, 'id_bling': 16286903044, 'id_estoque': 19369615726, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 35.98, 'preco': 62.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 26734, 'id_bling': 16286908699, 'id_estoque': 19369652709, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 57.42, 'preco': 94.99}, 'endpoint_correto': 'estoque'}]
+2024-07-25 14:34:44,684 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 14:34:44,685 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 14:34:44,686 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 14:34:44,687 - request_preprocessing - INFO - (call_api) Executando 'update_product_main'
+2024-07-25 14:34:46,755 - request_routine_module - INFO - (update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-25 14:34:46,757 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-25 14:34:46,757 - request_preprocessing - DEBUG - self.yes_stockId: 
+[{'codigo_carbrasil': 4783, 'id_bling': 16286907769, 'id_estoque': 19369197013, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 38.32, 'preco': 69.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4847, 'id_bling': 16286907807, 'id_estoque': 19369206917, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 8.0, 'custo': 25.92, 'preco': 49.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4859, 'id_bling': 16286907873, 'id_estoque': 19369208299, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 38.32, 'preco': 69.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4860, 'id_bling': 16286907874, 'id_estoque': 19369208703, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 34.78, 'preco': 59.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 4986, 'id_bling': 16286907940, 'id_estoque': 19369223211, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 4.0, 'custo': 4.73, 'preco': 10.0}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 7379, 'id_bling': 16286903571, 'id_estoque': 19369258895, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 172.8, 'preco': 269.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 7826, 'id_bling': 16286902964, 'id_estoque': 19369295514, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 65.05, 'preco': 99.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 7975, 'id_bling': 16286904362, 'id_estoque': 19369301912, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 68.99, 'custo': 42.51, 'estoque': 6.0, 'descricao': 'BIELETA KA NOVO/NEW FIESTA/ECOSPORT 12/'}, 'endpoint_correto': 'ambos', 'resposta_api': {'response_status': 200}}, {'codigo_carbrasil': 8020, 'id_bling': 16286904395, 'id_estoque': 19369305947, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 4.0, 'custo': 42.31, 'preco': 69.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 8675, 'id_bling': 16286908421, 'id_estoque': 19369366453, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 4.0, 'custo': 34.22, 'preco': 59.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 9302, 'id_bling': 16286905111, 'id_estoque': 19369411525, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 117.99, 'custo': 73.41, 'estoque': 2.0, 'descricao': 'CABO FREIO GOL GTI 16V TDS 2950MM'}, 'endpoint_correto': 'ambos', 'resposta_api': {'response_status': 200}}, {'codigo_carbrasil': 9485, 'id_bling': 16286905048, 'id_estoque': 19369435325, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 37.55, 'preco': 59.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 13806, 'id_bling': 16286903102, 'id_estoque': 19369519451, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 3.0, 'custo': 24.47, 'preco': 44.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 19970, 'id_bling': 16286902785, 'id_estoque': 19369570019, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 311.56, 'preco': 479.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 19971, 'id_bling': 16286902786, 'id_estoque': 19369570185, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 0.0, 'custo': 309.4, 'preco': 479.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 23613, 'id_bling': 16286903044, 'id_estoque': 19369615726, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 35.98, 'preco': 62.9}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 26734, 'id_bling': 16286908699, 'id_estoque': 19369652709, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 2.0, 'custo': 57.42, 'preco': 94.99}, 'endpoint_correto': 'estoque'}]
+2024-07-25 14:34:49,021 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 14:34:49,022 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 14:34:49,324 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 14:34:59,316 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-25 14:34:59,326 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando banco de dados
+2024-07-25 14:34:59,357 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-25 14:34:59,362 - app_module - INFO - (bridge) O programa levou 17.32 segundos para completar
+2024-07-25 14:59:49,385 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 15:00:12,657 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 15:00:12,660 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 15:00:13,268 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 15:00:13,269 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 15:00:13,957 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 15:04:44,513 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 15:04:44,580 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 15:04:44,580 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 15:04:44,581 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 15:04:44,581 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 15:04:45,594 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 15:04:45,595 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 15:04:47,276 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 15:04:47,276 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-25 15:04:47,278 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 15:04:47,278 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 15:04:47,278 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-25 15:04:47,279 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 15:04:47,279 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 15:04:47,280 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 15:04:47,285 - app_module - INFO - (bridge) O programa levou 2.77 segundos para completar
+2024-07-25 15:24:59,011 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 15:25:22,224 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 15:25:22,225 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 15:25:22,815 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 15:25:22,815 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 15:25:23,495 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 15:34:47,450 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 15:34:47,508 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 15:34:47,510 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 15:34:47,511 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 15:34:47,512 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 15:34:48,371 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 15:34:48,373 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 15:34:50,041 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 15:34:50,041 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 1
+2024-07-25 15:34:50,042 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 15:34:50,043 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 15:34:50,043 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[{'codigo_carbrasil': 4820, 'id_bling': 16286907786, 'id_estoque': 19369203644, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 17.0, 'custo': 29.26, 'preco': 59.9}, 'endpoint_correto': 'estoque'}]
+2024-07-25 15:34:50,044 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 15:34:50,045 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 15:34:50,046 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 15:34:50,046 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-25 15:34:50,046 - request_preprocessing - DEBUG - self.yes_stockId: 
+[{'codigo_carbrasil': 4820, 'id_bling': 16286907786, 'id_estoque': 19369203644, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 17.0, 'custo': 29.26, 'preco': 59.9}, 'endpoint_correto': 'estoque'}]
+2024-07-25 15:34:52,169 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-25 15:34:52,173 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando banco de dados
+2024-07-25 15:34:52,181 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-25 15:34:52,186 - app_module - INFO - (bridge) O programa levou 4.74 segundos para completar
+2024-07-25 15:50:08,548 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 15:50:31,722 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 15:50:31,724 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 15:50:32,341 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 15:50:32,341 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 15:50:33,035 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 16:04:52,344 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 16:04:52,397 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 16:04:52,399 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 16:04:52,400 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 16:04:52,400 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 16:04:53,204 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 16:04:53,205 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 16:04:54,896 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 16:04:54,896 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 1
+2024-07-25 16:04:54,897 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 16:04:54,897 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 16:04:54,897 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[{'codigo_carbrasil': 10955, 'id_bling': 16286904487, 'id_estoque': 19369464165, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 3.0, 'custo': 65.0, 'preco': 109.99}, 'endpoint_correto': 'estoque'}]
+2024-07-25 16:04:54,898 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 16:04:54,898 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 16:04:54,900 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 16:04:54,900 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-25 16:04:54,900 - request_preprocessing - DEBUG - self.yes_stockId: 
+[{'codigo_carbrasil': 10955, 'id_bling': 16286904487, 'id_estoque': 19369464165, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 3.0, 'custo': 65.0, 'preco': 109.99}, 'endpoint_correto': 'estoque'}]
+2024-07-25 16:04:57,382 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-25 16:04:57,385 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando banco de dados
+2024-07-25 16:04:57,419 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-25 16:04:57,423 - app_module - INFO - (bridge) O programa levou 5.08 segundos para completar
+2024-07-25 16:15:18,089 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 16:15:42,537 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 16:15:42,539 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 16:15:43,140 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 16:15:43,140 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 16:15:43,827 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 16:34:57,565 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 16:34:57,618 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 16:34:57,620 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 16:34:57,621 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 16:34:57,621 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 16:34:58,438 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 16:34:58,439 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 16:35:00,106 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 16:35:00,106 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 1
+2024-07-25 16:35:00,107 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 16:35:00,108 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 16:35:00,108 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[{'codigo_carbrasil': 56277, 'id_bling': 16286906130, 'id_estoque': 19369729290, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 103.62, 'preco': 169.99}, 'endpoint_correto': 'estoque'}]
+2024-07-25 16:35:00,109 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 16:35:00,109 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 16:35:00,110 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 16:35:00,110 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-25 16:35:00,110 - request_preprocessing - DEBUG - self.yes_stockId: 
+[{'codigo_carbrasil': 56277, 'id_bling': 16286906130, 'id_estoque': 19369729290, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'estoque': 1.0, 'custo': 103.62, 'preco': 169.99}, 'endpoint_correto': 'estoque'}]
+2024-07-25 16:35:02,229 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-25 16:35:02,233 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando banco de dados
+2024-07-25 16:35:02,237 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-25 16:35:02,242 - app_module - INFO - (bridge) O programa levou 4.68 segundos para completar
+2024-07-25 16:40:28,923 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 16:40:51,943 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 16:40:51,946 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 16:40:52,539 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 16:40:52,539 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 16:40:53,213 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 17:05:02,394 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 17:05:02,447 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 17:05:02,449 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 17:05:02,451 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 17:05:02,451 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 17:05:03,070 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 17:05:03,072 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 17:05:04,782 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 17:05:04,782 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 6
+2024-07-25 17:05:04,784 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 17:05:04,784 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[{'codigo_carbrasil': 7788, 'id_bling': 16286902877, 'id_estoque': 19369290323, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 39.99, 'custo': 23.12, 'estoque': 4.0, 'descricao': 'PIVO ECOSPORT/FIESTA 03/12'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 12220, 'id_bling': 16286905516, 'id_estoque': 19369478542, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 124.99, 'custo': 76.87, 'estoque': 1.0, 'descricao': 'RESERV GAS CELTA06/1.0 E 1.4/8V CORSA CL'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 22501, 'id_bling': 16286908383, 'id_estoque': 19369600676, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 104.99, 'custo': 61.35, 'estoque': 1.0, 'descricao': 'PAST FREIO IX35 SONATA TUCSON 11/'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 63468, 'id_bling': 16286908433, 'id_estoque': 19369734290, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 114.99, 'custo': 70.15, 'estoque': 1.0, 'descricao': 'PAST FREIO PICANTO 12/'}, 'endpoint_correto': 'ambos'}]
+2024-07-25 17:05:04,785 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[{'codigo_carbrasil': 7788, 'id_bling': 16286902877, 'id_estoque': 19369290323, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 39.99, 'custo': 23.12, 'estoque': 4.0, 'descricao': 'PIVO ECOSPORT/FIESTA 03/12'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 8840, 'id_bling': 16286908739, 'id_estoque': 19369374152, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'custo': 14.01, 'estoque': 6.0, 'preco': 24.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 9347, 'id_bling': 16286905131, 'id_estoque': 19369417753, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'custo': 77.39, 'estoque': 1.0, 'preco': 129.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 12220, 'id_bling': 16286905516, 'id_estoque': 19369478542, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 124.99, 'custo': 76.87, 'estoque': 1.0, 'descricao': 'RESERV GAS CELTA06/1.0 E 1.4/8V CORSA CL'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 22501, 'id_bling': 16286908383, 'id_estoque': 19369600676, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 104.99, 'custo': 61.35, 'estoque': 1.0, 'descricao': 'PAST FREIO IX35 SONATA TUCSON 11/'}, 'endpoint_correto': 'ambos'}, {'codigo_carbrasil': 63468, 'id_bling': 16286908433, 'id_estoque': 19369734290, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 114.99, 'custo': 70.15, 'estoque': 1.0, 'descricao': 'PAST FREIO PICANTO 12/'}, 'endpoint_correto': 'ambos'}]
+2024-07-25 17:05:04,785 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 17:05:04,785 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 17:05:04,787 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 17:05:04,787 - request_preprocessing - INFO - (call_api) Executando 'update_product_main'
+2024-07-25 17:05:08,099 - request_routine_module - INFO - (update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-25 17:05:08,101 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-25 17:05:08,101 - request_preprocessing - DEBUG - self.yes_stockId: 
+[{'codigo_carbrasil': 7788, 'id_bling': 16286902877, 'id_estoque': 19369290323, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 39.99, 'custo': 23.12, 'estoque': 4.0, 'descricao': 'PIVO ECOSPORT/FIESTA 03/12'}, 'endpoint_correto': 'ambos', 'resposta_api': {'response_status': 200}}, {'codigo_carbrasil': 8840, 'id_bling': 16286908739, 'id_estoque': 19369374152, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'custo': 14.01, 'estoque': 6.0, 'preco': 24.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 9347, 'id_bling': 16286905131, 'id_estoque': 19369417753, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'custo': 77.39, 'estoque': 1.0, 'preco': 129.99}, 'endpoint_correto': 'estoque'}, {'codigo_carbrasil': 12220, 'id_bling': 16286905516, 'id_estoque': 19369478542, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 124.99, 'custo': 76.87, 'estoque': 1.0, 'descricao': 'RESERV GAS CELTA06/1.0 E 1.4/8V CORSA CL'}, 'endpoint_correto': 'ambos', 'resposta_api': {'response_status': 200}}, {'codigo_carbrasil': 22501, 'id_bling': 16286908383, 'id_estoque': 19369600676, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 104.99, 'custo': 61.35, 'estoque': 1.0, 'descricao': 'PAST FREIO IX35 SONATA TUCSON 11/'}, 'endpoint_correto': 'ambos', 'resposta_api': {'response_status': 200}}, {'codigo_carbrasil': 63468, 'id_bling': 16286908433, 'id_estoque': 19369734290, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'gtin': None, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'largura': None, 'altura': None, 'profundidade': None, 'internal_error_count': 0, 'ignore_code': 0, 'divergencias': {'preco': 114.99, 'custo': 70.15, 'estoque': 1.0, 'descricao': 'PAST FREIO PICANTO 12/'}, 'endpoint_correto': 'ambos', 'resposta_api': {'response_status': 200}}]
+2024-07-25 17:05:12,623 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+                     error_not_found:0
+                     unknown_errors:0
+                     os_errors: 0
+
+2024-07-25 17:05:12,627 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando banco de dados
+2024-07-25 17:05:12,636 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-25 17:05:12,642 - app_module - INFO - (bridge) O programa levou 10.25 segundos para completar
+2024-07-25 17:05:38,251 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 17:06:01,036 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 17:06:01,042 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 17:06:01,612 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 17:06:01,612 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 17:06:02,292 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 17:30:47,343 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 17:31:11,226 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 17:31:11,229 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 17:31:11,816 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 17:31:11,816 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 17:31:12,504 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-25 17:35:12,790 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-25 17:35:12,898 - sync_carbrasil_mysql - INFO - (database_get_all) Produtos obtidos com sucesso.
+2024-07-25 17:35:12,900 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.
+2024-07-25 17:35:12,901 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 17:35:12,901 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-25 17:35:13,718 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Produtos obtidos com sucesso
+2024-07-25 17:35:13,720 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-25 17:35:15,416 - sync_carbrasil_mysql - INFO - (compare_responses) Diagnóstico completo
+2024-07-25 17:35:15,416 - sync_carbrasil_mysql - INFO - Tamanho da lista 'diagnosis': 0
+2024-07-25 17:35:15,417 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-25 17:35:15,418 - request_preprocessing - DEBUG - self.api_product_instructions: 
+[]
+2024-07-25 17:35:15,418 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+[]
+2024-07-25 17:35:15,418 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-25 17:35:15,418 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-25 17:35:15,420 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-25 17:35:15,421 - app_module - INFO - (bridge) O programa levou 2.63 segundos para completar
+2024-07-25 17:55:57,556 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling..
+2024-07-25 17:56:20,764 - sync_bling_mysql - INFO - (api_calls_get) Produtos recebidos com sucesso.
+2024-07-25 17:56:20,766 - sync_bling_mysql - INFO - (update_database) Iniciando atualização do Banco de Dados.
+2024-07-25 17:56:21,334 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-25 17:56:21,335 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-25 17:56:21,974 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
