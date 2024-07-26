@@ -3,6 +3,10 @@ import pyodbc
 
 class DatabaseConnection():
     def __init__(self):
+        self.connect_mysql()
+        self.cb_connection = None
+
+    def connect_mysql(self):
         try:
             self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="sistema_integrador", pool_size=4, user="root", password="123456", database="intermediador_bling", host="CARBRASIL-HOST") 
             self.conn1 = self.conn_pool.get_connection()
@@ -26,13 +30,13 @@ class DatabaseConnection():
                             altura FLOAT, profundidade FLOAT)")
                 self.conn1.commit()
 
-
+    def connect_carbrasil(self):
         cnxn_str = ("Driver={SQL SERVER};"
                         "Server=CARBRASIL-HOST\\SQLEXPRESS;"
                         "Database=bdados1;"
-                        "UID=sa;"
-                        "PWD=Tec12345678;")
+                        "UID=sistema_integrador;"
+                        "PWD=cb010306;")
 
-        cnxn = pyodbc.connect(cnxn_str)
-        self.cb_cursor = cnxn.cursor()
+        self.cb_connection = pyodbc.connect(cnxn_str)
+        
         #cb_cursor = None
