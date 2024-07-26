@@ -2,8 +2,8 @@ import logging
 import time
 import datetime
 
-logger = logging.getLogger(__name__)
 logging.basicConfig(filename="app_logs.log", encoding="utf-8", level=logging.DEBUG , format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger = logging.getLogger("sync_carbrasil_mysql")
 
 class DatabaseSync():
     def __init__(self, txbox, conn, cursor, cb_cursor, pause_event=None, stop_event=None):
@@ -54,15 +54,13 @@ class DatabaseSync():
                 continue
 
             all_database_products.append(document)
-        self.displayer("(database_get_all) Produtos obtidos com sucesso.")
+        self.displayer(f"(database_get_all) {len(all_database_products)} produtos obtidos com sucesso.")
         return all_database_products
 
     def carbrasil_database_get(self, products)-> list[dict]:
 
-        self.displayer("(carbrasil_database_get) Se conectando ao banco de dados da Car Brasil.")
         carbrasil_responses = []
         self.displayer("(carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil")
-        logger.info("(carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil")
         for product in products:
             response = self.cb_cursor.execute(f"SELECT codprod, descricao, eatu, pvenda, custo_base FROM v_produtos1 WHERE ativa=0 AND codprod={product['codigo_carbrasil']}")
             for x in response:
@@ -75,12 +73,12 @@ class DatabaseSync():
                 }
                 carbrasil_responses.append(document)
 
-        self.displayer("(carbrasil_database_get) Produtos obtidos com sucesso")
+        self.displayer(f"(carbrasil_database_get) {len(carbrasil_responses)} produtos obtidos com sucesso")
         return carbrasil_responses
 
     def compare_responses(self, carbrasil_response: list[dict], database_response: list[dict]) -> list[dict]:
-        self.displayer("(compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico")
         
+        self.displayer("(compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico")
         diagnosis = []
         for dict_mysql in database_response:
             for dict_carbrasil in carbrasil_response:
@@ -143,23 +141,31 @@ class DatabaseSync():
                     document["endpoint_correto"] = "ambos"
                     diagnosis.append(document)
                     break
-        self.displayer("(compare_responses) Diagnóstico completo")
+        self.displayer(f"(compare_responses) Foram encontrados divergências em {len(diagnosis)} produtos.")
         return diagnosis
 
     def update_mysql_db(self, api_return):
-        self.displayer("(update_mysql_db) Atualizando banco de dados")
+        self.displayer(f"(update_mysql_db) Atualizando {len(api_return)} registros do banco de dados.")
+        logger.info(f"(update_mysql_db) Atualizando {len(api_return)} registros do banco de dados.")
         for product in api_return:
-            prod_keys = [x for x in product["divergencias"].keys()]
-            if "custo" in prod_keys:
-                self.cursor.execute("UPDATE db_sistema_intermediador SET custo = %s WHERE codigo_carbrasil = %s", (product['divergencias']['custo'], product['codigo_carbrasil']))
-            if "estoque" in prod_keys:
-                self.cursor.execute("UPDATE db_sistema_intermediador SET estoque = %s WHERE codigo_carbrasil = %s", (product['divergencias']['estoque'], product['codigo_carbrasil']))
-            if "preco" in prod_keys:
-                self.cursor.execute("UPDATE db_sistema_intermediador SET preco = %s WHERE codigo_carbrasil = %s", (product['divergencias']['preco'], product['codigo_carbrasil']))
-            if "descricao" in prod_keys:
-                self.cursor.execute("UPDATE db_sistema_intermediador SET descricao = %s WHERE codigo_carbrasil = %s", (product['divergencias']['descricao'], product['codigo_carbrasil']))
+            try:
+                prod_keys = [x for x in product["divergencias"].keys()]
+                if "custo" in prod_keys:
+                    self.cursor.execute("UPDATE db_sistema_intermediador SET custo = %s WHERE codigo_carbrasil = %s", (product['divergencias']['custo'], product['codigo_carbrasil']))
+                if "estoque" in prod_keys:
+                    self.cursor.execute("UPDATE db_sistema_intermediador SET estoque = %s WHERE codigo_carbrasil = %s", (product['divergencias']['estoque'], product['codigo_carbrasil']))
+                if "preco" in prod_keys:
+                    self.cursor.execute("UPDATE db_sistema_intermediador SET preco = %s WHERE codigo_carbrasil = %s", (product['divergencias']['preco'], product['codigo_carbrasil']))
+                if "descricao" in prod_keys:
+                    self.cursor.execute("UPDATE db_sistema_intermediador SET descricao = %s WHERE codigo_carbrasil = %s", (product['divergencias']['descricao'], product['codigo_carbrasil']))
+            except Exception as err:
+                logger.critical(f"Produto no qual o erro foi lançado:\n {product}")
+                logger.exception(err)
+                raise err
+
         self.conn.commit()
         self.displayer("(update_mysql_db) Atualização concluída")
+        logger.info("(update_mysql_db) Atualização concluída")
 
     def reset_internal_error_count(self,conn, cursor):
         start_time = datetime.datetime.now()
@@ -176,23 +182,26 @@ class DatabaseSync():
                 crs.execute("UPDATE db_sistema_intermediador SET internal_error_count = 0 WHERE internal_error_count > 0")
                 cnn.commit()
 
-
             time.sleep(15)
 
     def main(self):
+        #Checking for exits or pauses
         self._pause_trigger.wait()
         if self._stop_trigger.is_set():
             return
+        
         db_products = self.database_get_all()
+        
         self._pause_trigger.wait()
         if self._stop_trigger.is_set():
             return
+        
         carbrasil_products = self.carbrasil_database_get(db_products)
+        
         self._pause_trigger.wait()
         if self._stop_trigger.is_set():
             return
-        #carbrasil_products = db_products.copy()
+        
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products)
-        logger.info(f"Tamanho da lista 'diagnosis': {len(diagnosis)}")
         return diagnosis
     

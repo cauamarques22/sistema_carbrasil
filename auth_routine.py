@@ -7,7 +7,10 @@ import string
 import os
 import json
 import datetime
+import logging
 
+logging.basicConfig(level=logging.DEBUG, filemode="w", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger = logging.getLogger("auth_routine")
 
 class AuthRoutine():
 
@@ -35,7 +38,9 @@ class AuthRoutine():
         self._stop_trigger = stop_event
 
     @classmethod
-    def first_auth(cls):
+    def first_auth(cls, displayer):
+        displayer("(first_auth) Iniciando primeira autenticação")
+        logger.info("(first_auth) Iniciando primeira autenticação")
         payload = {
             "client_id": cls.CLIENT_ID,
             "state": cls.state,
@@ -48,22 +53,26 @@ class AuthRoutine():
         r2 = requests.get("https://cauamarques.pythonanywhere.com/")
 
         os.system("cls")
-        print("Aguardando a Autorização do Usuário.")
+        displayer("(first_auth) Aguardando autorização do usuário.")
         while len(r2.text) == 0:
             time.sleep(8)
             r2 = requests.get("https://cauamarques.pythonanywhere.com/")
         else:
             os.system("cls")
-            print("Código de acesso Obtido.")
-            print(r2.text)
+            displayer("(first_auth) Código de acesso obtido")
+            logger.info("(first_auth) Código de acesso obtido")
             requests.get("https://cauamarques.pythonanywhere.com/clear")
         
         json_auth_code = json.loads(r2.text)
-        print("(first_auth) Autenticação de primeiro estágio realizada.")
+        displayer("(first_auth) Autenticação finalizada")
+        logger.info("(first_auth) Autenticação finalizada")
         cls.auth_code = json_auth_code["code"]
 
     @classmethod
-    def second_auth(cls):
+    def second_auth(cls, displayer):
+        displayer("(second_auth) Iniciando segunda autenticação")
+        logger.info("(second_auth) Iniciando segunda autenticação")
+
         cn_str = f"{cls.HOST}oauth/token"
         headers = {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -79,15 +88,17 @@ class AuthRoutine():
         r = requests.post(cn_str, headers=headers, data=payload)
         parsed = json.loads(r.text)
         if "error" in parsed.keys():
-            raise RuntimeError("API RETORNOU COM ERRO (second_auth)")
+            logger.critical(f"(second_auth) A api retornou com o seguinte erro: \n{parsed}")
+            raise RuntimeError("(second_auth) API RETORNOU COM ERRO")
         
-        print("(second_auth) Autenticação de segundo estágio realizada.")
+        displayer("(second_auth) Autenticação finalizada.")
+        logger.info("(second_auth) Autenticação finalizada.")
         cls.session_tokens = (parsed["access_token"], parsed["refresh_token"])
-        print(cls.session_tokens)
         cls.token_time = datetime.datetime.now()
 
     @classmethod
     def refresh(cls):
+        logger.info("(refresh) Obtendo novo token de acesso.")
         cn_str = f"{cls.HOST}oauth/token"
         headers = {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -103,7 +114,8 @@ class AuthRoutine():
         r = requests.post(cn_str, headers=headers,data=payload)
         parsed = json.loads(r.text)
         cls.session_tokens = (parsed["access_token"], parsed["refresh_token"])
-        print("(refresh) Tokens Refreshed: ", cls.session_tokens)
+        cls.token_time = datetime.datetime.now()
+        logger.info("(refresh) Tokens obtidos com sucesso.")
 
     @property
     def flags(self):
@@ -114,7 +126,7 @@ class AuthRoutine():
         self._pause_trigger, self._stop_trigger = events
 
     def auth_rout(self):
-        print("(auth_routine) Rotina de autenticação iniciada.")
+        logger.info("(auth_rout) Rotina de autenticação iniciada")
         while not self._stop_trigger.is_set():
             # #Pause when needed
             self._pause_trigger.wait()

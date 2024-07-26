@@ -31,7 +31,7 @@ class BlingDatabaseSync():
         pages = 1
         products_per_page = []
         all_products = []
-        self.displayer("(api_calls_get) Solicitando produtos ao Bling..")
+        self.displayer("(api_calls_get) Solicitando produtos ao Bling.")
         while not self._stop_trigger.is_set():
             self._pause_trigger.wait()
             time.sleep(1)
@@ -57,12 +57,12 @@ class BlingDatabaseSync():
         for x in products_per_page:
             for prod in x:
                 all_products.append(prod)
-        self.displayer("(api_calls_get) Produtos recebidos com sucesso.")
         
         self.bling_products = all_products
+        self.displayer(f"(api_calls_get) {len(self.bling_products)} Produtos recebidos com sucesso.")
 
     def update_database(self):
-        self.displayer("(update_database) Iniciando atualização do Banco de Dados.")
+        self.displayer(f"(update_database) Iniciando atualização em {len(self.bling_products)} produtos do Banco de Dados.")
         for item in self.bling_products:
             #Verifying triggers
             self._pause_trigger.wait()

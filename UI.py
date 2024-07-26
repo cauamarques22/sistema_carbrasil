@@ -94,7 +94,7 @@ class Display:
         self.start_btn = ctk.CTkButton(self.menu_frame, text="Iniciar Sincronização",font=std_font1 ,command=self.start)
         self.start_btn.place(relx=std_x, relwidth=std_width, rely=0.02, relheight=0.05)
 
-        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=std_font1, command=self.pause_thread, state="disabled")
+        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=std_font1, command=self.pausar_thread, state="disabled")
         self.pause_btn.place(relx=std_x, relwidth=std_width, rely=0.09, relheight=0.05)
 
         self.continue_btn = ctk.CTkButton(self.menu_frame, text="Continuar Sincronização", font=std_font1,command=self.continuar_thread, state="disabled")

@@ -16,7 +16,6 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.basicConfig(level=logging.DEBUG, filemode="w", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("app_module")
 
-
 class ModuleManager(UI.UIFunctions):
 
     def __init__(self):
@@ -37,7 +36,7 @@ class ModuleManager(UI.UIFunctions):
         self.iohandler = request_preprocessing.IOHandler(txbox=self.modulo2_textbox, db_sync_instance=self.db_events, pause_event=self.pause_event,stop_event=self.stop_event)
 
         #Authorization Routine Instance
-        self.auth_obj = auth_routine.AuthRoutine(pause_event=self.pause_event, stop_event=self.stop_event)
+        self.auth_obj = auth_routine.AuthRoutine(pause_event=self.pause_event, stop_event=self.stop_event, principal_txbox=self.modulo1_textbox)
 
         #Bling Routine Instance
         b_routine_conn = self.db_connection.conn_pool.get_connection()
@@ -49,13 +48,15 @@ class ModuleManager(UI.UIFunctions):
 
     def displayer(self, msg):
         print(msg)
-        self.modulo1_textbox.insert('end', f"{msg}\n")
-    
+        time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        self.modulo1_textbox.insert('end', f"{time} - {msg}\n")
+
     def start(self):
-        
+        self.displayer("(start) Inicializando as threads")
+        logger.info("(start) Inicializando as threads")
         def first_start():
-            self.auth_obj.first_auth()
-            self.auth_obj.second_auth()
+            self.auth_obj.first_auth(self.displayer)
+            self.auth_obj.second_auth(self.displayer)
             self.pause_event.set()
 
         def second_start():
@@ -64,17 +65,25 @@ class ModuleManager(UI.UIFunctions):
             #Token refreshing Routine
             T1 = threading.Thread(target=self.auth_obj.auth_rout)
             T1.start()
+            self.displayer("(start) Iniciando módulo de autenticação")
+            logger.info("(start) Iniciando módulo de autenticação")
             #Bling & Database Synchronization Routine
             T2 = threading.Thread(target=self.b_routine.bling_routine)
             T2.start()
+            self.displayer("(start) Iniciando módulo 3")
+            logger.info("(start) Iniciando módulo 3")
             #Resetting Internal Error Count Column
             T3_connection = self.db_connection.conn_pool.get_connection()
             T3_cursor = T3_connection.cursor()
             T3 = threading.Thread(target=self.db_events.reset_internal_error_count, args=(T3_connection, T3_cursor))
             T3.start()
+            self.displayer("(start) Iniciando módulo 2")
+            logger.info("(start) Iniciando módulo 2")
             #Initizaling request_and_mysql_loop
             T4 = threading.Thread(target=self.Bridge)
             T4.start()
+            self.displayer("(start) Iniciando módulo 1")
+            logger.info("(start) Iniciando módulo 1")
 
         t1 = threading.Thread(target=first_start)
         t1.start()
@@ -92,8 +101,10 @@ class ModuleManager(UI.UIFunctions):
         self.modulo3_label.configure(text_color="green")
         self.modulo4_label.configure(text_color="green")
 
-    def pause_thread(self):
-        #Call the pause method 
+    def pausar_thread(self):
+        #Call the pause method
+        self.displayer("(pausar_thread) Pausando a execução do Sistema.")
+        logger.info("(pausar_thread) Pausando a execução do Sistema")
         self.pause_event.clear()
 
         #Display Effects
@@ -105,6 +116,8 @@ class ModuleManager(UI.UIFunctions):
 
     def continuar_thread(self):
         #Call the resume method
+        self.displayer("(continuar_thread) Continuando a execução do Sistema")
+        logger.info("(continuar_thread) Continuando a execução do Sistema")
         self.pause_event.set()
 
         #Display Effects
@@ -116,9 +129,14 @@ class ModuleManager(UI.UIFunctions):
 
     def parar_thread(self):
         #Call the resume method
+        self.displayer("(parar_thread) Despausando operações pausadas.")
+        logger.info("(parar_thread) Despausando operações pausadas.")
         self.pause_event.set()
         #Then call the stop method
+        self.displayer("(parar_thread) Parando a execução do Sistema.")
+        logger.info("(parar_thread) Parando a execução do Sistema.")
         self.stop_event.set()
+        
 
         #Display Effects
         self.stop_btn.configure(state="disabled")
@@ -133,29 +151,38 @@ class ModuleManager(UI.UIFunctions):
     def Bridge(self):
         start_time = datetime.datetime.now()
         iteration_counter = 0
-        self.displayer("(bridge) Iniciando sistema.")
+        self.displayer("(bridge) Iniciando o ciclo de sincronização.")
+        logger.info("(bridge) Iniciando o ciclo de sincronização.")
+        #Enquanto não for dado o sinal stop_event, ele continuará a iterar
         while not self.stop_event.is_set():
+            #Verificando se há pausas a serem feitas
             self.pause_event.wait()
+
             now = datetime.datetime.now()
             elapsed_time = now - start_time
             elapsed_minutes = elapsed_time.seconds / 60
-            self.info1_count.configure(text=f"{self.iohandler.produtos_atualizados}")
+
+            #Se o tempo decorrido for maior ou igual a 30 minutos, executa o trecho de código abaixo. 
             if elapsed_minutes >= 30 or iteration_counter == 0:
                 start_time = datetime.datetime.now()
                 iteration_counter+=1
+
+                #Inicio do ciclo de requests
                 begin = time.time()
-                diagnosis = self.db_events.main()
                 if self.stop_event.is_set():
                     break
+                #Funções principais do ciclo de requests
+                diagnosis = self.db_events.main()
                 self.iohandler.verify_input(diagnosis)
                 self.iohandler.main()
             
-                #Atualizando informações da label dos produtos atualizados
                 end = time.time()
-                runtime = end - begin
+                self.displayer(f"(bridge) O programa levou {end-begin:.2f} segundos para completar")
                 self.displayer("(bridge) 30 minutos para a próxima sincronização.")
-                self.displayer(f"(bridge) O programa levou {runtime:.2f} segundos para completar")
-                logger.info(f"(bridge) O programa levou {runtime:.2f} segundos para completar")
+                logger.info(f"(bridge) O programa levou {end-begin:.2f} segundos para completar")
+           
+            #Atualizando informações da label de quantidade de produtos atualizados
+            self.info1_count.configure(text=f"{self.iohandler.produtos_atualizados}")
             time.sleep(15)
 
 app = ModuleManager()
