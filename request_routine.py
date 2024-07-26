@@ -25,7 +25,8 @@ class ApiFunctions():
 
     def displayer(self, msg):
         print(msg)
-        self.txbox.insert('end', f"{msg}\n")
+        time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        self.txbox.insert('end', f"{time} - {msg}\n")
 
     async def error_handler(self, semaphore,function, **kwargs):
         async with semaphore:

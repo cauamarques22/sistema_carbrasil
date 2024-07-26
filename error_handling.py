@@ -9,6 +9,7 @@ logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", 
 logger = logging.getLogger("error_handling")
 
 class ErrorHandler(ApiFunctions):
+    """Essa classe tem o propósito de fazer o tratamento adequado dos erros das outras classes e métodos."""
     
     def __init__(self, txbox, db_sync_instance):
         self.db_events = db_sync_instance
@@ -22,6 +23,14 @@ class ErrorHandler(ApiFunctions):
         self.txbox.insert('end', f"{msg}\n")
 
     async def error_return_api(self,error_list):
+        """
+        Este método trata dos produtos que retornaram com erro durante as chamadas de API.
+        Basicamente, ele tentará fazer uma nova request. Se o produto não estiver dentro da quantidade
+        de erros permitida, ele irá criar um arquivo informando que há muitos erros.
+
+        Se a request retornar com erro, o método chamará a si mesmo para fazer mais uma tentativa. 
+        Caso retorne sem erros, ele irá atualizar o Banco de dados.
+        """
         products_api_estoque = []
         products_api_produtos = []
         self.displayer("ErrorHandler - (error_return_api) produtos retornaram das requests com erro.")

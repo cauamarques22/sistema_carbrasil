@@ -91,16 +91,16 @@ class Display:
         std_width = 0.9
         std_font1 = ("Montserrat", 12, "bold")
         std_font2 = ("Montserrat", 14, "bold")
-        self.start_btn = ctk.CTkButton(self.menu_frame, text="Iniciar Sincronização",font=std_font1 ,command=self.start)
+        self.start_btn = ctk.CTkButton(self.menu_frame, text="Iniciar Sincronização",font=std_font1)
         self.start_btn.place(relx=std_x, relwidth=std_width, rely=0.02, relheight=0.05)
 
-        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=std_font1, command=self.pausar_thread, state="disabled")
+        self.pause_btn = ctk.CTkButton(self.menu_frame, text="Pausar Sincronização",font=std_font1, state="disabled")
         self.pause_btn.place(relx=std_x, relwidth=std_width, rely=0.09, relheight=0.05)
 
-        self.continue_btn = ctk.CTkButton(self.menu_frame, text="Continuar Sincronização", font=std_font1,command=self.continuar_thread, state="disabled")
+        self.continue_btn = ctk.CTkButton(self.menu_frame, text="Continuar Sincronização", font=std_font1,state="disabled")
         self.continue_btn.place(relx=std_x, relwidth=std_width, rely=0.16, relheight=0.05)
 
-        self.stop_btn = ctk.CTkButton(self.menu_frame, text="Parar Sincronização",font=std_font1, command=self.parar_thread, state="disabled")
+        self.stop_btn = ctk.CTkButton(self.menu_frame, text="Parar Sincronização",font=std_font1, state="disabled")
         self.stop_btn.place(relx=std_x, relwidth=std_width, rely=0.23, relheight=0.05)
 
         self.f1_btn = ctk.CTkButton(self.menu_frame, text="Painel Principal",font=std_font2, command=lambda: self.switch_frame(self.app_frame1))

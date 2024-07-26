@@ -11,12 +11,12 @@ logger = logging.getLogger("request_preprocessing")
 
 class IOHandler(ErrorHandler):
 
-    def __init__(self, txbox, db_sync_instance ,pause_event, stop_event):
-        super().__init__(txbox, db_sync_instance)
+    def __init__(self, UI, db_sync_instance ,pause_event, stop_event):
+        super().__init__(UI.error_textbox, db_sync_instance)
         self.db_events = db_sync_instance
         self._pause_trigger = pause_event
         self._stop_trigger = stop_event
-        self.txbox = txbox
+        self.txbox = UI.modulo2_textbox
         
         self.produtos_atualizados = 0
         self.api_product_instructions = []
@@ -28,7 +28,7 @@ class IOHandler(ErrorHandler):
     def displayer(self, msg):
         print(msg)
         time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        self.modulo1_textbox.insert('end', f"{time} - {msg}\n")
+        self.txbox.insert('end', f"{time} - {msg}\n")
 
     def verify_input(self, diagnosis:list[dict]):
 

@@ -39,6 +39,13 @@ class AuthRoutine():
 
     @classmethod
     def first_auth(cls, displayer):
+        """
+        Método responsável por fazer a primeira autenticação no Bling. Enviando uma request para o endpoint
+        de autenticação, e depois enviando uma request para a API do sistema (cauamarques.pythonanywhere.com).
+        
+        O método fará um loop de requests a cada 8 segundos para a API do sistema com a intenção de obter
+        o código de autorização. O Bling enviará o código para a API, e da API pegamos o código.
+        """
         displayer("(first_auth) Iniciando primeira autenticação")
         logger.info("(first_auth) Iniciando primeira autenticação")
         payload = {
@@ -70,6 +77,11 @@ class AuthRoutine():
 
     @classmethod
     def second_auth(cls, displayer):
+        """
+        Método responsável por fazer a segunda autenticação do sistema na API do Bling, com base
+        no código de autorização fornecido pela primeira função. Também registra a hora que o Token
+        de acesso foi obtido para que outras funções utilizem.
+        """
         displayer("(second_auth) Iniciando segunda autenticação")
         logger.info("(second_auth) Iniciando segunda autenticação")
 
@@ -98,6 +110,8 @@ class AuthRoutine():
 
     @classmethod
     def refresh(cls):
+        """Método responsável para obter um novo Token de acesso"""
+
         logger.info("(refresh) Obtendo novo token de acesso.")
         cn_str = f"{cls.HOST}oauth/token"
         headers = {
@@ -117,15 +131,11 @@ class AuthRoutine():
         cls.token_time = datetime.datetime.now()
         logger.info("(refresh) Tokens obtidos com sucesso.")
 
-    @property
-    def flags(self):
-        return (self._pause_trigger, self._stop_trigger)
-    
-    @flags.setter
-    def flags(self, events):
-        self._pause_trigger, self._stop_trigger = events
-
     def auth_rout(self):
+        """
+        Método responsável para fazer um loop de autenticação. A cada 5 horas e meia irá
+        utilizar o método refresh para obter um novo Token de acesso.
+        """
         logger.info("(auth_rout) Rotina de autenticação iniciada")
         while not self._stop_trigger.is_set():
             # #Pause when needed
