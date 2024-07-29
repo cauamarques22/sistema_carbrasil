@@ -65,13 +65,15 @@ class DatabaseSync():
                 "codigo_carbrasil": product[0],
                 "id_bling": product[1],
                 "id_estoque": product[2],
+                "bling_tipo": product[7],
+                "bling_formato": product[8],
+                "bling_situacao": product[9],
+                "internal_error_count": product[17],
+                "ignore_code": product[18],
                 "descricao": product[3],
                 "preco": product[4],
                 "custo": product[5],
                 "estoque" :product[6],
-                "bling_tipo": product[7],
-                "bling_formato": product[8],
-                "bling_situacao": product[9],
                 "gtin": product[10],
                 "peso_liquido": product[11],
                 "peso_bruto": product[12],
@@ -79,9 +81,9 @@ class DatabaseSync():
                 "largura": product[14],
                 "altura": product[15],
                 "profundidade": product[16],
-                "internal_error_count": product[17],
-                "ignore_code": product[18]
+
             }
+            #Implementação ignore codes.
             if document["ignore_code"] == 1:
                 continue
             if document["internal_error_count"] > 0:
@@ -96,14 +98,20 @@ class DatabaseSync():
         carbrasil_responses = []
         self.displayer("(carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil")
         for product in products:
-            response = self._cb_cursor.execute(f"SELECT codprod, descricao, eatu, pvenda, custo_base FROM v_produtos1 WHERE ativa=0 AND codprod={product['codigo_carbrasil']}")
+            #dimensao1 = altura; dimensao2 = largura; dimensao3 = profundidade;
+            response = self._cb_cursor.execute(f"SELECT codprod, descricao, eatu, pvenda, custo_base, peso, dimensao1, dimensao2, dimensao3, gtin_un FROM v_produtos1 WHERE ativa=0 AND codprod={product['codigo_carbrasil']}")
             for x in response:
                 document = {
                     "codigo_carbrasil": x[0],
                     "descricao": x[1].strip(),
                     "preco": float(x[3]),
                     "custo": float(x[4]),
-                    "estoque": float(x[2])
+                    "estoque": float(x[2]),
+                    "peso": float(x[5]),
+                    "altura": int(x[6]),
+                    "largura": int(x[7]),
+                    "profundidade": int(x[8]),
+                    "gtin": x[9] if x[9] != "SEM GTIN" else ""
                 }
                 carbrasil_responses.append(document)
 
@@ -132,6 +140,10 @@ class DatabaseSync():
                     equal_price = dict_mysql["preco"] == dict_carbrasil["preco"]
                     equal_cost = dict_mysql["custo"] == dict_carbrasil["custo"]
                     equal_stock = dict_mysql["estoque"] == dict_carbrasil["estoque"]
+                    equal_gtin = dict_mysql["gtin"] == dict_carbrasil["gtin"]
+                    equal_height = dict_mysql["altura"] == dict_carbrasil["altura"]
+                    equal_width = dict_mysql["largura"] == dict_carbrasil["largura"]
+                    equal_depth = dict_mysql["profundidade"] == dict_carbrasil["profundidade"]
 
                     if not equal_description:
                         document["divergencias"]["descricao"] = dict_carbrasil["descricao"]
@@ -141,8 +153,17 @@ class DatabaseSync():
                         document["divergencias"]["custo"] = dict_carbrasil["custo"]
                     if not equal_stock:
                         document["divergencias"]["estoque"] = dict_carbrasil["estoque"]
+                    if not equal_gtin:
+                        document["divergencias"]["gtin"] = dict_carbrasil["gtin"]
+                    if not equal_height:
+                        document["divergencias"]["altura"] = dict_carbrasil["altura"]
+                    if not equal_width:
+                        document["divergencias"]["largura"] = dict_carbrasil["largura"]
+                    if not equal_depth:
+                         document["divergencias"]["profundidade"] = dict_carbrasil["profundidade"]
 
                     doc_keys = [x for x in document["divergencias"].keys()]
+                    doc_keys_set = set(doc_keys)
                     #Se todas as condições acima foram falsas, doc_keys só terá as chaves padrão, sinalizando que
                     #não há divergência nó código em questão
                     if not doc_keys:
@@ -150,7 +171,7 @@ class DatabaseSync():
 
                     #Se tem ("estoque" ou "custo") E (não tem "preço" e "descrição") nas chaves do dicionário, faz o append e sai do loop
                     #Será redirecionado para API estoque
-                    if ("estoque" in doc_keys or "custo" in doc_keys) and ("preco" not in doc_keys and "descricao" not in doc_keys):
+                    if not {"descricao", "preco", "gtin", "altura", "largura", "profundidade"}.intersection(doc_keys_set):
                         document["divergencias"].setdefault("estoque", dict_carbrasil["estoque"])
                         document["divergencias"].setdefault("custo", dict_carbrasil["custo"]) 
                         document["divergencias"].setdefault("preco", dict_carbrasil["preco"])
@@ -160,7 +181,7 @@ class DatabaseSync():
 
                     #Se tem ("descrição" ou "preco") E (não tem "estoque" e "custo") nas chaves do dicionário, faz o append e sai do loop
                     #Será redirecionado para API produto 
-                    if ("descricao" in doc_keys or "preco" in doc_keys) and ("estoque" not in doc_keys and "custo" not in doc_keys):
+                    if not {"custo", "estoque"}.intersection(doc_keys_set):
                         document["divergencias"].setdefault("descricao", dict_carbrasil["descricao"])
                         document["divergencias"].setdefault("preco", dict_carbrasil["preco"])
                         document["endpoint_correto"] = "produto"
@@ -172,6 +193,10 @@ class DatabaseSync():
                     document["divergencias"].setdefault("preco", dict_carbrasil["preco"])
                     document["divergencias"].setdefault("estoque", dict_carbrasil["estoque"])
                     document["divergencias"].setdefault("custo", dict_carbrasil["custo"])
+                    document["divergencias"].setdefault("altura", dict_carbrasil["altura"])
+                    document["divergencias"].setdefault("largura", dict_carbrasil["largura"])
+                    document["divergencias"].setdefault("profundidade", dict_carbrasil["profundidade"])
+                    document["divergencias"].setdefault("gtin", dict_carbrasil["gtin"])
                     document["endpoint_correto"] = "ambos"
                     diagnosis.append(document)
                     break
