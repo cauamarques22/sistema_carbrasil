@@ -278,7 +278,7 @@ class ApiFunctions():
 
         return(ok_status, [])
 
-    async def update_product_slave(self, session: aiohttp.ClientSession, product: dict): #ATUALIZAR O ERROR HANDLING
+    async def update_product_slave(self, session: aiohttp.ClientSession, product: dict): 
         
         self.displayer(f"(update_product_slave) Atualizando Código: {product['codigo_carbrasil']}")
         headers = {
@@ -294,6 +294,13 @@ class ApiFunctions():
             "unidade": "UN",
             "condicao": 1,
             "tipoProducao": "T",
+            "gtin": product["gtin"],
+            "dimensoes": {
+                "largura": product["largura"],
+                "altura": product["altura"],
+                "profundidade": product["profundidade"],
+                "unidadeMedida": 1
+            }
         }
 
         try:
