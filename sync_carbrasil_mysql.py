@@ -133,6 +133,10 @@ class DatabaseSync():
                     del document["preco"]
                     del document["custo"]
                     del document["estoque"]
+                    del document["gtin"]
+                    del document["altura"]
+                    del document["largura"]
+                    del document["profundidade"]
                     document["divergencias"] = {}
 
                     #Comparação

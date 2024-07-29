@@ -1,2 +1,190 @@
-2024-07-29 14:25:57,919 - app_module - INFO - (start) Inicializando as threads
-2024-07-29 14:25:57,919 - auth_routine - INFO - (first_auth) Iniciando primeira autenticaÃ§Ã£o
+2024-07-29 14:47:07,301 - app_module - INFO - (start) Inicializando as threads
+2024-07-29 14:47:07,307 - auth_routine - INFO - (first_auth) Iniciando primeira autenticação
+2024-07-29 14:47:18,632 - auth_routine - INFO - (first_auth) Código de acesso obtido
+2024-07-29 14:47:19,031 - auth_routine - INFO - (first_auth) Autenticação finalizada
+2024-07-29 14:47:19,032 - auth_routine - INFO - (second_auth) Iniciando segunda autenticação
+2024-07-29 14:47:19,166 - auth_routine - INFO - (second_auth) Autenticação finalizada.
+2024-07-29 14:47:19,210 - auth_routine - INFO - (auth_rout) Rotina de autenticação iniciada
+2024-07-29 14:47:19,211 - app_module - INFO - (start) Iniciando módulo de autenticação
+2024-07-29 14:47:19,212 - app_module - INFO - (start) Iniciando módulo 3
+2024-07-29 14:47:19,213 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-07-29 14:47:19,219 - app_module - INFO - (start) Iniciando módulo 2
+2024-07-29 14:47:19,221 - app_module - INFO - (bridge) Iniciando o ciclo de sincronização.
+2024-07-29 14:47:19,221 - app_module - INFO - (start) Iniciando módulo 1
+2024-07-29 14:47:19,224 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-29 14:47:19,277 - sync_carbrasil_mysql - INFO - (database_get_all) 4461 produtos obtidos com sucesso.
+2024-07-29 14:47:19,279 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-29 14:47:20,194 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) 4461 produtos obtidos com sucesso
+2024-07-29 14:47:20,194 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-29 14:47:21,941 - sync_carbrasil_mysql - INFO - (compare_responses) Foram encontrados divergências em 4461 produtos.
+2024-07-29 14:47:21,946 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-29 14:47:21,948 - request_preprocessing - DEBUG - self.api_product_instructions: 
+4461
+2024-07-29 14:47:21,948 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+9
+2024-07-29 14:47:21,948 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-29 14:47:21,949 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-29 14:47:21,951 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-29 14:47:21,951 - request_preprocessing - INFO - (call_api) Executando 'update_product_main'
+2024-07-29 14:47:56,853 - sync_bling_mysql - INFO - (api_calls_get) 2000 Produtos recebidos com sucesso.
+2024-07-29 14:47:56,854 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 2000 produtos do Banco de Dados.
+2024-07-29 14:47:57,469 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-29 15:12:27,516 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-07-29 15:12:29,884 - sync_bling_mysql - INFO - (api_calls_get) 0 Produtos recebidos com sucesso.
+2024-07-29 15:12:29,885 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 0 produtos do Banco de Dados.
+2024-07-29 15:12:29,886 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-29 15:32:05,747 - request_routine_module - INFO - (update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+error_not_found:0
+unknown_errors:0
+os_errors: 0
+
+2024-07-29 15:32:05,749 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-29 15:32:05,749 - request_preprocessing - DEBUG - self.yes_stockId: 
+9
+2024-07-29 15:32:12,077 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+ok_status:9
+error_not_found:0
+unknown_errors:0
+os_errors: 0
+
+2024-07-29 15:32:12,081 - request_preprocessing - INFO - (call_api) 4470 produtos foram atualizados com sucesso.
+2024-07-29 15:32:12,083 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 4470 registros do banco de dados.
+2024-07-29 15:32:12,083 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 4470 registros do banco de dados.
+2024-07-29 15:32:13,638 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-29 15:32:13,638 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-29 15:32:13,646 - app_module - INFO - (bridge) O programa levou 2694.42 segundos para completar
+2024-07-29 15:32:28,653 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-29 15:32:28,707 - sync_carbrasil_mysql - INFO - (database_get_all) 4461 produtos obtidos com sucesso.
+2024-07-29 15:32:28,709 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-29 15:32:31,169 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) 4461 produtos obtidos com sucesso
+2024-07-29 15:32:31,170 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-29 15:32:32,912 - sync_carbrasil_mysql - INFO - (compare_responses) Foram encontrados divergências em 4461 produtos.
+2024-07-29 15:32:32,917 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-29 15:32:32,919 - request_preprocessing - DEBUG - self.api_product_instructions: 
+4461
+2024-07-29 15:32:32,919 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+3
+2024-07-29 15:32:32,921 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-29 15:32:32,921 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-29 15:32:32,923 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-29 15:32:32,925 - request_preprocessing - INFO - (call_api) Executando 'update_product_main'
+2024-07-29 15:37:29,936 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-07-29 15:37:32,664 - request_routine_module - ERROR - Produto com erro: 
+{'codigo_carbrasil': 7156, 'id_bling': 16286906440, 'id_estoque': 19369240761, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'AMORT TRAS KOMBI 78/96 PAMPA', 'preco': 189.9}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}
+2024-07-29 15:37:54,384 - sync_bling_mysql - INFO - (api_calls_get) 4462 Produtos recebidos com sucesso.
+2024-07-29 15:37:54,385 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 4462 produtos do Banco de Dados.
+2024-07-29 15:37:54,982 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-29 15:37:54,982 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-29 15:37:55,683 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-29 16:02:40,750 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-07-29 16:03:05,153 - sync_bling_mysql - INFO - (api_calls_get) 4462 Produtos recebidos com sucesso.
+2024-07-29 16:03:05,156 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 4462 produtos do Banco de Dados.
+2024-07-29 16:03:05,761 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-29 16:03:05,761 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-29 16:03:05,913 - request_routine_module - ERROR - Produto com erro: 
+{'codigo_carbrasil': 19393, 'id_bling': 16286904127, 'id_estoque': 19369563798, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'KIT EMB HB20 1.0 SACHS', 'preco': 639.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}
+2024-07-29 16:03:06,465 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-29 16:16:45,629 - request_routine_module - INFO - (update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+error_not_found:0
+unknown_errors:2
+os_errors: 0
+
+2024-07-29 16:16:45,636 - request_routine_module - ERROR - (error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'unknown_errors'
+2024-07-29 16:16:45,636 - request_routine_module - ERROR - [{'codigo_carbrasil': 7156, 'id_bling': 16286906440, 'id_estoque': 19369240761, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'AMORT TRAS KOMBI 78/96 PAMPA', 'preco': 189.9}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 19393, 'id_bling': 16286904127, 'id_estoque': 19369563798, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'KIT EMB HB20 1.0 SACHS', 'preco': 639.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}]
+2024-07-29 16:16:45,637 - request_routine_module - WARNING - Os seguintes produtos retornaram com erros:
+[{'codigo_carbrasil': 7156, 'id_bling': 16286906440, 'id_estoque': 19369240761, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'AMORT TRAS KOMBI 78/96 PAMPA', 'preco': 189.9}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 19393, 'id_bling': 16286904127, 'id_estoque': 19369563798, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'KIT EMB HB20 1.0 SACHS', 'preco': 639.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}]
+2024-07-29 16:16:45,643 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-07-29 16:16:45,643 - request_preprocessing - DEBUG - self.yes_stockId: 
+3
+2024-07-29 16:16:47,724 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+ok_status:3
+error_not_found:0
+unknown_errors:0
+os_errors: 0
+
+2024-07-29 16:16:47,726 - request_preprocessing - WARNING - (call_api) 2 produtos retornaram com erro
+2024-07-29 16:16:47,748 - request_preprocessing - INFO - (call_api) 4462 produtos foram atualizados com sucesso.
+2024-07-29 16:16:47,750 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 4462 registros do banco de dados.
+2024-07-29 16:16:47,750 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 4462 registros do banco de dados.
+2024-07-29 16:16:49,121 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-29 16:16:49,121 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-29 16:16:49,127 - app_module - INFO - (bridge) O programa levou 2660.47 segundos para completar
+2024-07-29 16:17:04,132 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-29 16:17:04,188 - sync_carbrasil_mysql - INFO - (database_get_all) 4461 produtos obtidos com sucesso.
+2024-07-29 16:17:04,189 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-29 16:17:05,310 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) 4461 produtos obtidos com sucesso
+2024-07-29 16:17:05,312 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-29 16:17:07,088 - sync_carbrasil_mysql - INFO - (compare_responses) Foram encontrados divergências em 4461 produtos.
+2024-07-29 16:17:07,095 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-29 16:17:07,097 - request_preprocessing - DEBUG - self.api_product_instructions: 
+4461
+2024-07-29 16:17:07,098 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+0
+2024-07-29 16:17:07,099 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-29 16:17:07,100 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-29 16:17:07,102 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-29 16:17:07,103 - request_preprocessing - INFO - (call_api) Executando 'update_product_main'
+2024-07-29 16:27:51,514 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-07-29 16:28:04,486 - request_routine_module - ERROR - Produto com erro: 
+{'codigo_carbrasil': 8072, 'id_bling': 16286903881, 'id_estoque': 19369312113, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'CUBO RD TRAS TEMPRA 8V/PALIO/PUNTO', 'preco': 129.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}
+2024-07-29 16:28:09,858 - sync_bling_mysql - INFO - (api_calls_get) 3000 Produtos recebidos com sucesso.
+2024-07-29 16:28:09,860 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 3000 produtos do Banco de Dados.
+2024-07-29 16:28:10,487 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-29 16:28:10,487 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-29 16:28:10,758 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-29 16:52:55,813 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-07-29 16:53:13,609 - request_routine_module - ERROR - Produto com erro: 
+{'codigo_carbrasil': 25039, 'id_bling': 16286903135, 'id_estoque': 19369632017, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000001316', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'TERMINAL DIR MONZA/ASTRA/VECTRA 94/ LD ORIG', 'preco': 71.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}
+2024-07-29 16:53:18,868 - request_routine_module - ERROR - Produto com erro: 
+{'codigo_carbrasil': 25115, 'id_bling': 16286902508, 'id_estoque': 19369632882, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000001880', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'BALANCA LOGAN/SANDERO S/PIVO LE ORIGINAL', 'preco': 179.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}
+2024-07-29 16:53:20,461 - sync_bling_mysql - INFO - (api_calls_get) 4462 Produtos recebidos com sucesso.
+2024-07-29 16:53:20,463 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 4462 produtos do Banco de Dados.
+2024-07-29 16:53:20,591 - request_routine_module - ERROR - Produto com erro: 
+{'codigo_carbrasil': 25139, 'id_bling': 16286902988, 'id_estoque': 19369633132, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000002023', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'PIVO SUP FUSION', 'preco': 70.5}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}
+2024-07-29 16:53:21,055 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-29 16:53:21,055 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-29 16:53:21,727 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.
+2024-07-29 17:01:22,521 - request_routine_module - INFO - (update_product_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+error_not_found:0
+unknown_errors:4
+os_errors: 0
+
+2024-07-29 17:01:22,523 - request_routine_module - ERROR - (error_handler) PRODUTOS DA FUNÇÃO 'update_product_main' RETORNARAM COM 'unknown_errors'
+2024-07-29 17:01:22,523 - request_routine_module - ERROR - [{'codigo_carbrasil': 8072, 'id_bling': 16286903881, 'id_estoque': 19369312113, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'CUBO RD TRAS TEMPRA 8V/PALIO/PUNTO', 'preco': 129.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 25039, 'id_bling': 16286903135, 'id_estoque': 19369632017, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000001316', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'TERMINAL DIR MONZA/ASTRA/VECTRA 94/ LD ORIG', 'preco': 71.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 25115, 'id_bling': 16286902508, 'id_estoque': 19369632882, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000001880', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'BALANCA LOGAN/SANDERO S/PIVO LE ORIGINAL', 'preco': 179.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 25139, 'id_bling': 16286902988, 'id_estoque': 19369633132, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000002023', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'PIVO SUP FUSION', 'preco': 70.5}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}]
+2024-07-29 17:01:22,525 - request_routine_module - WARNING - Os seguintes produtos retornaram com erros:
+[{'codigo_carbrasil': 8072, 'id_bling': 16286903881, 'id_estoque': 19369312113, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'CUBO RD TRAS TEMPRA 8V/PALIO/PUNTO', 'preco': 129.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 25039, 'id_bling': 16286903135, 'id_estoque': 19369632017, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000001316', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'TERMINAL DIR MONZA/ASTRA/VECTRA 94/ LD ORIG', 'preco': 71.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 25115, 'id_bling': 16286902508, 'id_estoque': 19369632882, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000001880', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'BALANCA LOGAN/SANDERO S/PIVO LE ORIGINAL', 'preco': 179.99}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}, {'codigo_carbrasil': 25139, 'id_bling': 16286902988, 'id_estoque': 19369633132, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '5000000002023', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'PIVO SUP FUSION', 'preco': 70.5}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}]
+2024-07-29 17:01:22,527 - request_preprocessing - WARNING - (call_api) 4 produtos retornaram com erro
+2024-07-29 17:01:22,528 - request_preprocessing - INFO - (call_api) 4457 produtos foram atualizados com sucesso.
+2024-07-29 17:01:22,530 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 4457 registros do banco de dados.
+2024-07-29 17:01:22,530 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 4457 registros do banco de dados.
+2024-07-29 17:01:23,971 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-29 17:01:23,971 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-07-29 17:01:23,978 - app_module - INFO - (bridge) O programa levou 2659.85 segundos para completar
+2024-07-29 17:01:38,985 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-07-29 17:01:39,040 - sync_carbrasil_mysql - INFO - (database_get_all) 4461 produtos obtidos com sucesso.
+2024-07-29 17:01:39,042 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-07-29 17:01:40,020 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) 4461 produtos obtidos com sucesso
+2024-07-29 17:01:40,022 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-07-29 17:01:41,798 - sync_carbrasil_mysql - INFO - (compare_responses) Foram encontrados divergências em 4461 produtos.
+2024-07-29 17:01:41,806 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-07-29 17:01:41,808 - request_preprocessing - DEBUG - self.api_product_instructions: 
+4461
+2024-07-29 17:01:41,808 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+3
+2024-07-29 17:01:41,810 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-07-29 17:01:41,810 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-07-29 17:01:41,812 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-07-29 17:01:41,814 - request_preprocessing - INFO - (call_api) Executando 'update_product_main'
+2024-07-29 17:18:06,772 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-07-29 17:18:11,700 - request_routine_module - ERROR - Produto com erro: 
+{'codigo_carbrasil': 8915, 'id_bling': 16286903638, 'id_estoque': 19369384296, 'bling_tipo': 'P', 'bling_formato': 'S', 'bling_situacao': 'A', 'internal_error_count': 0, 'ignore_code': 0, 'peso_liquido': None, 'peso_bruto': None, 'marca': None, 'divergencias': {'gtin': '', 'altura': 0, 'largura': 0, 'profundidade': 0, 'descricao': 'MOLA SAP VECTRA 97/00', 'preco': 19.9}, 'endpoint_correto': 'produto', 'resposta_api': {'decoded_resp': {'error': {'type': 'TOO_MANY_REQUESTS', 'message': 'Limite de requisições atingido.', 'description': 'O limite de requisições por segundo foi atingido, tente novamente mais tarde.'}}, 'response_status': 429}}
+2024-07-29 17:18:31,159 - sync_bling_mysql - INFO - (api_calls_get) 4462 Produtos recebidos com sucesso.
+2024-07-29 17:18:31,163 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 4462 produtos do Banco de Dados.
+2024-07-29 17:18:31,783 - sync_bling_mysql - ERROR - (update_database) Produtos retornaram com erros: 
+{'id': 16286908058, 'nome': 'FRISO LAT BRASILIA 2P PVC', 'codigo': '', 'preco': 0, 'tipo': 'P', 'situacao': 'A', 'formato': 'S', 'descricaoCurta': '', 'imagemURL': ''}
+2024-07-29 17:18:31,783 - sync_bling_mysql - ERROR - invalid literal for int() with base 10: ''
+2024-07-29 17:18:32,466 - sync_bling_mysql - INFO - (update_database) Atualização Concluída.

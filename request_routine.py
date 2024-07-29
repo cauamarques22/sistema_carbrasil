@@ -294,11 +294,11 @@ class ApiFunctions():
             "unidade": "UN",
             "condicao": 1,
             "tipoProducao": "T",
-            "gtin": product["gtin"],
+            "gtin": product["divergencias"]["gtin"],
             "dimensoes": {
-                "largura": product["largura"],
-                "altura": product["altura"],
-                "profundidade": product["profundidade"],
+                "largura": product["divergencias"]["largura"],
+                "altura": product["divergencias"]["altura"],
+                "profundidade": product["divergencias"]["profundidade"],
                 "unidadeMedida": 1
             }
         }
