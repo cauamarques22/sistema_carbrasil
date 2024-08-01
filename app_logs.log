@@ -1,2 +1,73 @@
-2024-07-29 14:43:56,158 - app_module - INFO - (start) Inicializando as threads
-2024-07-29 14:43:56,165 - auth_routine - INFO - (first_auth) Iniciando primeira autenticação
+2024-08-01 12:54:52,655 - app_module - INFO - (start) Inicializando as threads
+2024-08-01 12:54:52,666 - auth_routine - INFO - (first_auth) Iniciando primeira autenticação
+2024-08-01 12:55:04,034 - auth_routine - INFO - (first_auth) Código de acesso obtido
+2024-08-01 12:55:04,479 - auth_routine - INFO - (first_auth) Autenticação finalizada
+2024-08-01 12:55:04,481 - auth_routine - INFO - (second_auth) Iniciando segunda autenticação
+2024-08-01 12:55:04,598 - auth_routine - INFO - (second_auth) Autenticação finalizada.
+2024-08-01 12:55:04,600 - auth_routine - INFO - (auth_rout) Rotina de autenticação iniciada
+2024-08-01 12:55:04,600 - app_module - INFO - (start) Iniciando módulo de autenticação
+2024-08-01 12:55:04,607 - app_module - INFO - (start) Iniciando módulo 3
+2024-08-01 12:55:04,607 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-08-01 12:55:04,621 - app_module - INFO - (start) Iniciando módulo 2
+2024-08-01 12:55:04,621 - sync_carbrasil_mysql - INFO - Internal Error Connection Id: 59
+2024-08-01 12:55:04,628 - app_module - INFO - (start) Iniciando módulo 1
+2024-08-01 12:55:04,629 - app_module - INFO - (bridge) Iniciando o ciclo de sincronização.
+2024-08-01 12:55:04,649 - sync_carbrasil_mysql - INFO - (reset_internal_error_count) Atualização de internal_error_count feita com sucesso. Exceções: 0
+2024-08-01 12:55:04,802 - sync_carbrasil_mysql - INFO - DB Events Connection Id: 60
+2024-08-01 12:55:04,804 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-08-01 12:55:05,000 - sync_carbrasil_mysql - INFO - (database_get_all) 4461 produtos obtidos com sucesso.
+2024-08-01 12:55:05,002 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-08-01 12:55:05,554 - app_module - INFO - (parar_thread) Parando a execução do Sistema.
+2024-08-01 12:55:05,556 - app_module - INFO - (parar_thread) Despausando operações pausadas.
+2024-08-01 12:55:07,411 - sync_bling_mysql - INFO - (api_calls_get) 500 Produtos recebidos com sucesso.
+2024-08-01 12:55:07,412 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 500 produtos do Banco de Dados.
+2024-08-01 12:55:36,739 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) 4461 produtos obtidos com sucesso
+2024-08-01 12:55:53,436 - app_module - INFO - (start) Inicializando as threads
+2024-08-01 12:55:53,445 - auth_routine - INFO - (first_auth) Iniciando primeira autenticação
+2024-08-01 12:56:04,544 - auth_routine - INFO - (first_auth) Código de acesso obtido
+2024-08-01 12:56:04,984 - auth_routine - INFO - (first_auth) Autenticação finalizada
+2024-08-01 12:56:04,984 - auth_routine - INFO - (second_auth) Iniciando segunda autenticação
+2024-08-01 12:56:05,109 - auth_routine - INFO - (second_auth) Autenticação finalizada.
+2024-08-01 12:56:05,110 - auth_routine - INFO - (auth_rout) Rotina de autenticação iniciada
+2024-08-01 12:56:05,111 - app_module - INFO - (start) Iniciando módulo de autenticação
+2024-08-01 12:56:05,116 - app_module - INFO - (start) Iniciando módulo 3
+2024-08-01 12:56:05,116 - sync_bling_mysql - INFO - (api_calls_get) Solicitando produtos ao Bling.
+2024-08-01 12:56:05,130 - app_module - INFO - (start) Iniciando módulo 2
+2024-08-01 12:56:05,130 - sync_carbrasil_mysql - INFO - Internal Error Connection Id: 62
+2024-08-01 12:56:05,143 - app_module - INFO - (start) Iniciando módulo 1
+2024-08-01 12:56:05,143 - app_module - INFO - (bridge) Iniciando o ciclo de sincronização.
+2024-08-01 12:56:05,156 - sync_carbrasil_mysql - INFO - (reset_internal_error_count) Atualização de internal_error_count feita com sucesso. Exceções: 0
+2024-08-01 12:56:05,278 - sync_carbrasil_mysql - INFO - DB Events Connection Id: 57
+2024-08-01 12:56:05,279 - sync_carbrasil_mysql - INFO - (database_get_all) Solicitando produtos ao Banco de Dados Interno
+2024-08-01 12:56:05,470 - sync_carbrasil_mysql - INFO - (database_get_all) 4461 produtos obtidos com sucesso.
+2024-08-01 12:56:05,470 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil
+2024-08-01 12:56:32,491 - sync_bling_mysql - INFO - (api_calls_get) 4462 Produtos recebidos com sucesso.
+2024-08-01 12:56:32,492 - sync_bling_mysql - INFO - (update_database) Iniciando atualização em 4462 produtos do Banco de Dados.
+2024-08-01 12:56:38,911 - sync_carbrasil_mysql - INFO - (carbrasil_database_get) 4461 produtos obtidos com sucesso
+2024-08-01 12:56:38,914 - sync_carbrasil_mysql - INFO - (compare_responses) Comparando respostas dos dois Bancos de Dados e montando diagnóstico
+2024-08-01 12:56:41,319 - sync_carbrasil_mysql - INFO - (compare_responses) Foram encontrados divergências em 1 produtos.
+2024-08-01 12:56:41,338 - request_preprocessing - INFO - (verify_input) Separando diagnóstico
+2024-08-01 12:56:41,338 - request_preprocessing - DEBUG - self.api_product_instructions: 
+0
+2024-08-01 12:56:41,338 - request_preprocessing - DEBUG - self.api_stock_instructions: 
+1
+2024-08-01 12:56:41,338 - request_preprocessing - INFO - (verify_input) Diagnóstico separado
+2024-08-01 12:56:41,344 - asyncio - DEBUG - Using proactor: IocpProactor
+2024-08-01 12:56:41,354 - request_preprocessing - INFO - (call_api) Executando funções apropriadas
+2024-08-01 12:56:41,355 - request_preprocessing - INFO - (call_api) executando 'update_stock_main'
+2024-08-01 12:56:41,355 - request_preprocessing - DEBUG - self.yes_stockId: 
+1
+2024-08-01 12:56:43,406 - request_routine_module - INFO - (update_stock_main) PUT REQUESTS FINALIZADAS, RESULTADOS:
+ok_status:1
+error_not_found:0
+unknown_errors:0
+os_errors: 0
+
+2024-08-01 12:56:43,421 - request_preprocessing - INFO - (call_api) 1 produtos foram atualizados com sucesso.
+2024-08-01 12:56:43,429 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 1 registros do banco de dados.
+2024-08-01 12:56:43,430 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualizando 1 registros do banco de dados.
+2024-08-01 12:56:43,500 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-08-01 12:56:43,500 - sync_carbrasil_mysql - INFO - (update_mysql_db) Atualização concluída
+2024-08-01 12:56:43,520 - app_module - INFO - (bridge) O programa levou 38.36 segundos para completar
+2024-08-01 12:56:52,067 - app_module - INFO - (parar_thread) Parando a execução do Sistema.
+2024-08-01 12:56:52,067 - app_module - INFO - (parar_thread) Despausando operações pausadas.

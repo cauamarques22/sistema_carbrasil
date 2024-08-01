@@ -4,6 +4,7 @@ import itertools
 import logging
 
 from request_routine import ApiFunctions
+import connect_database
 
 logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("error_handling")
@@ -13,10 +14,8 @@ class ErrorHandler(ApiFunctions):
     
     def __init__(self, txbox, db_sync_instance):
         self.db_events = db_sync_instance
-        self.cursor = db_sync_instance.cursor
-        self.conn = db_sync_instance.conn
         self.txbox = txbox
-        super().__init__(txbox,db_sync_instance, self.conn,self.cursor)
+        super().__init__(txbox)
 
     def displayer(self, msg):
         print(msg)
@@ -33,10 +32,14 @@ class ErrorHandler(ApiFunctions):
         """
         products_api_estoque = []
         products_api_produtos = []
+        self.conn = connect_database.conn_pool.get_connection()
+
         self.displayer("ErrorHandler - (error_return_api) produtos retornaram das requests com erro.")
         logger.warn(f"(error_return_api) {len(error_list)} produtos retornaram das requests com erro.")
+        
         for product in error_list:
-            self.cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = internal_error_count + 1 WHERE codigo_carbrasil = %s", (product["codigo_carbrasil"],))
+            with self.conn.cursor() as cursor:
+                cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = internal_error_count + 1 WHERE codigo_carbrasil = %s", (product["codigo_carbrasil"],))
 
             if product["internal_error_count"] > 2:
                 self.displayer(f"ErrorHandler - (error_return_api) O seguinte produto está causando muitos erros no sistema: \n{product}\n")
@@ -57,7 +60,9 @@ class ErrorHandler(ApiFunctions):
                 products_api_estoque.append(product)
                 products_api_produtos.append(product)
         
+        #Commit error count and close connection
         self.conn.commit()
+        self.conn.close()
 
         yes_stockId = []
         no_stockId = []

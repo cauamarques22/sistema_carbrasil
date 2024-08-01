@@ -8,6 +8,7 @@ import os
 import json
 import datetime
 import logging
+from threading import Semaphore
 
 logging.basicConfig(level=logging.DEBUG, filemode="w", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("auth_routine")
@@ -32,10 +33,11 @@ class AuthRoutine():
     auth_code = ""
     token_time = None
 
-    def __init__(self, pause_event=None, stop_event=None):
+    def __init__(self, semaphore:Semaphore ,pause_event=None, stop_event=None):
         super().__init__()
         self._pause_trigger = pause_event
         self._stop_trigger = stop_event
+        self.semaphore = semaphore
 
     @classmethod
     def first_auth(cls, displayer):
@@ -145,6 +147,8 @@ class AuthRoutine():
             elapsed_time = now - AuthRoutine.token_time
             elapsed_hours = elapsed_time.seconds / 60 / 60 
             if elapsed_hours >= 5.5:
+                self.semaphore.acquire()
                 self.refresh()
+                self.semaphore.release()
 
             time.sleep(15)

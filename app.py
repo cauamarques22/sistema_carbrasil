@@ -9,7 +9,6 @@ import sync_bling_mysql
 import sync_carbrasil_mysql
 import UI
 import request_preprocessing
-import connect_database
 
 #Init Logging
 logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -23,6 +22,7 @@ class ModuleManager():
         super().__init__()
         self.pause_event = threading.Event()
         self.stop_event = threading.Event()
+        self.semaphore = threading.Semaphore(1)
         
         #UI Instance
         self.UI = UI.UIFunctions()
@@ -33,20 +33,17 @@ class ModuleManager():
         self.UI.stop_btn.configure(command=self.parar_thread)
         self.UI.continue_btn.configure(command=self.continuar_thread)
 
-        #Database Connection Instance
-        self.db_connection = connect_database.DatabaseConnection()
-
         #Database Module Instance
         self.db_events = sync_carbrasil_mysql.DatabaseSync(UI=self.UI, pause_event=self.pause_event,stop_event=self.stop_event)
         
         #Request Routine Instance
-        self.iohandler = request_preprocessing.IOHandler(UI=self.UI, db_sync_instance=self.db_events, pause_event=self.pause_event,stop_event=self.stop_event)
+        self.iohandler = request_preprocessing.IOHandler(UI=self.UI, db_sync_instance=self.db_events, pause_event=self.pause_event,stop_event=self.stop_event, semaphore=self.semaphore)
 
         #Authorization Routine Instance
-        self.auth_obj = auth_routine.AuthRoutine(pause_event=self.pause_event, stop_event=self.stop_event)
+        self.auth_obj = auth_routine.AuthRoutine(pause_event=self.pause_event, stop_event=self.stop_event, semaphore=self.semaphore)
 
         #Bling Routine Instance
-        self.b_routine = sync_bling_mysql.BlingDatabaseSync(UI=self.UI, pause_event=self.pause_event, stop_event=self.stop_event)
+        self.b_routine = sync_bling_mysql.BlingDatabaseSync(UI=self.UI, pause_event=self.pause_event, stop_event=self.stop_event, semaphore=self.semaphore)
         
         #App Mainloop
         self.UI.root.mainloop()
@@ -57,28 +54,6 @@ class ModuleManager():
         print(msg)
         time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         self.UI.modulo1_textbox.insert('end', f"{time} - {msg}\n")
-
-    def thread_db_connection(self):
-        """Método responsável por setar as conexões de bancos de dados de todas as threads"""
-        #Bling Routine Thread Connection
-        self.b_rout_conn = self.db_connection.conn_pool.get_connection()
-        self.b_routine.conn = self.b_rout_conn
-
-        #DB Events Thread Connection
-        self.db_connection.connect_carbrasil()
-        self.db_events.cb_conn = self.db_connection.cb_connection
-        self.db_events_conn = self.db_connection.conn_pool.get_connection()
-        self.db_events.general_db_conn = self.db_events_conn
-        
-        #Internal Error Thread Connection
-        self.ierror_conn = self.db_connection.conn_pool.get_connection()
-        self.db_events.internal_error_conn = self.ierror_conn
-
-    def kill_thread_db_connections(self):
-        self.b_rout_conn.close()
-        self.db_events_conn.close()
-        self.ierror_conn.close()
-        self.db_connection.cb_connection.close()
         
     def start(self) -> None:
         """
@@ -107,9 +82,6 @@ class ModuleManager():
         def second_start():
             #Wait first thread to complete
             self.pause_event.wait()
-
-            #Connecting all threads to DB
-            self.thread_db_connection()
 
             #Token refreshing Routine
             self.T1 = threading.Thread(target=self.auth_obj.auth_rout)
@@ -150,6 +122,7 @@ class ModuleManager():
         self.UI.modulo4_label.configure(text_color="yellow", text="Modulo 3 (Inicializando...)")
     
     def kill_thread(self):
+        """Função para assegurar que as Threads serão finalizadas corretamente"""
         while True:
             time.sleep(2)
             if not self.T2.is_alive() and not self.T4.is_alive():
@@ -157,8 +130,6 @@ class ModuleManager():
                 self.UI.modulo3_label.configure(text="Modulo 2", text_color="red")
                 self.UI.modulo4_label.configure(text="Modulo 3", text_color="red")
                 break
-        #Kill all DB connections
-        self.kill_thread_db_connections()
 
         #Unset events
         self.pause_event.clear()
@@ -194,12 +165,12 @@ class ModuleManager():
 
     def parar_thread(self):
         """Método responsável por despausar as Threads pausadas e enviar um sinal para que elas parem, e modifica as cores da UI."""
-        #Then call the stop method
+        #Set Stop Event
         self.displayer("(parar_thread) Parando a execução do Sistema.")
         logger.info("(parar_thread) Parando a execução do Sistema.")
         self.stop_event.set()
 
-        #Call the resume method
+        #Resume threads
         self.displayer("(parar_thread) Despausando operações pausadas.")
         logger.info("(parar_thread) Despausando operações pausadas.")
         self.pause_event.set()
@@ -251,30 +222,31 @@ class ModuleManager():
 
                 #Inicio do ciclo de requests
                 begin = time.time()
-                if self.stop_event.is_set():
-                    break
+                
                 if not self.pause_event.is_set():
                     self.UI.modulo2_label.configure(text="Modulo 2 (Pausado)", text_color="yellow")
                     self.pause_event.wait()
+                if self.stop_event.is_set():
+                    break
 
                 #Funções principais do ciclo de requests
                 self.UI.modulo3_label.configure(text_color="green", text="Modulo 2")
                 diagnosis = self.db_events.main()
 
-                if self.stop_event.is_set():
-                    break
                 if not self.pause_event.is_set():
                     self.UI.modulo2_label.configure(text="Modulo 2 (Pausado)", text_color="yellow")
                     self.pause_event.wait()
+                if self.stop_event.is_set():
+                    break
 
                 self.UI.modulo2_label.configure(text_color="green", text="Modulo 1")
                 self.iohandler.verify_input(diagnosis)
 
-                if self.stop_event.is_set():
-                    break
                 if not self.pause_event.is_set():
                     self.UI.modulo2_label.configure(text="Modulo 2 (Pausado)", text_color="yellow")
                     self.pause_event.wait()
+                if self.stop_event.is_set():
+                    break
 
                 self.iohandler.main()
                 end = time.time()

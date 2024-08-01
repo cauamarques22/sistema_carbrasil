@@ -4,33 +4,24 @@ import json
 import time
 import logging
 import datetime
+from threading import Semaphore
 
 #APP modules
 import auth_routine
+import connect_database
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="app_logs.log", encoding="utf-8", level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 class BlingDatabaseSync():
-    def __init__(self, UI, conn=None, cursor=None,pause_event=None, stop_event=None):
+    def __init__(self, UI, semaphore: Semaphore,pause_event=None, stop_event=None):
         super().__init__()
         self._pause_trigger = pause_event
         self._stop_trigger = stop_event
         self.bling_products = []
         self.txbox = UI.modulo4_textbox
-        self.iteration_count = 0
-        self._cursor = cursor
-        self._conn = conn
         self.UI = UI
-    
-    @property
-    def conn(self):
-        return self._conn
-
-    @conn.setter
-    def conn(self, conn):
-        self._conn = conn
-        self._cursor = self._conn.cursor()
+        self.semaphore = semaphore
 
     def displayer(self, msg):
         print(msg)
@@ -81,21 +72,24 @@ class BlingDatabaseSync():
                 return
             
             try:
-                self._cursor.execute(f"SELECT * FROM db_sistema_intermediador WHERE codigo_carbrasil = {int(item['codigo'])}")
-                response = self._cursor.fetchall()
-                if not response:
-                    self._cursor.execute(f"""INSERT INTO db_sistema_intermediador \
-                                (codigo_carbrasil, id_bling, descricao, preco, bling_tipo, bling_formato, bling_situacao) \
-                                VALUES ({int(item['codigo'])}, {item['id']}, '{item['nome']}', {item['preco']}, '{item['tipo']}', '{item['formato']}', '{item['situacao']}')""")
+                with self.conn.cursor() as cursor:
+                    cursor.execute(f"SELECT * FROM db_sistema_intermediador WHERE codigo_carbrasil = {int(item['codigo'])}")
+                    response = cursor.fetchall()
+                    if not response:
+                        cursor.execute(f"""INSERT INTO db_sistema_intermediador \
+                                    (codigo_carbrasil, id_bling, descricao, preco, bling_tipo, bling_formato, bling_situacao) \
+                                    VALUES ({int(item['codigo'])}, {item['id']}, '{item['nome']}', {item['preco']}, '{item['tipo']}', '{item['formato']}', '{item['situacao']}')""")
             except ValueError as err:
                 logger.error(f"(update_database) Produtos retornaram com erros: \n{item}")
                 logger.error(err)
                 continue
-        self._conn.commit()
+        self.conn.commit()
         self.displayer("(update_database) Atualização Concluída.")
 
     def bling_routine(self):
         self.start_time = datetime.datetime.now()
+        iteration_count = 0
+        
         while not self._stop_trigger.is_set():
             #Pause when needed
             if not self._pause_trigger.is_set():
@@ -105,11 +99,19 @@ class BlingDatabaseSync():
             now = datetime.datetime.now()
             elapsed_time = now - self.start_time
             elapsed_minutes = elapsed_time.seconds / 60  
-            if elapsed_minutes >= 25 or self.iteration_count == 0 and not self._stop_trigger.is_set():
+            if elapsed_minutes >= 25 or iteration_count == 0 and not self._stop_trigger.is_set():
+                self.conn = connect_database.conn_pool.get_connection()
+                self.semaphore.acquire()
                 self.start_time = datetime.datetime.now()
-                self.iteration_count+=1
+                iteration_count+=1
+                
+                #Make request and close semaphore
                 self.api_calls_get()
+                self.semaphore.release()
+
+                #Make database update and close connection
                 self.update_database()
+                self.conn.close()
 
             time.sleep(15)
 

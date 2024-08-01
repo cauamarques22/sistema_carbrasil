@@ -2,6 +2,7 @@ import asyncio
 import logging
 import itertools
 import datetime
+from threading import Semaphore
 
 #Modules
 from error_handling import ErrorHandler
@@ -11,19 +12,20 @@ logger = logging.getLogger("request_preprocessing")
 
 class IOHandler(ErrorHandler):
 
-    def __init__(self, UI, db_sync_instance ,pause_event, stop_event):
+    def __init__(self, UI, db_sync_instance ,pause_event, stop_event, semaphore: Semaphore):
         super().__init__(UI.error_textbox, db_sync_instance)
         self.db_events = db_sync_instance
         self._pause_trigger = pause_event
         self._stop_trigger = stop_event
         self.txbox = UI.modulo2_textbox
+        self.semaphore = semaphore
         
         self.produtos_atualizados = 0
         self.api_product_instructions = []
         self.api_stock_instructions = []
         self.yes_stockId = []
         self.no_stockId = []
-        self.semaphore = asyncio.Semaphore(1)
+
 
     def displayer(self, msg):
         print(msg)
@@ -47,7 +49,7 @@ class IOHandler(ErrorHandler):
         
         if self.api_stock_instructions:
             for product in self.api_stock_instructions:
-                if product["id_estoque"]:
+                if product["idEstoque"]:
                     self.yes_stockId.append(product)
                     continue
                 self.no_stockId.append(product)
@@ -68,7 +70,9 @@ class IOHandler(ErrorHandler):
             self.displayer("(call_api) Executando 'update_product_main'")
             logger.info("(call_api) Executando 'update_product_main'")
 
+            self.semaphore.acquire()
             resp1 = await asyncio.create_task(self.update_product_main(self.api_product_instructions))
+            self.semaphore.release()
             ok_status.append(resp1[0])
             error_status.append(resp1[1])
             #( [{}, ...], [{}, ...] )
@@ -78,7 +82,9 @@ class IOHandler(ErrorHandler):
             logger.info("(call_api) executando 'update_stock_main'")
             logger.debug(f"self.yes_stockId: \n{len(self.yes_stockId)}")
 
+            self.semaphore.acquire()
             resp2 = await asyncio.create_task(self.update_stock_main(self.yes_stockId))
+            self.semaphore.release()
             ok_status.append(resp2[0])
             error_status.append(resp2[1])
             #( [{}, ...], [{}, ...] )
@@ -87,7 +93,9 @@ class IOHandler(ErrorHandler):
             logger.info("(call_api) executando 'create_stock_main'")
             logger.debug(f"self.no_stockId: \n{len(self.no_stockId)}")
 
+            self.semaphore.acquire()
             resp3 = await asyncio.create_task(self.create_stock_main(self.no_stockId))
+            self.semaphore.release()
             ok_status.append(resp3[0])
             error_status.append(resp3[1])
             #( [{}, ...], [{}, ...] )
