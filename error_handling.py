@@ -3,8 +3,10 @@ import datetime
 import itertools
 import logging
 
+#App Modules
 from request_routine import ApiFunctions
 import connect_database
+import data_exchanger
 
 logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("error_handling")
@@ -12,14 +14,14 @@ logger = logging.getLogger("error_handling")
 class ErrorHandler(ApiFunctions):
     """Essa classe tem o propósito de fazer o tratamento adequado dos erros das outras classes e métodos."""
     
-    def __init__(self, txbox, db_sync_instance):
-        self.db_events = db_sync_instance
-        self.txbox = txbox
-        super().__init__(txbox)
+    def __init__(self):
+        self.db_events = data_exchanger.DB_EVENTS
+        self.UI = data_exchanger.UI
+        super().__init__()
 
     def displayer(self, msg):
         print(msg)
-        self.txbox.insert('end', f"{msg}\n")
+        self.UI.error_textbox.insert('end', f"{msg}\n")
 
     async def error_return_api(self,error_list):
         """

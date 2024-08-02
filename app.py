@@ -7,8 +7,8 @@ import datetime
 import auth_routine
 import sync_bling_mysql
 import sync_carbrasil_mysql
-import UI
 import request_preprocessing
+import data_exchanger
 
 #Init Logging
 logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -20,12 +20,12 @@ class ModuleManager():
 
     def __init__(self):
         super().__init__()
-        self.pause_event = threading.Event()
-        self.stop_event = threading.Event()
-        self.semaphore = threading.Semaphore(1)
+        self.pause_event = data_exchanger.PAUSE_EVENT
+        self.stop_event = data_exchanger.STOP_EVENT
+        self.semaphore = data_exchanger.SEMAPHORE
         
         #UI Instance
-        self.UI = UI.UIFunctions()
+        self.UI = data_exchanger.UI
         
         #Configuring Buttons
         self.UI.start_btn.configure(command=self.start)
@@ -34,16 +34,17 @@ class ModuleManager():
         self.UI.continue_btn.configure(command=self.continuar_thread)
 
         #Database Module Instance
-        self.db_events = sync_carbrasil_mysql.DatabaseSync(UI=self.UI, pause_event=self.pause_event,stop_event=self.stop_event)
+        self.db_events = sync_carbrasil_mysql.DatabaseSync()
+        data_exchanger.DB_EVENTS = self.db_events
         
         #Request Routine Instance
-        self.iohandler = request_preprocessing.IOHandler(UI=self.UI, db_sync_instance=self.db_events, pause_event=self.pause_event,stop_event=self.stop_event, semaphore=self.semaphore)
+        self.iohandler = request_preprocessing.IOHandler()
 
         #Authorization Routine Instance
-        self.auth_obj = auth_routine.AuthRoutine(pause_event=self.pause_event, stop_event=self.stop_event, semaphore=self.semaphore)
+        self.auth_obj = auth_routine.AuthRoutine()
 
         #Bling Routine Instance
-        self.b_routine = sync_bling_mysql.BlingDatabaseSync(UI=self.UI, pause_event=self.pause_event, stop_event=self.stop_event, semaphore=self.semaphore)
+        self.b_routine = sync_bling_mysql.BlingDatabaseSync()
         
         #App Mainloop
         self.UI.root.mainloop()
@@ -53,7 +54,7 @@ class ModuleManager():
 
         print(msg)
         time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        self.UI.modulo1_textbox.insert('end', f"{time} - {msg}\n")
+        self.UI.painel_principal_textbox.insert('end', f"{time} - {msg}\n")
         
     def start(self) -> None:
         """
@@ -116,7 +117,7 @@ class ModuleManager():
 
         #Display Effects
         self.UI.start_btn.configure(state="disabled")
-        self.UI.modulo1_label.configure(text_color="green")
+        self.UI.painel_principal_label.configure(text_color="green")
         self.UI.modulo2_label.configure(text_color="yellow", text="Modulo 1 (Inicializando...)")
         self.UI.modulo3_label.configure(text_color="yellow", text="Modulo 2 (Inicializando...)")
         self.UI.modulo4_label.configure(text_color="yellow", text="Modulo 3 (Inicializando...)")
@@ -184,7 +185,7 @@ class ModuleManager():
         self.UI.pause_btn.configure(state="disabled")
         self.UI.continue_btn.configure(state="disabled")
         self.UI.start_btn.configure(state="normal")
-        self.UI.modulo1_label.configure(text="Painel Principal", text_color="red")
+        self.UI.painel_principal_label.configure(text="Painel Principal", text_color="red")
         self.UI.modulo2_label.configure(text="Modulo 2 (Parando...)",text_color="yellow")
         self.UI.modulo3_label.configure(text="Modulo 3 (Parando...)",text_color="yellow")
         self.UI.modulo4_label.configure(text="Modulo 4 (Parando...)",text_color="yellow")
@@ -201,7 +202,6 @@ class ModuleManager():
         Também contabiliza quantas iterações foram feitas.
         """
         start_time = datetime.datetime.now()
-        iteration_counter = 0
         self.displayer("(bridge) Iniciando o ciclo de sincronização.")
         logger.info("(bridge) Iniciando o ciclo de sincronização.")
         #Enquanto não for dado o sinal stop_event, ele continuará a iterar
@@ -216,9 +216,9 @@ class ModuleManager():
             elapsed_minutes = elapsed_time.seconds / 60
 
             #Se o tempo decorrido for maior ou igual a 30 minutos, executa o trecho de código abaixo. 
-            if elapsed_minutes >= 30 or iteration_counter == 0:
+            if elapsed_minutes >= 30 or data_exchanger.bridge_iterations == 0:
                 start_time = datetime.datetime.now()
-                iteration_counter+=1
+                data_exchanger.bridge_iterations+=1
 
                 #Inicio do ciclo de requests
                 begin = time.time()
@@ -255,7 +255,7 @@ class ModuleManager():
                 logger.info(f"(bridge) O programa levou {end-begin:.2f} segundos para completar")
            
             #Atualizando informações da label de quantidade de produtos atualizados
-            self.UI.info1_count.configure(text=f"{self.iohandler.produtos_atualizados}")
+            self.UI.info1_count.configure(text=f"{data_exchanger.produtos_atualizados}")
             time.sleep(15)
 
 app = ModuleManager()

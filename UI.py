@@ -47,11 +47,11 @@ class Display:
 
     def widgets(self):
         #Widgets Modulo 1
-        self.modulo1_label = ctk.CTkLabel(self.app_subframe1,text="Painel Principal", font=("Montserrat", 18, "bold"), text_color="red")
-        self.modulo1_label.place(relx=0.02, rely=0.04)
+        self.painel_principal_label = ctk.CTkLabel(self.app_subframe1,text="Painel Principal", font=("Montserrat", 18, "bold"), text_color="red")
+        self.painel_principal_label.place(relx=0.02, rely=0.04)
 
-        self.modulo1_textbox = ctk.CTkTextbox(self.app_subframe1, width=0, height=0, font=("Montserrat", 14),fg_color="#282A27")
-        self.modulo1_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
+        self.painel_principal_textbox = ctk.CTkTextbox(self.app_subframe1, width=0, height=0, font=("Montserrat", 14),fg_color="#282A27")
+        self.painel_principal_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
         #Widgets Modulo 2
         self.modulo2_label = ctk.CTkLabel(self.app_subframe2,text="Modulo 1", font=("Montserrat", 18, "bold"), text_color="red")
@@ -81,10 +81,21 @@ class Display:
         self.error_textbox = ctk.CTkTextbox(self.app2_subframe, width=0, height=0, font=("Montserrat", 14), fg_color="#282A27")
         self.error_textbox.place(relx=0.02, rely=0.16,relwidth=0.96, relheight=0.78)
 
-        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados: ")
-        self.info1_label.place(relx=0.03, rely=0.02, relwidth=0.3, relheight=0.05)
+        #(x, width, height)
+        dim1 = (0.03, 0.3, 0.05)
+        dim2 = (0.29, 0.15, 0.05)
+        start_y = 0.02
+        def steps(x):
+            return start_y + (0.06 * x)
+        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados: ", anchor="w", fg_color="red")
+        self.info1_label.place(relx=dim1[0], rely=start_y, relwidth=dim1[1], relheight=dim1[2])
         self.info1_count = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="0")
-        self.info1_count.place(relx=0.32, rely=0.02, relwidth=0.15, relheight=0.05)
+        self.info1_count.place(relx=dim2[0], rely=start_y, relwidth=dim2[1], relheight=dim2[2])
+
+        self.info2_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Ciclos do módulo 1: ", anchor="w", fg_color="red")
+        self.info2_label.place(relx=dim1[0], rely=steps(1), relwidth=dim1[1], relheight=dim1[2])
+        self.info2_count = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="0")
+        self.info2_count.place(relx=dim2[0], rely=steps(1), relwidth=dim2[1], relheight=dim2[2])
 
         #Menu Buttons
         std_x = 0.05

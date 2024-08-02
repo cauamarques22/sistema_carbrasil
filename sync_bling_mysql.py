@@ -1,32 +1,30 @@
-#Import libraries
 import requests
 import json
 import time
 import logging
 import datetime
-from threading import Semaphore
 
 #APP modules
 import auth_routine
 import connect_database
+import data_exchanger
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="app_logs.log", encoding="utf-8", level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 class BlingDatabaseSync():
-    def __init__(self, UI, semaphore: Semaphore,pause_event=None, stop_event=None):
-        super().__init__()
-        self._pause_trigger = pause_event
-        self._stop_trigger = stop_event
+    def __init__(self):
+        self._pause_trigger = data_exchanger.PAUSE_EVENT
+        self._stop_trigger = data_exchanger.STOP_EVENT
+        self.UI = data_exchanger.UI
+        self.semaphore = data_exchanger.SEMAPHORE
+
         self.bling_products = []
-        self.txbox = UI.modulo4_textbox
-        self.UI = UI
-        self.semaphore = semaphore
 
     def displayer(self, msg):
         print(msg)
         time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        self.txbox.insert('end', f"{time} - {msg}\n")
+        self.UI.modulo4_textbox.insert('end', f"{time} - {msg}\n")
         logger.info(msg)
 
     def api_calls_get(self):
@@ -82,6 +80,7 @@ class BlingDatabaseSync():
             except ValueError as err:
                 logger.error(f"(update_database) Produtos retornaram com erros: \n{item}")
                 logger.error(err)
+                self.UI.error_textbox.insert("end",f"(update_database) Produtos retornaram com erros:\n{item}")
                 continue
         self.conn.commit()
         self.displayer("(update_database) Atualização Concluída.")

@@ -2,23 +2,24 @@ import logging
 import time
 import datetime
 
+#App Modules
 import connect_database
+import data_exchanger
 
 logging.basicConfig(filename="app_logs.log", encoding="utf-8", level=logging.DEBUG , format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("sync_carbrasil_mysql")
 
 class DatabaseSync():
-    def __init__(self, UI, pause_event=None, stop_event=None):
+    def __init__(self):
         super().__init__()
-        self.txbox = UI.modulo3_textbox
-        self._pause_trigger = pause_event
-        self._stop_trigger = stop_event
-        self.UI = UI
+        self._pause_trigger = data_exchanger.PAUSE_EVENT
+        self._stop_trigger = data_exchanger.STOP_EVENT
+        self.UI = data_exchanger.UI
 
     def displayer(self, msg):
         print(msg)
         time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        self.txbox.insert('end', f"{time} - {msg}\n")
+        self.UI.modulo3_textbox.insert('end', f"{time} - {msg}\n")
         logger.info(msg)
 
     def database_get_all(self) -> list[dict]:
@@ -67,17 +68,14 @@ class DatabaseSync():
             for prod in response:
                 document = {}
                 #Montando o document
-                for column in column_list:
-                    prod_idx = column_list.index(column) 
+                for idx, column in enumerate(column_list):
                     #Regras de data_types
                     if column[0] == "descricao":
-                        document[column[1]] = prod[prod_idx].strip()
+                        document[column[1]] = prod[idx].strip()
                     elif column[0] == "gtin_un":
-                        document[column[1]] = prod[prod_idx] if prod[prod_idx] != "SEM GTIN" else ""
-                    elif column[0] == "eatu":
-                        document[column[1]] = int(prod[prod_idx])
+                        document[column[1]] = prod[idx] if prod[idx] != "SEM GTIN" else ""
                     else:
-                        document[column[1]] = float(prod[prod_idx])
+                        document[column[1]] = column[2](prod[idx])
                 
                 #Append do document
                 carbrasil_responses.append(document)
@@ -170,6 +168,7 @@ class DatabaseSync():
             elapsed_time = now - start_time
             elapsed_minutes = elapsed_time.seconds / 60
             if elapsed_minutes >= 60 or run_count == 0:
+                start_time = datetime.datetime.now()
                 exception_count = 0
                 #Database Connection
                 self.internal_error_conn = connect_database.conn_pool.get_connection()
@@ -189,6 +188,7 @@ class DatabaseSync():
                         logger.warn("(reset_internal_error_count) Uma exceção foi encontrada ao tentar atualizar o internal_error_count, tentando novamente")
                         logger.exception(err)
 
+                        self.UI.error_textbox.insert("end", "(reset_internal_error_count) Uma exceção foi encontrada ao tentar atualizar o internal_error_count, tentando novamente")
                         exception_count+=1
                         if exception_count == 3:
                             logger.critical("(reset_internal_error_count) Quantidade de errors permitidos excedida.")
@@ -217,10 +217,10 @@ class DatabaseSync():
         if self._stop_trigger.is_set():
             return
         
-        #(nome_da_coluna_db, nome_da_chave_do_dicionario)
-        column_list = [("codprod", "codigo_carbrasil"), ("descricao", "descricao"), ("eatu", "estoque"), 
-                       ("pvenda", "preco"), ("custo_base", "custo"), ("peso", "peso"), ("dimensao1", "altura"),
-                       ("dimensao2", "largura"), ("dimensao3", "profundidade"), ("gtin_un", "gtin")]
+        #(nome_da_coluna_db, nome_da_chave_do_dicionario, datatype)
+        column_list = [("codprod", "codigo_carbrasil", int), ("descricao", "descricao", str), ("eatu", "estoque", int), 
+                       ("pvenda", "preco", float), ("custo_base", "custo", float), ("peso", "peso", float), ("dimensao1", "altura", int),
+                       ("dimensao2", "largura", int), ("dimensao3", "profundidade", int), ("gtin_un", "gtin", str), ("codncm", "ncm", str)]
         carbrasil_products = self.carbrasil_database_get(db_products, column_list)
         
         #Checking for exits or pauses
@@ -232,7 +232,7 @@ class DatabaseSync():
         
         #chave_comparacao: chaves que serão comparadas. (dict_mysql[chave] == dict_carbrasil[chave])
         chave_padrao = ["codigo_carbrasil", "id_bling", "idEstoque", "bling_tipo", "bling_formato", "bling_situacao", "marca", "internal_error_count"]
-        chave_comparacao = ["descricao", "preco", "custo", "estoque", "gtin", "altura", "largura", "profundidade", "peso"]
+        chave_comparacao = ["descricao", "preco", "custo", "estoque", "gtin", "altura", "largura", "profundidade", "peso", "ncm"]
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products, chaves_padrao=chave_padrao, chaves_comparacao=chave_comparacao)
         
         

@@ -2,35 +2,34 @@ import asyncio
 import logging
 import itertools
 import datetime
-from threading import Semaphore
 
 #Modules
 from error_handling import ErrorHandler
+import data_exchanger
 
 logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("request_preprocessing")
 
 class IOHandler(ErrorHandler):
 
-    def __init__(self, UI, db_sync_instance ,pause_event, stop_event, semaphore: Semaphore):
-        super().__init__(UI.error_textbox, db_sync_instance)
-        self.db_events = db_sync_instance
-        self._pause_trigger = pause_event
-        self._stop_trigger = stop_event
-        self.txbox = UI.modulo2_textbox
-        self.semaphore = semaphore
+    def __init__(self,):
+        super().__init__()
+        self.db_events = data_exchanger.DB_EVENTS
+
+        self._pause_trigger = data_exchanger.PAUSE_EVENT
+        self._stop_trigger = data_exchanger.STOP_EVENT
+        self.UI = data_exchanger.UI
+        self.semaphore = data_exchanger.SEMAPHORE
         
-        self.produtos_atualizados = 0
         self.api_product_instructions = []
         self.api_stock_instructions = []
         self.yes_stockId = []
         self.no_stockId = []
 
-
     def displayer(self, msg):
         print(msg)
         time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        self.txbox.insert('end', f"{time} - {msg}\n")
+        self.UI.modulo2_textbox.insert('end', f"{time} - {msg}\n")
 
     def verify_input(self, diagnosis:list[dict]):
 
@@ -115,7 +114,7 @@ class IOHandler(ErrorHandler):
         if flat_ok:
             self.displayer(f"(call_api) {len(flat_ok)} produtos foram atualizados com sucesso.")
             logger.info(f"(call_api) {len(flat_ok)} produtos foram atualizados com sucesso.")
-            self.produtos_atualizados += len(flat_ok)
+            data_exchanger.produtos_atualizados+= len(flat_ok)
             self.db_events.update_mysql_db(flat_ok)
 
 

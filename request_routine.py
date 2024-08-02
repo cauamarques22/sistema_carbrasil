@@ -6,26 +6,26 @@ import asyncio
 import itertools
 import logging
 
-#APP modules
+#App modules
 import auth_routine
 import connect_database
+import data_exchanger
 
 logging.basicConfig(level=logging.DEBUG, filemode="a", filename="app_logs.log", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("request_routine_module")
 
 class ApiFunctions():
-    def __init__ (self, txbox, pause_event = None, stop_event = None):
-        super().__init__()
-        self._pause_trigger = pause_event
-        self._stop_trigger = stop_event
-        
-        self.semaphore = asyncio.Semaphore(1)
-        self.txbox = txbox
+    def __init__ (self):
+        self._pause_trigger = data_exchanger.PAUSE_EVENT
+        self._stop_trigger = data_exchanger.STOP_EVENT
+        self.UI = data_exchanger.UI
 
+        self.semaphore = asyncio.Semaphore(1)
+        
     def displayer(self, msg):
         print(msg)
         time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        self.txbox.insert('end', f"{time} - {msg}\n")
+        self.UI.modulo1_textbox.insert('end', f"{time} - {msg}\n")
 
     async def create_stock_slave(self, session, product):
         self.displayer(f"(create_stock_slave) Começando request: {product['codigo_carbrasil']}")
@@ -262,6 +262,9 @@ class ApiFunctions():
                 "altura": product["divergencias"]["altura"],
                 "profundidade": product["divergencias"]["profundidade"],
                 "unidadeMedida": 1
+            },
+            "tributacao": {
+                "ncm": product["divergencias"]["ncm"]
             }
         }
 
