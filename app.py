@@ -114,6 +114,11 @@ class ModuleManager():
             self.displayer("(start) Iniciando get_product")
             logger.info("(start) Iniciando get_product")
 
+            self.T6 = threading.Thread(target=self.update_ui)
+            self.T6.start()
+            self.displayer("(start) Iniciando update_ui")
+            logger.info("(start) Iniciando update_ui")
+
         t1 = threading.Thread(target=first_start)
         t1.start()
 
@@ -195,6 +200,7 @@ class ModuleManager():
         self.UI.modulo3_label.configure(text="Modulo 3 (Parando...)",text_color="yellow")
         self.UI.modulo4_label.configure(text="Modulo 4 (Parando...)",text_color="yellow")
 
+    #Módulo 1
     def Bridge(self):
         """
         Esse método será executado em uma Thread, e ficará responsável por chamar o método
@@ -207,6 +213,7 @@ class ModuleManager():
         Também contabiliza quantas iterações foram feitas.
         """
         start_time = datetime.datetime.now()
+        self.bridge_iterations = 0
         self.displayer("(bridge) Iniciando o ciclo de sincronização.")
         logger.info("(bridge) Iniciando o ciclo de sincronização.")
         #Enquanto não for dado o sinal stop_event, ele continuará a iterar
@@ -221,9 +228,9 @@ class ModuleManager():
             elapsed_minutes = elapsed_time.seconds / 60
 
             #Se o tempo decorrido for maior ou igual a 30 minutos, executa o trecho de código abaixo. 
-            if elapsed_minutes >= 30 or data_exchanger.bridge_iterations == 0:
+            if elapsed_minutes >= 30 or self.bridge_iterations == 0:
                 start_time = datetime.datetime.now()
-                data_exchanger.bridge_iterations+=1
+                self.bridge_iterations+=1
 
                 #Inicio do ciclo de requests
                 begin = time.time()
@@ -258,9 +265,19 @@ class ModuleManager():
                 self.displayer(f"(bridge) O programa levou {end-begin:.2f} segundos para completar")
                 self.displayer("(bridge) 30 minutos para a próxima sincronização.")
                 logger.info(f"(bridge) O programa levou {end-begin:.2f} segundos para completar")
-           
+
+            time.sleep(15)
+    
+    def update_ui(self):
+        while not self.stop_event.is_set():
+            if not self.pause_event.is_set():
+                self.pause_event.wait()
+
             #Atualizando informações da label de quantidade de produtos atualizados
             self.UI.info1_count.configure(text=f"{data_exchanger.produtos_atualizados}")
+
+            #Atualizando informação da label de quantidade de iterações do módulo 1
+            self.UI.info2_count.configure(text=f"{self.bridge_iterations}")
             time.sleep(15)
 
 app = ModuleManager()

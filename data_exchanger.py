@@ -14,4 +14,4 @@ DB_EVENTS = None
 
 #Shared Variables
 produtos_atualizados = 0
-bridge_iterations = 0
+
