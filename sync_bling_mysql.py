@@ -61,7 +61,61 @@ class BlingDatabaseSync():
         self.bling_products = all_products
         self.displayer(f"(api_calls_get) {len(self.bling_products)} Produtos recebidos com sucesso.")
 
+    def get_product(self):
+        self.start_time_2 = datetime.datetime.now()
+        iteration_count = 0
+
+        while not self._stop_trigger.is_set():
+            if not self._pause_trigger.is_set():
+                self._pause_trigger.wait()
+            
+            now = datetime.datetime.now()
+            elapsed_time = now - self.start_time_2
+            elapsed_minutes = elapsed_time.seconds / 60
+            if elapsed_minutes >= 120 or iteration_count == 0 and not self._stop_trigger.is_set():
+                self.conn2 = connect_database.conn_pool.get_connection()
+                iteration_count+=1
+                with self.conn2.cursor() as cursor:
+                    cursor.execute("SELECT * FROM db_sistema_intermediador")
+                    response = cursor.fetchall()
+                
+                for x in response:
+                    if self._stop_trigger.is_set():
+                        break
+                    if not self._pause_trigger.is_set():
+                        self._pause_trigger.wait()
+
+                    print(f"(get_product) getting {x[0]} info from bling")
+                    self.semaphore.acquire()
+                    time.sleep(0.5)
+                    headers = {
+                        "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
+                    }
+
+                    r = requests.get(f"{auth_routine.AuthRoutine.HOST}produtos/{x[1]}", headers=headers)
+                    self.semaphore.release()
+                    parsed = json.loads(r.text)
+                    parsed = parsed["data"]
+                    document = {
+                        "codigo_carbrasil": int(parsed["codigo"]),
+                        "descricao": parsed["nome"],
+                        "preco": parsed["preco"],
+                        "gtin": parsed["gtin"],
+                        "ncm": parsed["tributacao"]["ncm"],
+                        "peso": parsed["pesoLiquido"],
+                        "marca": parsed["marca"],
+                        "largura": parsed["dimensoes"]["largura"],
+                        "altura": parsed["dimensoes"]["altura"],
+                        "profundidade": parsed["dimensoes"]["profundidade"]
+                    }
+                    with self.conn2.cursor() as cursor:
+                        columns = ["descricao", "preco", "gtin", "ncm", "peso", "marca", "largura", "altura", "profundidade"]
+                        for column in columns:
+                            cursor.execute(f"UPDATE db_sistema_intermediador SET {column} = %s WHERE codigo_carbrasil = %s", (document[column], document["codigo_carbrasil"]))
+
+            time.sleep(15)
     def update_database(self):
+        self.conn = connect_database.conn_pool.get_connection()
         self.displayer(f"(update_database) Iniciando atualização em {len(self.bling_products)} produtos do Banco de Dados.")
         for item in self.bling_products:
             #Verifying triggers
@@ -83,6 +137,7 @@ class BlingDatabaseSync():
                 self.UI.error_textbox.insert("end",f"(update_database) Produtos retornaram com erros:\n{item}")
                 continue
         self.conn.commit()
+        self.conn.close()
         self.displayer("(update_database) Atualização Concluída.")
 
     def bling_routine(self):
@@ -99,18 +154,18 @@ class BlingDatabaseSync():
             elapsed_time = now - self.start_time
             elapsed_minutes = elapsed_time.seconds / 60  
             if elapsed_minutes >= 25 or iteration_count == 0 and not self._stop_trigger.is_set():
-                self.conn = connect_database.conn_pool.get_connection()
+                
                 self.semaphore.acquire()
                 self.start_time = datetime.datetime.now()
                 iteration_count+=1
                 
-                #Make request and close semaphore
+                #Make request and release semaphore
                 self.api_calls_get()
                 self.semaphore.release()
 
-                #Make database update and close connection
+                #Make database update 
                 self.update_database()
-                self.conn.close()
+                
 
             time.sleep(15)
 

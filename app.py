@@ -109,6 +109,11 @@ class ModuleManager():
             self.displayer("(start) Iniciando módulo 1")
             logger.info("(start) Iniciando módulo 1")
 
+            self.T5 = threading.Thread(target=self.b_routine.get_product)
+            self.T5.start()
+            self.displayer("(start) Iniciando get_product")
+            logger.info("(start) Iniciando get_product")
+
         t1 = threading.Thread(target=first_start)
         t1.start()
 
