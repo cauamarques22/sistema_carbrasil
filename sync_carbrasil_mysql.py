@@ -28,19 +28,21 @@ class DatabaseSync():
 
         self.displayer("(database_get_all) Solicitando produtos ao Banco de Dados Interno")
         #Selecionando produtos da tabela
-        with self.conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM db_sistema_intermediador")
-            resp = cursor.fetchall()
+        conn = connect_database.conn_pool.get_connection()
+        with conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT * FROM db_sistema_intermediador")
+                resp = cursor.fetchall()
 
-            #Selecionando colunas da tabela
-            cursor.execute("""
-            SELECT COLUMN_NAME 
-            FROM INFORMATION_SCHEMA.COLUMNS 
-            WHERE TABLE_SCHEMA = 'intermediador_bling' 
-            AND TABLE_NAME = 'db_sistema_intermediador';
-            """)
-            columns = cursor.fetchall()
-             #columns = [(x, ), (y, ), ...]
+                #Selecionando colunas da tabela
+                cursor.execute("""
+                SELECT COLUMN_NAME 
+                FROM INFORMATION_SCHEMA.COLUMNS 
+                WHERE TABLE_SCHEMA = 'intermediador_bling' 
+                AND TABLE_NAME = 'db_sistema_intermediador';
+                """)
+                columns = cursor.fetchall()
+                #columns = [(x, ), (y, ), ...]
     
         all_database_products = []
         for product in resp:
@@ -62,23 +64,26 @@ class DatabaseSync():
         self.displayer("(carbrasil_database_get) Solicitando produtos ao Banco de Dados CarBrasil")
         carbrasil_responses = []
         column_string = ", ".join([x[0] for x in column_list])
-        for product in products:
-            #dimensao1 = altura; dimensao2 = largura; dimensao3 = profundidade;
-            response = self.cb_cursor.execute(f"SELECT {column_string} FROM v_produtos1 WHERE ativa=0 AND codprod={product['codigo_carbrasil']}")
-            for prod in response:
-                document = {}
-                #Montando o document
-                for idx, column in enumerate(column_list):
-                    #Regras de data_types
-                    if column[0] == "descricao":
-                        document[column[1]] = prod[idx].strip()
-                    elif column[0] == "gtin_un":
-                        document[column[1]] = prod[idx] if prod[idx] != "SEM GTIN" else ""
-                    else:
-                        document[column[1]] = column[2](prod[idx])
-                
-                #Append do document
-                carbrasil_responses.append(document)
+        cb_conn = connect_database.get_cb_connection()
+        with cb_conn:
+            with cb_conn.cursor() as cursor:
+                for product in products:
+                    #dimensao1 = altura; dimensao2 = largura; dimensao3 = profundidade;
+                    response = cursor.execute(f"SELECT {column_string} FROM v_produtos1 WHERE ativa=0 AND codprod={product['codigo_carbrasil']}")
+                    for prod in response:
+                        document = {}
+                        #Montando o document
+                        for idx, column in enumerate(column_list):
+                            #Regras de data_types
+                            if column[0] == "descricao":
+                                document[column[1]] = prod[idx].strip()
+                            elif column[0] == "gtin_un":
+                                document[column[1]] = prod[idx] if prod[idx] != "SEM GTIN" else ""
+                            else:
+                                document[column[1]] = column[2](prod[idx])
+                        
+                        #Append do document
+                        carbrasil_responses.append(document)
 
         self.displayer(f"(carbrasil_database_get) {len(carbrasil_responses)} produtos obtidos com sucesso")
         return carbrasil_responses
@@ -140,20 +145,21 @@ class DatabaseSync():
     def update_mysql_db(self, api_return):
         self.displayer(f"(update_mysql_db) Atualizando {len(api_return)} registros do banco de dados.")
         logger.info(f"(update_mysql_db) Atualizando {len(api_return)} registros do banco de dados.")
-        for product in api_return:
-            try:
-                prod_keys = [x for x in product["divergencias"].keys()]
-                for key in prod_keys:
-                    with self.conn.cursor() as cursor:
-                        cursor.execute(f"UPDATE db_sistema_intermediador SET {key} = %s WHERE codigo_carbrasil = %s", (product['divergencias'][key], product['codigo_carbrasil']))
+        conn = connect_database.conn_pool.get_connection()
+        with conn:
+            for product in api_return:
+                try:
+                    prod_keys = [x for x in product["divergencias"].keys()]
+                    for key in prod_keys:
+                        with conn.cursor() as cursor:
+                            cursor.execute(f"UPDATE db_sistema_intermediador SET {key} = %s WHERE codigo_carbrasil = %s", (product['divergencias'][key], product['codigo_carbrasil']))
 
-            except Exception as err:
-                logger.critical(f"Produto no qual o erro foi lançado:\n {product}")
-                logger.exception(err)
-                raise err
+                except Exception as err:
+                    logger.critical(f"Produto no qual o erro foi lançado:\n {product}")
+                    logger.exception(err)
+                    raise err
 
-        self.conn.commit()
-        self.conn.close()
+            conn.commit()
         self.displayer("(update_mysql_db) Atualização concluída")
         logger.info("(update_mysql_db) Atualização concluída")
 
@@ -172,18 +178,17 @@ class DatabaseSync():
                 exception_count = 0
                 #Database Connection
                 self.internal_error_conn = connect_database.conn_pool.get_connection()
-                self.displayer(f"Internal Error Connection Id: {self.internal_error_conn.connection_id}")
+                self.displayer(f"Internal Error Connection Id: {self.internal_error_conn.thread_id()}")
                 while True:
                     try:
-                        run_count+=1
-                        with self.internal_error_conn.cursor() as ierror_cursor:
-                            ierror_cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = 0 WHERE internal_error_count > 0")
-                        self.internal_error_conn.commit()
-                        logger.info(f"(reset_internal_error_count) Atualização de internal_error_count feita com sucesso. Exceções: {exception_count}")
-                        
-                        #Close Database Connection
-                        self.internal_error_conn.close()
-                        break
+                        with self.internal_error_conn:
+                            run_count+=1
+                            with self.internal_error_conn.cursor() as ierror_cursor:
+                                ierror_cursor.execute("UPDATE db_sistema_intermediador SET internal_error_count = 0 WHERE internal_error_count > 0")
+                            self.internal_error_conn.commit()
+                            logger.info(f"(reset_internal_error_count) Atualização de internal_error_count feita com sucesso. Exceções: {exception_count}")
+                            
+                            break
                     except Exception as err:
                         logger.warn("(reset_internal_error_count) Uma exceção foi encontrada ao tentar atualizar o internal_error_count, tentando novamente")
                         logger.exception(err)
@@ -192,7 +197,7 @@ class DatabaseSync():
                         exception_count+=1
                         if exception_count == 3:
                             logger.critical("(reset_internal_error_count) Quantidade de errors permitidos excedida.")
-                            raise err
+                            
             time.sleep(15)
 
     def main(self):
@@ -203,11 +208,6 @@ class DatabaseSync():
         if self._stop_trigger.is_set():
             return
                 
-        #Database Connections
-        self.conn = connect_database.conn_pool.get_connection()
-        self.cb_conn = connect_database.get_cb_connection()
-        self.cb_cursor = self.cb_conn.cursor()
-        self.displayer(f"DB Events Connection Id: {self.conn.connection_id}")
         db_products = self.database_get_all()
         
         #Checking for exits or pauses
@@ -231,8 +231,8 @@ class DatabaseSync():
             return
         
         #chave_comparacao: chaves que serão comparadas. (dict_mysql[chave] == dict_carbrasil[chave])
-        chave_padrao = ["codigo_carbrasil", "id_bling", "idEstoque", "bling_tipo", "bling_formato", "bling_situacao", "marca", "internal_error_count"]
-        chave_comparacao = ["descricao", "preco", "custo", "estoque", "gtin", "altura", "largura", "profundidade", "peso", "ncm"]
+        chave_padrao = ["codigo_carbrasil", "id_bling", "idEstoque", "descricao", "bling_tipo", "bling_formato", "bling_situacao", "marca", "internal_error_count", "descricao_curta"]
+        chave_comparacao = ["preco", "custo", "estoque", "gtin", "altura", "largura", "profundidade", "peso", "ncm"]
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products, chaves_padrao=chave_padrao, chaves_comparacao=chave_comparacao)
         
         

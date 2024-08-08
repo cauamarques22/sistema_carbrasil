@@ -1,14 +1,17 @@
-import mysql.connector
+import pymysqlpool
+import pymysql
 import pyodbc
 
 try:
-    conn_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="sistema_integrador", pool_size=6, user="root", password="123456", database="intermediador_bling", host="CARBRASIL-HOST") 
+    config = {"user":"root", "password":"123456", "database":"intermediador_bling", "host":"CARBRASIL-HOST"}
+    conn_pool = pymysqlpool.ConnectionPool(name="sistema_integrador", size=5,maxsize=8, **config) 
     conn1 = conn_pool.get_connection()
     cursor1 = conn1.cursor()
     cursor1.execute("SELECT * FROM db_sistema_intermediador")
-except mysql.connector.ProgrammingError as err:
+except pymysql.err.OperationalError as err:
     if err.errno == 1049:
-        conn1 = mysql.connector.pooling.MySQLConnectionPool(pool_name="sistema_integrador", pool_size=6,user="root", password="123456", host="CARBRASIL-HOST")            
+        config = {"user":"root", "password":"123456", "database":"intermediador_bling", "host":"CARBRASIL-HOST"}
+        conn_pool = pymysqlpool.ConnectionPool(name="sistema_integrador", size=5,maxsize=8, **config)            
         cursor1 = conn1.cursor()
         cursor1.execute("CREATE DATABASE intermediador_bling")
         cursor1.execute("USE intermediador_bling")

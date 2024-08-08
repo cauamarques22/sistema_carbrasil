@@ -61,6 +61,7 @@ class BlingDatabaseSync():
         self.bling_products = all_products
         self.displayer(f"(api_calls_get) {len(self.bling_products)} Produtos recebidos com sucesso.")
 
+    #Erro API 504
     def get_product(self):
         self.start_time_2 = datetime.datetime.now()
         iteration_count = 0
@@ -73,11 +74,12 @@ class BlingDatabaseSync():
             elapsed_time = now - self.start_time_2
             elapsed_minutes = elapsed_time.seconds / 60
             if elapsed_minutes >= 120 or iteration_count == 0 and not self._stop_trigger.is_set():
-                self.conn2 = connect_database.conn_pool.get_connection()
                 iteration_count+=1
-                with self.conn2.cursor() as cursor:
-                    cursor.execute("SELECT * FROM db_sistema_intermediador")
-                    response = cursor.fetchall()
+                conn = connect_database.conn_pool.get_connection()
+                with conn:
+                    with conn.cursor() as cursor:
+                        cursor.execute("SELECT * FROM db_sistema_intermediador")
+                        response = cursor.fetchall()
                 
                 for x in response:
                     if self._stop_trigger.is_set():
@@ -91,9 +93,10 @@ class BlingDatabaseSync():
                     headers = {
                         "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
                     }
-
-                    r = requests.get(f"{auth_routine.AuthRoutine.HOST}produtos/{x[1]}", headers=headers)
+                    
+                    r = requests.get(f"{auth_routine.AuthRoutine.HOST}produtos/{x[1]}", headers=headers, timeout=(10, 10))
                     self.semaphore.release()
+                    #Erro 504 no código 9624 e 9625
                     parsed = json.loads(r.text)
                     parsed = parsed["data"]
                     document = {
@@ -108,11 +111,14 @@ class BlingDatabaseSync():
                         "altura": parsed["dimensoes"]["altura"],
                         "profundidade": parsed["dimensoes"]["profundidade"]
                     }
-                    with self.conn2.cursor() as cursor:
-                        columns = ["descricao", "preco", "gtin", "ncm", "peso", "marca", "largura", "altura", "profundidade"]
-                        for column in columns:
-                            cursor.execute(f"UPDATE db_sistema_intermediador SET {column} = %s WHERE codigo_carbrasil = %s", (document[column], document["codigo_carbrasil"]))
-
+                    #Pool exhausted
+                    conn = connect_database.conn_pool.get_connection()
+                    with conn:
+                        with self.conn2.cursor() as cursor:
+                            columns = ["descricao", "preco", "gtin", "ncm", "peso", "marca", "largura", "altura", "profundidade"]
+                            for column in columns:
+                                cursor.execute(f"UPDATE db_sistema_intermediador SET {column} = %s WHERE codigo_carbrasil = %s", (document[column], document["codigo_carbrasil"]))
+                    time.sleep(0.3)
             time.sleep(15)
     def update_database(self):
         self.conn = connect_database.conn_pool.get_connection()

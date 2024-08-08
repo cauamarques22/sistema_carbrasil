@@ -110,11 +110,11 @@ class ApiFunctions():
         
         #Atualizando campo do idEstoque no Banco de Dados
         conn = connect_database.conn_pool.get_connection()
-        cursor = conn.cursor()
-        for prod in ok_status:
-            cursor.execute(f"UPDATE db_sistema_intermediador SET idEstoque={prod["resposta_api"]['idEstoque']} WHERE codigo_carbrasil={prod['codigo_carbrasil']}")
-        conn.commit()
-        conn.close()
+        with conn:
+            with conn.cursor() as cursor:
+                for prod in ok_status:
+                    cursor.execute(f"UPDATE db_sistema_intermediador SET idEstoque={prod["resposta_api"]['idEstoque']} WHERE codigo_carbrasil={prod['codigo_carbrasil']}")
+            conn.commit()
 
         msg = f"(create_stock_main) POST REQUESTS FINALIZADAS, RESULTADOS: \nok_status:{len(ok_status)}\nunknown_errors:{len(unknown_errors)}\nos_errors: {len(os_error)}\nok_status: {len(ok_status)}"
         logger.info(msg)
@@ -251,6 +251,7 @@ class ApiFunctions():
             "situacao": product["bling_situacao"],
             "formato": product["bling_formato"],
             "codigo": product["codigo_carbrasil"],
+            "descricaoCurta": product["descricao_curta"],
             "unidade": "UN",
             "condicao": 1,
             "tipoProducao": "T",
