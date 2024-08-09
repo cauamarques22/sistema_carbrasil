@@ -231,7 +231,7 @@ class DatabaseSync():
             return
         
         #chave_comparacao: chaves que serão comparadas. (dict_mysql[chave] == dict_carbrasil[chave])
-        chave_padrao = ["codigo_carbrasil", "id_bling", "idEstoque", "descricao", "bling_tipo", "bling_formato", "bling_situacao", "marca", "internal_error_count", "descricao_curta"]
+        chave_padrao = ["codigo_carbrasil", "idEstoque", "internal_error_count"]
         chave_comparacao = ["preco", "custo", "estoque", "gtin", "altura", "largura", "profundidade", "peso", "ncm"]
         diagnosis = self.compare_responses(carbrasil_response=carbrasil_products, database_response=db_products, chaves_padrao=chave_padrao, chaves_comparacao=chave_comparacao)
         

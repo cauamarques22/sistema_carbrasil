@@ -244,33 +244,21 @@ class ApiFunctions():
         headers = {
         "Authorization": f"Bearer {auth_routine.AuthRoutine.session_tokens[0]}"
         }
-        payload = {
-            "nome": product["divergencias"]["descricao"],
-            "preco": product["divergencias"]["preco"],
-            "tipo": product["bling_tipo"],
-            "situacao": product["bling_situacao"],
-            "formato": product["bling_formato"],
-            "codigo": product["codigo_carbrasil"],
-            "descricaoCurta": product["descricao_curta"],
-            "unidade": "UN",
-            "condicao": 1,
-            "tipoProducao": "T",
-            "gtin": product["divergencias"]["gtin"],
-            "peso_liquido": product["divergencias"]["peso"],
-            "peso_bruto": product["divergencias"]["peso"],
-            "dimensoes": {
-                "largura": product["divergencias"]["largura"],
-                "altura": product["divergencias"]["altura"],
-                "profundidade": product["divergencias"]["profundidade"],
-                "unidadeMedida": 1
-            },
-            "tributacao": {
-                "ncm": product["divergencias"]["ncm"]
-            }
-        }
+
+        async with session.get(url=f"{auth_routine.AuthRoutine.HOST}produtos/{product["id_bling"]}", headers=headers) as response:
+            response_json = await response.json()
+            data = response_json["data"]
+            data["preco"] = product["divergencias"]["preco"]
+            data["pesoLiquido"] = product["divergencias"]["peso"]
+            data["pesoBruto"] = product["divergencias"]["peso"]
+            data["gtin"] = product["divergencias"]["gtin"]
+            data["dimensoes"]["largura"] = product["divergencias"]["largura"]
+            data["dimensoes"]["altura"] = product["divergencias"]["altura"]
+            data["dimensoes"]["profundidade"] = product["divergencias"]["profundidade"]
+            data["tributacao"]["ncm"] = product["divergencias"]["ncm"]
 
         try:
-            async with session.request(method="PUT", url=f"{auth_routine.AuthRoutine.HOST}produtos/{product['id_bling']}", headers=headers, json=payload) as resp:
+            async with session.request(method="PUT", url=f"{auth_routine.AuthRoutine.HOST}produtos/{product['id_bling']}", headers=headers, json=data) as resp:
                 resp_status = resp.status
                 
                 if resp_status == 504:
