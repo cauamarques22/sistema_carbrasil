@@ -87,12 +87,12 @@ class Display:
         start_y = 0.02
         def steps(x):
             return start_y + (0.06 * x)
-        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados: ", anchor="w", fg_color="red")
+        self.info1_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Produtos atualizados: ", anchor="w")
         self.info1_label.place(relx=dim1[0], rely=start_y, relwidth=dim1[1], relheight=dim1[2])
         self.info1_count = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="0")
         self.info1_count.place(relx=dim2[0], rely=start_y, relwidth=dim2[1], relheight=dim2[2])
 
-        self.info2_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Ciclos do módulo 1: ", anchor="w", fg_color="red")
+        self.info2_label = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="Ciclos do módulo 1: ", anchor="w")
         self.info2_label.place(relx=dim1[0], rely=steps(1), relwidth=dim1[1], relheight=dim1[2])
         self.info2_count = ctk.CTkLabel(self.app2_subframe2, font=("Montserrat", 14, "bold"), text="0")
         self.info2_count.place(relx=dim2[0], rely=steps(1), relwidth=dim2[1], relheight=dim2[2])

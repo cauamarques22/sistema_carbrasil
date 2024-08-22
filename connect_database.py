@@ -36,10 +36,8 @@ finally:
 cnxn_str = ("Driver={SQL SERVER};"
             "Server=CARBRASIL-HOST\\SQLEXPRESS;"
             "Database=bdados1;"
-            "UID=sistema_integrador;"
-            "PWD=cb010306;"
-            "Pooling=True;"
-            "Max Pool Size=1")
+            "UID=sa;"
+            "PWD=Tec12345678;")
 
 def get_cb_connection():
     return pyodbc.connect(cnxn_str)
